@@ -1,32 +1,126 @@
 {
-	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "Agda",
-	"patterns": [
-		{
-			"include": "#keywords"
-		},
-		{
-			"include": "#strings"
-		}
-	],
-	"repository": {
-		"keywords": {
-			"patterns": [{
-				"name": "keyword.control.agda",
-				"match": "\\b(if|while|for|return)\\b"
-			}]
-		},
-		"strings": {
-			"name": "string.quoted.double.agda",
-			"begin": "\"",
-			"end": "\"",
-			"patterns": [
-				{
-					"name": "constant.character.escape.agda",
-					"match": "\\\\."
-				}
-			]
-		}
-	},
-	"scopeName": "source.agda"
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Agda",
+  "scopeName": "source.agda",
+  "patterns": [
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#punctuation"
+    },
+    {
+      "include": "#constants"
+    },
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#pragmas"
+    },
+    {
+      "include": "#agda-markdown-block"
+    }
+  ],
+  "repository": {
+    "agda-markdown-block": {
+      "begin": "(^|\\G)(\\s*)(\\`{3,}|~{3,})\\s*(?i:(agda)(\\s+[^`~]*)?$)",
+      "end": "(^|\\G)(\\2|\\s{0,3})(\\3)\\s*$",
+      "beginCaptures": {
+        "3": {
+          "name": "punctuation.definition.markdown"
+        },
+        "4": {
+          "name": "fenced_code.block.language.markdown"
+        },
+        "5": {
+          "name": "fenced_code.block.language.attributes.markdown"
+        }
+      },
+      "endCaptures": {
+        "3": {
+          "name": "punctuation.definition.markdown"
+        }
+      },
+      "patterns": [
+        {
+          "begin": "(^|\\G)(\\s*)(.*)",
+          "while": "(^|\\G)(?!\\s*([`~]{3,})\\s*$)",
+          "contentName": "meta.embedded.block.agda",
+          "patterns": [
+            {
+              "include": "#keywords"
+            }
+          ]
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.agda",
+          "match": "(?<=^|\\s)(abstract|coinductive|constructor|data|do|eta-equality|field|forall|import|in|inductive|infix|infixl|infixr|instance|interleaved|let|macro|module|mutual|no-eta-equality|open|overlap|pattern|postulate|primitive|private|quote|quoteTerm|record|rewrite|syntax|tactic|unquote|unquoteDecl|unquoteDef|variable|where|with)(?=$|\\s)"
+        },
+        {
+          "name": "storage.type.agda",
+          "match": "(?<=^|\\s)(SSet|Set|Prop)ω?(\\d*|(₀|₁|₂|₃|₄|₅|₆|₇|₈|₉)*)(?=$|\\s)"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.agda",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.agda",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.weak.agda",
+          "match": "(?<=^|\\s)(:|=|\\?|->|→|forall|∀|\\\\|λ|;|_|\\.|\\.\\.|\\.\\.\\.|\\(|\\)|\\{|\\}|\\{\\{|\\}\\}|⦃|⦄)(?=$|\\s)"
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.numeric.agda",
+          "match": "(?<=^|\\s)\\d+(?=$|\\s)"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-dash.agda",
+          "match": "--.*$"
+        },
+        {
+          "name": "comment.block.agda",
+          "begin": "\\{-(?![#])",
+          "end": "-\\}"
+        }
+      ]
+    },
+    "pragmas": {
+      "patterns": [
+        {
+          "name": "meta.pragma.agda",
+          "begin": "\\{-#",
+          "end": "#-\\}",
+          "captures": {
+            "0": { "name": "punctuation.definition.pragma.agda" }
+          }
+        }
+      ]
+    }
+  }
 }

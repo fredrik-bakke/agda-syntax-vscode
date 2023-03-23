@@ -10,16 +10,37 @@
     "Programming Languages"
   ],
   "contributes": {
-    "languages": [{
-      "id": "agda",
-      "aliases": ["Agda", "agda"],
-      "extensions": [".agda",".lagda",".lagda.md"],
-      "configuration": "./language-configuration.json"
-    }],
-    "grammars": [{
-      "language": "agda",
-      "scopeName": "source.agda",
-      "path": "./syntaxes/agda.tmLanguage.json"
-    }]
+    "languages": [
+      {
+        "id": "agda",
+        "aliases": [
+          "Agda",
+          "agda"
+        ],
+        "extensions": [
+          ".agda"
+        ],
+        "configuration": "./language-configuration.json",
+        "scopeName": "source.agda"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "agda",
+        "scopeName": "source.agda",
+        "path": "./syntaxes/agda.tmLanguage.json"
+      },
+      {
+        "scopeName": "source.agda.embedded",
+        "path": "./syntaxes/agda.tmLanguage.json",
+        "injectTo": [
+          "text.html.markdown"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.agda": "agda"
+        },
+        "injectionSelector": "L:text.html.markdown"
+      }
+    ]
   }
 }
