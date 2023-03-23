@@ -32,14 +32,13 @@
       },
       {
         "scopeName": "source.agda.embedded",
-        "path": "./syntaxes/agda.tmLanguage.json",
+        "path": "./syntaxes/agda-markdown-injection.tmLanguage.json",
         "injectTo": [
           "text.html.markdown"
         ],
         "embeddedLanguages": {
           "meta.embedded.block.agda": "agda"
-        },
-        "injectionSelector": "L:text.html.markdown"
+        }
       }
     ]
   }
