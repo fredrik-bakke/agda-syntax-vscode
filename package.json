@@ -1,0 +1,25 @@
+{
+  "name": "agda-highlight",
+  "displayName": "agda-highlight",
+  "description": "Syntax highlighting for the Agda programming language.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.76.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "agda",
+      "aliases": ["Agda", "agda"],
+      "extensions": [".agda",".lagda",".lagda.md"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "agda",
+      "scopeName": "source.agda",
+      "path": "./syntaxes/agda.tmLanguage.json"
+    }]
+  }
+}
