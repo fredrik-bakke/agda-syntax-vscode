@@ -24,7 +24,7 @@
       "include": "#pragmas"
     },
     {
-      "include": "#definitions"
+      "include": "#declarations"
     }
   ],
   "repository": {
@@ -82,12 +82,8 @@
     "punctuation": {
       "patterns": [
         {
-          "name": "variable.language.wildcard.agda",
-          "match": "(?<=^|\\s)_(?=$|\\s)"
-        },
-        {
           "name": "punctuation.agda",
-          "match": "(?<=^|\\s)(:|=|\\?|->|→|forall|∀|\\\\|λ|;|_|\\.|\\.\\.|\\.\\.\\.)(?=$|\\s)"
+          "match": "(?<=^|\\s)(:|=|\\?|->|→|forall|∀|\\\\|λ|;|\\.|\\.\\.|\\.\\.\\.)(?=$|\\s)"
         },
         {
           "name": "punctuation.definition.agda",
@@ -153,18 +149,24 @@
         }
       ]
     },
-    "definitions": {
+    "declarations": {
       "patterns": [
         {
           "name": "meta.module.declaration.agda",
-          "begin": "(?<=^|\\s)(module)\\s+(\\S+)(?:\\s+(\\S+))?\\s+(where)",
-          "end": "(?=$|\\s)",
+          "begin": "^\\s*(module)\\s+([^\\(\\)\\{\\}[:space:]=→λ∀?][^\\(\\)\\{\\}[:space:]]*)(?=$|\\s)",
+          "end": "(?<=^|\\s)(where)(?=$|\\s)",
           "beginCaptures": {
             "1": { "name": "keyword.control.module.agda" },
-            "2": { "name": "entity.name.module.agda" },
-            "3": { "name": "meta.module.parameters.agda" },
-            "4": { "name": "keyword.control.where.module.agda" }
+            "2": { "name": "entity.name.type.module.agda" },
+            "3": { "name": "meta.parameters.module.agda" }
+          },
+          "endCaptures": {
+            "1": { "name": "keyword.control.where.module.agda" }
           }
+        },
+        {
+          "name": "variable.language.wildcard.agda",
+          "match": "(?<=^|\\s)_(?=$|\\s)"
         }
       ]
     }
