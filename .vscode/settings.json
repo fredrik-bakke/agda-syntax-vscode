@@ -14,5 +14,6 @@
     "editor.suggest.insertMode": "replace",
     "gitlens.codeLens.scopes": ["document"],
     "editor.tabSize": 2
-  }
+  },
+  "prettier.trailingComma": "es5"
 }

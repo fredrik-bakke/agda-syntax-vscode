@@ -36,22 +36,7 @@
           "contentName": "meta.embedded.block.agda",
           "patterns": [
             {
-              "include": "source.agda#keywords"
-            },
-            {
-              "include": "source.agda#strings"
-            },
-            {
-              "include": "source.agda#punctuation"
-            },
-            {
-              "include": "source.agda#constants"
-            },
-            {
-              "include": "source.agda#comments"
-            },
-            {
-              "include": "source.agda#pragmas"
+              "include": "source.agda"
             }
           ]
         }
