@@ -18,7 +18,11 @@
           "agda"
         ],
         "extensions": [
-          ".agda"
+          ".agda",
+          ".lagda",
+          ".lagda.md",
+          ".lagda.rst",
+          ".lagda.tex"
         ],
         "configuration": "./language-configuration.json",
         "scopeName": "source.agda"
@@ -40,6 +44,27 @@
           "meta.embedded.block.agda": "agda"
         }
       }
+    ],
+    "keybindings": [
+      {
+        "command": "agda-mode.load",
+        "key": "ctrl+c ctrl+l",
+        "mac": "ctrl+c ctrl+l",
+        "when": "editorLangId == markdown && !editorHasSelection && editorTextFocus"
+      },
+      {
+        "command": "agda-mode.input-symbol[Activate]",
+        "key": "\\",
+        "when": "editorLangId == markdown"
+      },
+      {
+        "command": "agda-mode.input-symbol[Activate]",
+        "key": "[Backslash]",
+        "when": "editorLangId == markdown"
+      }
     ]
+  },
+  "devDependencies": {
+    "js-yaml": "^4.1.0"
   }
 }

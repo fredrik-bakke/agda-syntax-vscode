@@ -1,0 +1,13 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "convert yaml grammar to json",
+      "type": "shell",
+      "command": "setopt nullglob; for file in syntaxes/*.tmLanguage.y{a,}ml; do npx js-yaml $file > ${file%.*}.json; done; unsetopt nullglob",
+      "problemMatcher": []
+    }
+  ]
+}

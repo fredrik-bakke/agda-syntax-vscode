@@ -7,29 +7,32 @@
   },
   // symbols used as brackets
   "brackets": [
+    ["(", ")"],
     ["{", "}"],
-    ["{{", "}}"],
-    ["(", ")"]
+    // ["{{", "}}"], // VSCode highlights nested curly braces wrong e.g. {{{}}}
+    // ["⦃", "⦄"], // VSCode doesn't properly recognize them as sometimes part of larger tokens
+    ["{!", "!}"],
+    ["{-#", "#-}"]
   ],
   // symbols that are auto closed when typing
   "autoClosingPairs": [
-    // ["(", ")"],
-    // ["{", "}"],
-    // ["{{", "}}"],
+    // ["(", ")"], // Interferes with agda input mode
+    // ["{", "}"], // Interferes with agda input mode
+    // ["{{", "}}"], // Interferes with agda input mode
     ["{!", "!}"],
     ["{-", "-}"],
     ["⦃", "⦄"],
     ["{-#", "#-}"]
-    // { "open": "'", "close": "'", "notIn": ["string"] },
-    // { "open": "\"", "close": "\"", "notIn": ["string"] },
   ],
   // symbols that that can be used to surround a selection
   "surroundingPairs": [
+    ["(", ")"],
     ["{", "}"],
     ["{{", "}}"],
+    ["⦃", "⦄"],
     ["{!", "!}"],
+    ["{-#", "#-}"],
     ["[", "]"],
-    ["(", ")"],
     ["\"", "\""],
     ["'", "'"]
   ]

@@ -1,0 +1,402 @@
+$schema: https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
+name: Agda
+scopeName: source.agda
+fileTypes:
+  - agda
+keyEquivalent: ^~A
+
+patterns:
+  - include: "#literal"
+  - include: "#module-declaration"
+  - include: "#data-declaration"
+  # - include: "#record-declaration"
+  - include: "#open-import-statement"
+  - include: "#pragma"
+  - include: "#block-comment"
+  - include: "#dash-comment"
+  - include: "#discard"
+  - include: "#builtin-sort"
+  - include: "#top-level-type-signature-colon-on-first-line"
+  - include: "#top-level-definition-equals-on-first-line"
+
+  - comment: badly placed keywords
+    name: invalid.illegal.keyword.agda
+    match: (?<=^|[\s;{}()@"'])(data|module|record)(?=$|[\s;{}()@"])
+
+  - include: "#reserved"
+
+repository:
+  module-declaration:
+    contentName: meta.declaration.module.agda
+    begin: (^|\G)(\s*)(module)(?=$|[\s;{}()@"])
+    end: (?<=^|[\s;{}()@"'])where(?=$|[\s;{}()@"])
+    beginCaptures:
+      "3": { name: keyword.control.module.agda }
+    endCaptures:
+      "0": { name: keyword.control.where.module.agda }
+    patterns:
+      - begin: (?<=(^\s*|module\s+))((?!')[^\s;{}()@"]+)
+        end: (?=(?<=^|[\s;{}()@"'])where(?=$|[\s;{}()@"]))
+        beginCaptures:
+          "0":
+            patterns:
+              - include: "#discard"
+              - include: "#qualified-module-name"
+        contentName: meta.declaration.parameters.module.agda
+        patterns:
+          - include: "#parameter-declaration"
+
+  data-declaration:
+    contentName: meta.declaration.data.agda
+    begin: (^|\G)(\s*)(data)\s+(\S+)(?=$|[\s;{}()@"])
+    end: (?<=^|[\s;{}()@"'])where(?=$|[\s;{}()@"]) #TODO multiline definition
+    beginCaptures:
+      "3": { name: keyword.control.data.agda }
+      "4":
+        patterns:
+          - include: "#module-name"
+    endCaptures:
+      "0": { name: keyword.control.where.data.agda }
+    patterns:
+      - begin: \G
+        end: (?=(?<=^|[\s;{}()@"'])where(?=$|[\s;{}()@"]))
+        beginCaptures:
+          "1":
+            patterns:
+              - include: "#discard"
+              - include: "#term-name" #TODO: type name, maybe do a "top-level" type def? no, gotta get parameters on lhs as well
+        contentName: meta.declaration.parameters.data.agda
+        patterns:
+          - include: "#parameter-declaration"
+          - include: "#reserved"
+
+  open-import-statement:
+    begin: (^|\G)(\s*)(import|open(\s+import)?)(?=$|\s)
+    beginCaptures:
+      "3": { name: keyword.control.open-import }
+    while: ^\2\s
+    patterns:
+      - begin: \(
+        beginCaptures:
+          "0": { name: punctuation.section.parens.begin.agda }
+        end: \)
+        endCaptures:
+          "0": { name: punctuation.section.parens.end.agda }
+        name: meta.statement.open-import.names.agda
+        patterns:
+          - match: (?<=^|[\s;{}()@"'])to(?=$|[\s;{}()@"])
+            name: keyword.other.to.agda
+          - include: "#term-name"
+      - include: "#reserved"
+      - include: "#qualified-module-name"
+
+  forall-parameter-declaration:
+    patterns:
+      - include: "#forall-explicit-parameter-declaration" #TODO
+      # - include: "#forall-instance-parameter-declaration"
+      # - include: "#forall-implicit-parameter-declaration"
+
+  forall-explicit-parameter-declaration:
+    begin: (?<=^|[\s;{}()@"'])(forall|∀)\s*(\()
+    end: \)
+    beginCaptures:
+      "1": { name: keyword.operator.forall.agda }
+      "2": { name: punctuation.section.parens.begin.agda }
+    endCaptures:
+      "0": { name: punctuation.section.parens.end.agda }
+    name: meta.declaration.parameters.forall.agda
+    patterns:
+      - include: "#variable-type-signature-multiline" # TODO: probably just add two, one that recognizes parentheses without colons in them
+
+  parameter-declaration:
+    patterns:
+      - include: "#explicit-parameter-declaration"
+      - include: "#instance-parameter-declaration"
+      - include: "#implicit-parameter-declaration"
+
+  explicit-parameter-declaration:
+    begin: \(
+    end: \)
+    beginCaptures:
+      "0": { name: punctuation.section.parens.begin.agda }
+    endCaptures:
+      "0": { name: punctuation.section.parens.end.agda }
+    name: meta.declaration.parameters.agda
+    patterns:
+      - include: "#parameter-declaration"
+      - include: "#variable-type-signature"
+      - include: "#type"
+
+  implicit-parameter-declaration:
+    begin: \{
+    end: \}
+    beginCaptures:
+      "0": { name: punctuation.section.parens.end.agda }
+    endCaptures:
+      "0": { name: punctuation.section.parens.end.agda }
+    name: meta.declaration.parameters.agda
+    patterns:
+      - include: "#parameter-declaration"
+      - include: "#variable-type-signature"
+      - include: "#type"
+
+  instance-parameter-declaration:
+    patterns:
+      - include: "#instance-parameter-declaration-double-brace"
+      - include: "#instance-parameter-declaration-unicode"
+
+  instance-parameter-declaration-double-brace:
+    begin: \{\{
+    end: \}\}
+    name: meta.declaration.parameters.agda
+    beginCaptures:
+      "0": { name: punctuation.section.parens.end.agda }
+    endCaptures:
+      "0": { name: punctuation.section.parens.end.agda }
+    patterns:
+      - include: "#parameter-declaration"
+      - include: "#variable-type-signature"
+      - include: "#type"
+
+  instance-parameter-declaration-unicode:
+    begin: (?<=^|[\s;{}()@".'])⦃(?=$|[\s;{}()@".])
+    end: (?<=^|[\s;{}()@".'])⦄(?=$|[\s;{}()@".])
+    name: meta.declaration.parameters.agda
+    beginCaptures:
+      "0": { name: punctuation.section.parens.end.agda }
+    endCaptures:
+      "0": { name: punctuation.section.parens.end.agda }
+    patterns:
+      - include: "#parameter-declaration"
+      - include: "#variable-type-signature"
+      - include: "#type"
+
+  variable-type-signature-multiline:
+    begin: \G
+    end: ((?<=^|[\s;{}()@"]):(?=$|[\s;{}()@"]))|\G
+    endCaptures:
+      "0": { name: punctuation.separator.colon.agda }
+    patterns:
+      - include: "#discard"
+      - include: "#variable-name"
+
+  variable-type-signature:
+    match: \G.*(?<=[\s;{}()@"])(:)(?=$|[\s;{}()@"])
+    name: meta.declaration.variable-type-signature.agda
+    captures:
+      "1":
+        patterns:
+          - include: "#discard"
+          - include: "#variable-name"
+      "2": { name: keyword.operator.colon.agda }
+
+  type:
+    patterns:
+      - include: "#literal"
+      - include: "#builtin-sort"
+      - match: (?<=^|\G|[\s;{}()@"':])\s*[^\s;{}()@"']+(?=$|[\s;{}()@"])
+        name: storage.type.agda
+        captures:
+          "0":
+            patterns:
+              - match: (->|→|∀|\\|λ)
+                name: keyword.operator.type.agda
+
+  top-level-type-signature-colon-on-first-line:
+    begin: (^|\G)(\s*)((?!')[^\s;{}()@".]+)\s+(:)(?=$|[\s;{}()@"]) # TODO: newline before colon
+    while: ^\2\s
+    name: meta.declaration.function.agda
+    beginCaptures:
+      "3":
+        patterns:
+          - include: "#term-name"
+      "4":
+        name: keyword.operator.agda
+    patterns:
+      - include: "#type"
+      - include: "#parameter-declaration"
+
+  top-level-definition-equals-on-first-line:
+    match: (^|\G)(\s*)(\S.*)\s+(=)(?=$|[\s;{}()@"])
+    name: meta.declaration.function.agda
+    captures:
+      "3":
+        patterns:
+          - include: "#term-name"
+      "4":
+        name: keyword.operator.agda
+    patterns:
+      - include: "#term-name"
+
+  discard:
+    name: variable.language.discard.agda
+    match: (?<=^|[\s;{}()@"'])_(?=$|[\s;{}()@"])
+
+  qualify:
+    name: punctuation.separator.qualify.agda
+    match: (?<!^|[\s;{}()@"'])\.(?!$|[\s;{}()@"])
+
+  name-part:
+    name: entity.name.name-part.agda
+    match: (?<=^|[\s;{}()@"'.])(?!')[^\s;{}()@"._]+(?=$|[\s;{}()@".])
+
+  name:
+    name: entity.name.name.agda
+    match: (?<=^|[\s;{}()@"'.])(?!_$)(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?(?=$|[\s;{}()@".])
+    captures:
+      "0":
+        patterns:
+          - name: variable.language.placeholder.agda
+            match: _
+          - include: "#name-part"
+
+  qualified-name:
+    name: entity.name.qualified-name.agda
+    match: (?<=^|[\s;{}()@"'.])((_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?)(\.(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?)*(?=$|[\s;{}()@".])
+    captures:
+      "0":
+        patterns:
+          - include: "#qualify"
+          - include: "#name"
+
+  qualified-module-name:
+    match: (?<=^|[\s;{}()@"'.])((_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?)(\.(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?)*(?=$|[\s;{}()@".])
+    captures:
+      "0":
+        patterns:
+          - include: "#qualify"
+          - include: "#module-name"
+
+  module-name:
+    name: entity.name.namespace.module.agda
+    match: (?<=^|[\s;{}()@"'.])(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?(?=$|[\s;{}()@".])
+    captures:
+      "0":
+        patterns:
+          - include: "#discard"
+          - name: variable.language.placeholder.agda
+            match: _
+          - include: "#name-part"
+
+  variable-name:
+    name: variable.parameter.term.agda
+    match: (?<=^|[\s;{}()@"'.])(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?(?=$|[\s;{}()@".])
+    captures:
+      "0":
+        patterns:
+          - include: "#discard"
+          - name: variable.language.placeholder.agda
+            match: _
+          - include: "#name-part"
+
+  term-name:
+    name: entity.name.function.term.agda
+    match: (?<=^|[\s;{}()@"'.])(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?(?=$|[\s;{}()@".])
+    captures:
+      "0":
+        patterns:
+          - include: "#discard"
+          - name: variable.language.placeholder.agda
+            match: _
+          - include: "#name-part"
+
+  hole:
+    name: meta.hole.block.agda
+    begin: \{\!
+    end: \!\}
+    beginCaptures:
+      "0": { name: punctuation.definition.hole.agda }
+    endCaptures:
+      "0": { name: punctuation.definition.hole.agda }
+    patterns:
+      - include: "#hole"
+
+  pragma:
+    name: meta.preprocessor.pragma.block.agda
+    begin: "{-#"
+    captures:
+      "0": { name: punctuation.definition.pragma.agda }
+    end: "#-}"
+
+  block-comment:
+    name: comment.block.agda
+    begin: \{-(?!#)
+    end: -\}
+    beginCaptures:
+      "0": { name: punctuation.definition.comment.agda }
+    endCaptures:
+      "0": { name: punctuation.definition.comment.agda }
+    patterns:
+      - include: "#block-comment"
+
+  dash-comment:
+    name: comment.line.double-dash.agda
+    match: (?<=^|[\s(){};"'])(--).*$
+    captures:
+      "1": { name: punctuation.definition.comment.agda }
+
+  escape-character:
+    name: constant.character.escape.agda
+    match: \\(\d+|0[xX]\h+|a|b|t|n|v|f|\\|'|"|NUL|SOH|STX|ETX|EOT|ENQ|ACK|BEL|BS|HT|LF|VT|FF|CR|SO|SI|DLE|DC1|DC2|DC3|DC4|NAK|SYN|ETB|CAN|EM|SUB|ESC|FS|GS|RS|US|SP|DEL)
+  escape-control-character:
+    name: constant.character.escape.control.agda
+    match: \^[A-Z@\[\]\\\^_]
+
+  literal:
+    patterns:
+      - name: string.quoted.double.agda
+        begin: \"
+        end: \"
+        beginCaptures:
+          "0": { name: punctuation.definition.string.begin.agda }
+        endCaptures:
+          "0": { name: punctuation.definition.string.end.agda }
+
+        patterns:
+          - include: "#escape-character"
+          - include: "#escape-control-character"
+      - name: constant.character.quoted.single.agda
+        begin: (?<=^|[\s{}()@"])\'
+        end: \'
+        beginCaptures:
+          "0": { name: punctuation.definition.character.begin.agda }
+        endCaptures:
+          "0": { name: punctuation.definition.character.end.agda }
+        patterns:
+          - include: "#escape-character"
+          - include: "#escape-control-character"
+
+      - name: constant.numeric.integer.agda
+        match: (?<=^|[\s;{}()@"'])(-?(0[xX]\h+|0[bB][01]+|\d+(_\d+)*))(?=$|[\s;{}()@"])
+      - name: constant.numeric.float.agda
+        match: (?<=^|[\s;{}()@"'])(-?\d+\.\d+([eE][+-]?\d+)?|-?\d+[eE][+-]?\d+)(?=$|[\s;{}()@"])
+
+  builtin-sort:
+    name: support.type.sort.agda
+    match: (?<=^|[\s;{}()@".'])((SSet|Set|Prop)ω?(\d*|[₀₁₂₃₄₅₆₇₈₉]*)|(LevelUniv))(?=$|[\s;{}()@"])
+
+  reserved:
+    patterns:
+      - include: "#literal"
+
+      - name: keyword.operator.agda
+        match: (?<=^|[\s;{}()@"'])(forall|->|[=\?→∀\\λ:])(?=$|[\s;{}()@"])
+
+      - name: keyword.operator.constraint.agda
+        match: (?<=^|[\s;{}()@"'])\.(?!$|[\s;})])
+
+      - name: keyword.control.agda
+        match: (?<=^|[\s;{}()@"'])(abstract|constructor|do|field|forall|import|in|infix|infixl|infixr|instance|interleaved|let|macro|module|mutual|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with)(?=$|[\s;{}()@"])
+
+      - name: storage.modifier.agda
+        match: (coinductive|eta-equality|inductive|no-eta-equality|private|public)
+
+      - comment: match keywords
+        name: keyword.control.agda
+        match: (?<=^|[\s;{}()@"'])(overlap|quote|quoteTerm|unquote|unquoteDecl|unquoteDef)(?=$|[\s;{}()@"])
+
+      - name: keyword.control.agda
+        match: (?<=^|[\s;{}()@"'])(abstract|constructor|do|field|forall|import|in|infix|infixl|infixr|instance|interleaved|let|macro|module|mutual|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with)(?=$|[\s;{}()@"])
+
+      - name: keyword.control.open-import.agda
+        match: (?<=^|[\s;{}()@"'])(hiding|public|renaming|using)(?=$|[\s;{}()@"])

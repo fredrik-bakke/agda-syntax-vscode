@@ -1,0 +1,9 @@
+- [ ] recursive highlighting of dependent function types BUGGY
+- [ ] inline lambda abstraction
+- [ ] TeX-literate files
+  - [ ] whats the best approach with regards to escape key \\?
+- [ ] data declaration
+- [ ] record declaration
+- [ ] definition
+- [ ] rhs of an equals sign should be highlighted the same way as rhs of :
+- [ ] folding for `abstract` `postulate` `variable` `private` `module` `data` `field` `record` `instance` `where` `with` `mutual`...

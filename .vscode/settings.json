@@ -15,5 +15,11 @@
     "gitlens.codeLens.scopes": ["document"],
     "editor.tabSize": 2
   },
-  "prettier.trailingComma": "es5"
+  "[yaml][yaml-tmlanguage]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "advanced",
+    "diffEditor.ignoreTrimWhitespace": false,
+    "gitlens.codeLens.scopes": ["document"]
+  }
 }
