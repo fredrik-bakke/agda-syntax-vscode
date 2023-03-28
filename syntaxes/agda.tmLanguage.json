@@ -17,7 +17,13 @@
       "include": "#data-declaration"
     },
     {
+      "include": "#record-declaration"
+    },
+    {
       "include": "#open-import-statement"
+    },
+    {
+      "include": "#infix-statement"
     },
     {
       "include": "#pragma"
@@ -91,37 +97,30 @@
     },
     "data-declaration": {
       "contentName": "meta.declaration.data.agda",
-      "begin": "(^|\\G)(\\s*)(data)\\s+(\\S+)(?=$|[\\s;{}()@\"])",
-      "end": "(?<=^|[\\s;{}()@\"'])where(?=$|[\\s;{}()@\"])",
+      "begin": "(^|\\G)(\\s*)(data)(?=$|[\\s;{}()@\"])",
+      "end": "((?<=[\\s;{}()@\"'])where(?=$|[\\s;{}()@\"]))|^\\1\\S",
       "beginCaptures": {
         "3": {
           "name": "keyword.control.data.agda"
-        },
-        "4": {
-          "patterns": [
-            {
-              "include": "#module-name"
-            }
-          ]
         }
       },
       "endCaptures": {
-        "0": {
+        "1": {
           "name": "keyword.control.where.data.agda"
         }
       },
       "patterns": [
         {
-          "begin": "\\G",
+          "begin": "(?<=(^\\s*|data\\s+))((?!')[^\\s;{}()@\"]+)",
           "end": "(?=(?<=^|[\\s;{}()@\"'])where(?=$|[\\s;{}()@\"]))",
           "beginCaptures": {
-            "1": {
+            "0": {
               "patterns": [
                 {
                   "include": "#discard"
                 },
                 {
-                  "include": "#term-name"
+                  "include": "#module-name"
                 }
               ]
             }
@@ -132,7 +131,49 @@
               "include": "#parameter-declaration"
             },
             {
-              "include": "#reserved"
+              "include": "#type"
+            }
+          ]
+        }
+      ]
+    },
+    "record-declaration": {
+      "contentName": "meta.declaration.record.agda",
+      "begin": "(^|\\G)(\\s*)(record)(?=$|[\\s;{}()@\"])",
+      "end": "((?<=[\\s;{}()@\"'])where(?=$|[\\s;{}()@\"]))|^\\1\\S",
+      "beginCaptures": {
+        "3": {
+          "name": "keyword.control.record.agda"
+        }
+      },
+      "endCaptures": {
+        "1": {
+          "name": "keyword.control.where.record.agda"
+        }
+      },
+      "patterns": [
+        {
+          "begin": "(?<=(^\\s*|record\\s+))((?!')[^\\s;{}()@\"]+)",
+          "end": "(?=(?<=^|[\\s;{}()@\"'])where(?=$|[\\s;{}()@\"]))",
+          "beginCaptures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#discard"
+                },
+                {
+                  "include": "#module-name"
+                }
+              ]
+            }
+          },
+          "contentName": "meta.declaration.parameters.record.agda",
+          "patterns": [
+            {
+              "include": "#parameter-declaration"
+            },
+            {
+              "include": "#type"
             }
           ]
         }
@@ -176,6 +217,25 @@
         },
         {
           "include": "#qualified-module-name"
+        }
+      ]
+    },
+    "infix-statement": {
+      "begin": "(^\\G)(\\s*)(infix(l|r)?)(?=$|[\\s;{}()@\"])",
+      "while": "^\\2\\s",
+      "beginCaptures": {
+        "3": {
+          "name": "keyword.control.infix.agda"
+        }
+      },
+      "name": "meta.statement.infix.agda",
+      "contentName": "invalid",
+      "patterns": [
+        {
+          "include": "#literal"
+        },
+        {
+          "include": "#term-name"
         }
       ]
     },
@@ -354,7 +414,7 @@
       ]
     },
     "variable-type-signature": {
-      "match": "\\G.*(?<=[\\s;{}()@\"])(:)(?=$|[\\s;{}()@\"])",
+      "match": "\\G([^:]*)(?<=^|[\\s;{}()@\"])(:)(?=$|[\\s;{}()@\"])",
       "name": "meta.declaration.variable-type-signature.agda",
       "captures": {
         "1": {
@@ -375,19 +435,16 @@
     "type": {
       "patterns": [
         {
-          "include": "#literal"
+          "include": "#reserved"
         },
         {
-          "include": "#builtin-sort"
-        },
-        {
-          "match": "(?<=^|\\G|[\\s;{}()@\"':])\\s*[^\\s;{}()@\"']+(?=$|[\\s;{}()@\"])",
+          "match": "(?<=^|\\G|[\\s;{}()@\":])\\s*[^\\s;{}()@\"]+(?=$|[\\s;{}()@\"])",
           "name": "storage.type.agda",
           "captures": {
             "0": {
               "patterns": [
                 {
-                  "match": "(->|→|∀|\\\\|λ)",
+                  "match": "->|→|∀|\\\\|λ",
                   "name": "keyword.operator.type.agda"
                 }
               ]
@@ -414,10 +471,10 @@
       },
       "patterns": [
         {
-          "include": "#type"
+          "include": "#parameter-declaration"
         },
         {
-          "include": "#parameter-declaration"
+          "include": "#type"
         }
       ]
     },

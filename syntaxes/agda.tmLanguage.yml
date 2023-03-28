@@ -9,8 +9,9 @@ patterns:
   - include: "#literal"
   - include: "#module-declaration"
   - include: "#data-declaration"
-  # - include: "#record-declaration"
+  - include: "#record-declaration"
   - include: "#open-import-statement"
+  - include: "#infix-statement"
   - include: "#pragma"
   - include: "#block-comment"
   - include: "#dash-comment"
@@ -48,27 +49,45 @@ repository:
 
   data-declaration:
     contentName: meta.declaration.data.agda
-    begin: (^|\G)(\s*)(data)\s+(\S+)(?=$|[\s;{}()@"])
-    end: (?<=^|[\s;{}()@"'])where(?=$|[\s;{}()@"]) #TODO multiline definition
+    begin: (^|\G)(\s*)(data)(?=$|[\s;{}()@"])
+    end: ((?<=[\s;{}()@"'])where(?=$|[\s;{}()@"]))|^\1\S
     beginCaptures:
       "3": { name: keyword.control.data.agda }
-      "4":
-        patterns:
-          - include: "#module-name"
     endCaptures:
-      "0": { name: keyword.control.where.data.agda }
+      "1": { name: keyword.control.where.data.agda }
     patterns:
-      - begin: \G
+      - begin: (?<=(^\s*|data\s+))((?!')[^\s;{}()@"]+)
         end: (?=(?<=^|[\s;{}()@"'])where(?=$|[\s;{}()@"]))
         beginCaptures:
-          "1":
+          "0":
             patterns:
               - include: "#discard"
-              - include: "#term-name" #TODO: type name, maybe do a "top-level" type def? no, gotta get parameters on lhs as well
+              - include: "#module-name"
         contentName: meta.declaration.parameters.data.agda
         patterns:
           - include: "#parameter-declaration"
-          - include: "#reserved"
+          - include: "#type" #TODO: : and reserved tokens are not highlighted properly with #type
+
+  record-declaration:
+    contentName: meta.declaration.record.agda
+    begin: (^|\G)(\s*)(record)(?=$|[\s;{}()@"])
+    end: ((?<=[\s;{}()@"'])where(?=$|[\s;{}()@"]))|^\1\S
+    beginCaptures:
+      "3": { name: keyword.control.record.agda }
+    endCaptures:
+      "1": { name: keyword.control.where.record.agda }
+    patterns:
+      - begin: (?<=(^\s*|record\s+))((?!')[^\s;{}()@"]+)
+        end: (?=(?<=^|[\s;{}()@"'])where(?=$|[\s;{}()@"]))
+        beginCaptures:
+          "0":
+            patterns:
+              - include: "#discard"
+              - include: "#module-name"
+        contentName: meta.declaration.parameters.record.agda
+        patterns:
+          - include: "#parameter-declaration"
+          - include: "#type" #TODO: : and reserved tokens are not highlighted properly with #type
 
   open-import-statement:
     begin: (^|\G)(\s*)(import|open(\s+import)?)(?=$|\s)
@@ -89,6 +108,17 @@ repository:
           - include: "#term-name"
       - include: "#reserved"
       - include: "#qualified-module-name"
+
+  infix-statement:
+    begin: (^\G)(\s*)(infix(l|r)?)(?=$|[\s;{}()@"])
+    while: ^\2\s
+    beginCaptures:
+      "3": { name: keyword.control.infix.agda }
+    name: meta.statement.infix.agda
+    contentName: invalid
+    patterns:
+      - include: "#literal"
+      - include: "#term-name"
 
   forall-parameter-declaration:
     patterns:
@@ -181,7 +211,7 @@ repository:
       - include: "#variable-name"
 
   variable-type-signature:
-    match: \G.*(?<=[\s;{}()@"])(:)(?=$|[\s;{}()@"])
+    match: \G([^:]*)(?<=^|[\s;{}()@"])(:)(?=$|[\s;{}()@"]) # TODO Allow x:y in \1
     name: meta.declaration.variable-type-signature.agda
     captures:
       "1":
@@ -192,14 +222,13 @@ repository:
 
   type:
     patterns:
-      - include: "#literal"
-      - include: "#builtin-sort"
-      - match: (?<=^|\G|[\s;{}()@"':])\s*[^\s;{}()@"']+(?=$|[\s;{}()@"])
+      - include: "#reserved"
+      - match: (?<=^|\G|[\s;{}()@":])\s*[^\s;{}()@"]+(?=$|[\s;{}()@"])
         name: storage.type.agda
         captures:
           "0":
             patterns:
-              - match: (->|→|∀|\\|λ)
+              - match: ->|→|∀|\\|λ
                 name: keyword.operator.type.agda
 
   top-level-type-signature-colon-on-first-line:
@@ -213,8 +242,8 @@ repository:
       "4":
         name: keyword.operator.agda
     patterns:
-      - include: "#type"
       - include: "#parameter-declaration"
+      - include: "#type"
 
   top-level-definition-equals-on-first-line:
     match: (^|\G)(\s*)(\S.*)\s+(=)(?=$|[\s;{}()@"])
