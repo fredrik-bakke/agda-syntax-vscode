@@ -1,6 +1,6 @@
 {
-  "name": "agda-highlight",
-  "displayName": "agda-highlight",
+  "name": "agda-syntax",
+  "displayName": "agda-syntax",
   "description": "Syntax highlighting for the Agda programming language.",
   "version": "0.0.1",
   "engines": {
