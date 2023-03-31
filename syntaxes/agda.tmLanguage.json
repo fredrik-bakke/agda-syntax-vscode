@@ -38,6 +38,9 @@
       "include": "#constructor-statement"
     },
     {
+      "include": "#lambda-expression"
+    },
+    {
       "include": "#builtin-sort"
     },
     {
@@ -299,7 +302,7 @@
       ]
     },
     "implicit-parameter-declaration": {
-      "begin": "(?<=(^|\\G|\\)|\\}|(⦄|forall|->|[=\\?→∀\\\\λ:])[\\s({⦃])[\\s({⦃]*)\\{",
+      "begin": "\\{",
       "end": "\\}",
       "beginCaptures": {
         "0": {
@@ -335,7 +338,7 @@
       ]
     },
     "instance-parameter-declaration-double-brace": {
-      "begin": "(?<=(^|\\G|\\)|\\}|(⦄|forall|->|[=\\?→∀\\\\λ:])[\\s({⦃])[\\s({⦃]*)\\{\\{",
+      "begin": "\\{\\{",
       "end": "\\}\\}",
       "name": "meta.declaration.parameters.agda",
       "beginCaptures": {
@@ -361,7 +364,7 @@
       ]
     },
     "instance-parameter-declaration-unicode": {
-      "begin": "(?<=(^|\\G|\\)|\\}|(⦄|forall|->|[=\\?→∀\\\\λ:])[\\s({⦃])[\\s({⦃]*)(?<=^|[\\s;{}()@\".'])⦃(?=$|[\\s;{}()@\".])",
+      "begin": "(?<=^|[\\s;{}()@\".'])⦃(?=$|[\\s;{}()@\".])",
       "end": "(?<=^|[\\s;{}()@\".'])⦄(?=$|[\\s;{}()@\".])",
       "name": "meta.declaration.parameters.agda",
       "beginCaptures": {
@@ -421,6 +424,9 @@
                 },
                 {
                   "include": "#builtin-sort"
+                },
+                {
+                  "include": "#lambda-expression"
                 }
               ]
             }
@@ -471,6 +477,28 @@
           "name": "keyword.operator.agda"
         }
       }
+    },
+    "lambda-expression": {
+      "begin": "(?<=^|[\\s;{}()@\"])(\\\\|λ)(?=$|[\\s;{}()@\"])",
+      "end": "(?<=^|[\\s;{}()@\"])(->|→)(?=$|[\\s;{}()@\"])",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.operator.lambda.agda"
+        }
+      },
+      "endCaptures": {
+        "1": {
+          "name": "keyword.operator.lambda.mapsto.agda"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#parameter-declaration"
+        },
+        {
+          "include": "#variable-name"
+        }
+      ]
     },
     "discard": {
       "name": "variable.language.discard.agda",
@@ -560,11 +588,10 @@
         "0": {
           "patterns": [
             {
-              "include": "#discard"
+              "include": "#reserved"
             },
             {
-              "name": "variable.language.placeholder.agda",
-              "match": "_"
+              "include": "#discard"
             },
             {
               "include": "#name-part"

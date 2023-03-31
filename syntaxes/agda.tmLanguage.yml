@@ -18,6 +18,7 @@ patterns:
   - include: "#infix-statement"
   - include: "#constructor-statement"
 
+  - include: "#lambda-expression"
   - include: "#builtin-sort"
   - include: "#reserved"
 
@@ -219,6 +220,7 @@ repository:
             patterns:
               - include: "#reserved"
               - include: "#builtin-sort"
+              - include: "#lambda-expression"
 
   top-level-type-signature-colon-on-first-line:
     begin: (^|\G)(\s*)((?!')[^\s;{}()@".]+)\s+(:)(?=$|[\s;{}()@"])
@@ -244,6 +246,17 @@ repository:
           - include: "#term-name"
       "4":
         name: keyword.operator.agda
+
+  lambda-expression:
+    begin: (?<=^|[\s;{}()@"])(\\|λ)(?=$|[\s;{}()@"])
+    end: (?<=^|[\s;{}()@"])(->|→)(?=$|[\s;{}()@"])
+    beginCaptures:
+      "1": { name: keyword.operator.lambda.agda }
+    endCaptures:
+      "1": { name: keyword.operator.lambda.mapsto.agda }
+    patterns:
+      - include: "#parameter-declaration"
+      - include: "#variable-name"
 
   discard:
     name: variable.language.discard.agda
@@ -302,9 +315,8 @@ repository:
     captures:
       "0":
         patterns:
+          - include: "#reserved"
           - include: "#discard"
-          - name: variable.language.placeholder.agda
-            match: _
           - include: "#name-part"
 
   term-name:
