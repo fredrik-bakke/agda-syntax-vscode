@@ -12,6 +12,7 @@ patterns:
   - include: "#record-declaration"
   - include: "#open-import-statement"
   - include: "#infix-statement"
+  - include: "#constructor-statement"
   - include: "#pragma"
   - include: "#block-comment"
   - include: "#dash-comment"
@@ -115,6 +116,17 @@ repository:
     beginCaptures:
       "3": { name: keyword.control.infix.agda }
     name: meta.statement.infix.agda
+    contentName: invalid
+    patterns:
+      - include: "#literal"
+      - include: "#term-name"
+
+  constructor-statement:
+    begin: (^\G)(\s*)(constructor)(?=$|[\s;{}()@"])
+    while: ^\2\s
+    beginCaptures:
+      "3": { name: keyword.control.constructor.agda }
+    name: meta.statement.constructor.agda
     contentName: invalid
     patterns:
       - include: "#literal"
