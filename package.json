@@ -2,7 +2,7 @@
   "name": "agda-syntax",
   "displayName": "agda-syntax",
   "description": "Syntax highlighting for the Agda programming language.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.76.0"
   },
