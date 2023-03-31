@@ -1,10 +1,10 @@
-# agda-syntax README
+# Agda syntax highlighting in VSCode
 
-A agda syntax highlighting extension.
+This is a syntax highlighting extension for the Agda programming language.
 
 ## Features
 
-- Highlight agda syntax.
+- Highlight Agda syntax in Agda and Markdown files.
 
 ## Setup
 
@@ -12,4 +12,4 @@ If you are writing agda code in markdown or tex files, you should set the option
 
 ## Release Notes
 
-This is currently an alpha release.
+This is an alpha release.
