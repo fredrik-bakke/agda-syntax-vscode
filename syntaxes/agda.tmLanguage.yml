@@ -148,7 +148,7 @@ repository:
       "0": { name: punctuation.section.parens.end.agda }
     name: meta.declaration.parameters.forall.agda
     patterns:
-      - include: "#variable-type-signature-multiline" # TODO: probably just add two, one that recognizes parentheses without colons in them
+      - include: "#variable-type-signature-multiline"
 
   parameter-declaration:
     patterns:
@@ -274,7 +274,7 @@ repository:
     match: (?<=^|[\s;{}()@"'])_(?=$|[\s;{}()@"])
 
   qualify:
-    name: punctuation.separator.qualify.agda
+    name: punctuation.separator.namespace.dot.agda
     match: (?<!^|[\s;{}()@"'])\.(?!$|[\s;{}()@"])
 
   name-part:
@@ -302,6 +302,7 @@ repository:
 
   qualified-module-name:
     match: (?<=^|[\s;{}()@"'.])((_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?)(\.(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?)*(?=$|[\s;{}()@".])
+    name: entity.name.namespace.module.agda
     captures:
       "0":
         patterns:

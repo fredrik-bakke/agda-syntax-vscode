@@ -526,7 +526,7 @@
       "match": "(?<=^|[\\s;{}()@\"'])_(?=$|[\\s;{}()@\"])"
     },
     "qualify": {
-      "name": "punctuation.separator.qualify.agda",
+      "name": "punctuation.separator.namespace.dot.agda",
       "match": "(?<!^|[\\s;{}()@\"'])\\.(?!$|[\\s;{}()@\"])"
     },
     "name-part": {
@@ -568,6 +568,7 @@
     },
     "qualified-module-name": {
       "match": "(?<=^|[\\s;{}()@\"'.])((_?(?!')[^\\s;{}()@\"._]+)(_(?!')[^\\s;{}()@\"._]+)*_?)(\\.(_?(?!')[^\\s;{}()@\"._]+)(_(?!')[^\\s;{}()@\"._]+)*_?)*(?=$|[\\s;{}()@\".])",
+      "name": "entity.name.namespace.module.agda",
       "captures": {
         "0": {
           "patterns": [
