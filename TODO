@@ -6,5 +6,4 @@
       can be determined by the first line containing non-whitespace after the block starts
   - [ ] A block starts after any of the keywords `abstract` `postulate` `variable` `private` `module` `data` `field` `record` `instance` `where` `with` `mutual` `let-in`
 - [ ] folding for `abstract` `postulate` `variable` `private` `module` `data` `field` `record` `instance` `where` `with` `mutual` `let-in`...
-- [ ] BUG: in `(λ x → Σ (B x) (C x))`, `C x` is highlighted as a variable
 - [ ] disable autoclosing parenthesis and curly braces in markdown
