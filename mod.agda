@@ -1,4 +1,4 @@
 import Agda.Primitive
 
-as : ∀ (l) → Set l
+as : {l : Agda.Primitive.Level} → Set l
 as = {!   !}

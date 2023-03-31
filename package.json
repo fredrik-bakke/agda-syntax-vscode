@@ -15,7 +15,9 @@
   },
   "icon": "icon.png",
   "publisher": "FredrikBakke",
-  "license": "See LICENSE file",
+  "author": {
+    "name": "Fredrik Bakke"
+  },
   "preview": true,
   "contributes": {
     "languages": [
