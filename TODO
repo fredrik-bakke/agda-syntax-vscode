@@ -1,9 +1,11 @@
-- [ ] recursive highlighting of dependent function types BUGGY
 - [ ] inline lambda abstraction
 - [ ] TeX-literate files
   - [ ] whats the best approach with regards to escape key \\?
-- [ ] data declaration
-- [ ] record declaration
-- [ ] definition
-- [ ] rhs of an equals sign should be highlighted the same way as rhs of :
+- [ ] lhs of an equals sign should be highlighted the same way as lhs of :
+- [ ] consider just highlighting everything at the correct indentation level as definitions
+      this requires control over all possible block formers, and then the identation level
+      can be determined by the first line containing non-whitespace after the block starts
+  - [ ] A block starts after any of the keywords `abstract` `postulate` `variable` `private` `module` `data` `field` `record` `instance` `where` `with` `mutual`
 - [ ] folding for `abstract` `postulate` `variable` `private` `module` `data` `field` `record` `instance` `where` `with` `mutual`...
+- [ ] BUG: in `(λ x → Σ (B x) (C x))`, `C x` is highlighted as a variable
+- [ ] disable autoclosing parenthesis and curly braces in markdown

@@ -1,8 +1,7 @@
 $schema: https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
 name: Agda
 scopeName: source.agda
-fileTypes:
-  - agda
+fileTypes: [agda]
 keyEquivalent: ^~A
 
 patterns:
@@ -20,28 +19,29 @@ patterns:
   - include: "#constructor-statement"
 
   - include: "#builtin-sort"
-  - include: "#discard"
+  - include: "#reserved"
+
   - include: "#top-level-type-signature-colon-on-first-line"
-  - include: "#top-level-definition-equals-on-first-line"
+  # - include: "#top-level-definition-equals-on-first-line"
+
+  - include: "#discard"
 
   - comment: badly placed keywords
     name: invalid.illegal.keyword.agda
     match: (?<=^|[\s;{}()@"'])(data|module|record)(?=$|[\s;{}()@"])
 
-  - include: "#reserved"
-
 repository:
   module-declaration:
     contentName: meta.declaration.module.agda
-    begin: (^|\G)(\s*)(module)(?=$|[\s;{}()@"])
-    end: (?<=^|[\s;{}()@"'])where(?=$|[\s;{}()@"])
+    begin: (^|\G)\s*(module)(?=$|[\s;{}()@"])
+    end: ((?<=^|[\s;{}()@"'])where(?=$|[\s;{}()@"]))|^\1\S
     beginCaptures:
-      "3": { name: keyword.control.module.agda }
+      "2": { name: keyword.control.module.agda }
     endCaptures:
       "0": { name: keyword.control.where.module.agda }
     patterns:
       - begin: (?<=(^\s*|module\s+))((?!')[^\s;{}()@"]+)
-        end: (?=(?<=^|[\s;{}()@"'])where(?=$|[\s;{}()@"]))
+        end: (?=(^|[\s;{}()@"'])where($|[\s;{}()@"]))
         beginCaptures:
           "0":
             patterns:
@@ -53,15 +53,15 @@ repository:
 
   data-declaration:
     contentName: meta.declaration.data.agda
-    begin: (^|\G)(\s*)(data)(?=$|[\s;{}()@"])
+    begin: (^|\G)\s*(data)(?=$|[\s;{}()@"])
     end: ((?<=[\s;{}()@"'])where(?=$|[\s;{}()@"]))|^\1\S
     beginCaptures:
-      "3": { name: keyword.control.data.agda }
+      "2": { name: keyword.control.data.agda }
     endCaptures:
       "1": { name: keyword.control.where.data.agda }
     patterns:
       - begin: (?<=(^\s*|data\s+))((?!')[^\s;{}()@"]+)
-        end: (?=(?<=^|[\s;{}()@"'])where(?=$|[\s;{}()@"]))
+        end: (?=(^|[\s;{}()@"'])where($|[\s;{}()@"]))
         beginCaptures:
           "0":
             patterns:
@@ -74,16 +74,16 @@ repository:
 
   record-declaration:
     contentName: meta.declaration.record.agda
-    begin: (^|\G)(\s*)(record)(?=$|[\s;{}()@"])
+    begin: (^|\G)\s*(record)(?=$|[\s;{}()@"])
     end: ((?<=^|[\s;{}()@"'])where(?=$|[\s;{}()@"]))|^\1\S
     beginCaptures:
-      "3": { name: keyword.control.record.agda }
+      "2": { name: keyword.control.record.agda }
     endCaptures:
       "1": { name: keyword.control.where.record.agda }
     patterns:
       - comment: Capture name of record
         begin: (?<=(^\s*|record\s+))((?!')[^\s;{}()@"]+)
-        end: (?=(?<=^|[\s;{}()@"'])where(?=$|[\s;{}()@"]))
+        end: (?=(^|[\s;{}()@"'])where($|[\s;{}()@"]))
         beginCaptures:
           "0":
             patterns:
@@ -143,7 +143,7 @@ repository:
       - include: "#implicit-parameter-declaration"
 
   explicit-parameter-declaration:
-    begin: (?<=(^|\G|\)|\}|(⦄|forall|->|[=\?→∀\\λ:])[\s({⦃])[\s({⦃]*)\(
+    begin: \(
     end: \)
     beginCaptures:
       "0": { name: punctuation.section.parens.begin.agda }
@@ -156,7 +156,7 @@ repository:
       - include: "#type"
 
   implicit-parameter-declaration:
-    begin: (?<=(^|\G|\)|\}|(⦄|forall|->|[=\?→∀\\λ:])[\s({⦃])[\s({⦃]*)\{
+    begin: \{
     end: \}
     beginCaptures:
       "0": { name: punctuation.section.parens.end.agda }
@@ -174,7 +174,7 @@ repository:
       - include: "#instance-parameter-declaration-unicode"
 
   instance-parameter-declaration-double-brace:
-    begin: (?<=(^|\G|\)|\}|(⦄|forall|->|[=\?→∀\\λ:])[\s({⦃])[\s({⦃]*)\{\{
+    begin: \{\{
     end: \}\}
     name: meta.declaration.parameters.agda
     beginCaptures:
@@ -187,7 +187,7 @@ repository:
       - include: "#type"
 
   instance-parameter-declaration-unicode:
-    begin: (?<=(^|\G|\)|\}|(⦄|forall|->|[=\?→∀\\λ:])[\s({⦃])[\s({⦃]*)(?<=^|[\s;{}()@".'])⦃(?=$|[\s;{}()@".])
+    begin: (?<=^|[\s;{}()@".'])⦃(?=$|[\s;{}()@".])
     end: (?<=^|[\s;{}()@".'])⦄(?=$|[\s;{}()@".])
     name: meta.declaration.parameters.agda
     beginCaptures:
@@ -199,44 +199,29 @@ repository:
       - include: "#variable-type-signature"
       - include: "#type"
 
-  variable-type-signature-A:
-    match: (^|\G|(?<=[\s;{}()@"]))((^[:)}]|(?<=^|[\s;{}()@"])⦄(?=$|[\s;{}()@"]))+)(?<=^|[\s;{}()@"])(:)(?=$|[\s;{}()@"])
-    name: meta.declaration.variable-type-signature.agda
-    captures:
-      "2":
-        patterns:
-          - include: "#discard"
-          - include: "#variable-name"
-      "3": { name: keyword.operator.colon.agda }
-
-  variable-type-signature-B:
-    match: (^|\G)([^:)}]*)((?<=^|[\s;{}()@"]):(?=$|[\s;{}()@"])|(?=[)}]|[\s;{}()@"]⦄($|[\s;{}()@"])))
-    name: meta.declaration.variable-type-signature.agda
-    captures:
-      "2":
-        patterns:
-          - include: "#discard"
-          - include: "#variable-name"
-      "3": { name: keyword.operator.colon.agda }
-
   variable-type-signature:
-    patterns:
-      - include: "#variable-type-signature-A"
-      - include: "#variable-type-signature-B"
+    match: (^|\G)(([^:)}⦄]|(?<!^|[\s;{}()@"'])[:⦄]|[:⦄](?!$|[\s;{}()@"]))+)[\s;{}()@"](:)(?=$|[\s;{}()@"])
+    name: meta.declaration.variable-type-signature.agda
+    captures:
+      "2":
+        patterns:
+          - include: "#reserved"
+          - include: "#discard"
+          - include: "#variable-name"
+      "4": { name: keyword.operator.colon.agda }
 
   type:
     patterns:
-      - include: "#reserved"
       - match: (?<=^|\G|[\s;{}()@":])[^\s;{}()@"]+(?=$|[\s;{}()@"])
-        name: storage.type.agda
         captures:
           "0":
+            name: storage.type.agda
             patterns:
-              - match: ->|→|∀|\\|λ
-                name: keyword.operator.type.agda
+              - include: "#reserved"
+              - include: "#builtin-sort"
 
   top-level-type-signature-colon-on-first-line:
-    begin: (^|\G)(\s*)((?!')[^\s;{}()@".]+)\s+(:)(?=$|[\s;{}()@"]) # TODO: newline before colon
+    begin: (^|\G)(\s*)((?!')[^\s;{}()@".]+)\s+(:)(?=$|[\s;{}()@"])
     while: ^\2\s
     name: meta.declaration.function.agda
     beginCaptures:
@@ -255,15 +240,14 @@ repository:
     captures:
       "3":
         patterns:
+          - include: "#reserved"
           - include: "#term-name"
       "4":
         name: keyword.operator.agda
-    patterns:
-      - include: "#term-name"
 
   discard:
     name: variable.language.discard.agda
-    match: (?<=^|[\s;{}()@"'])_(?=$|[\s;{}()@"])
+    match: _
 
   qualify:
     name: punctuation.separator.namespace.dot.agda

@@ -41,30 +41,27 @@
       "include": "#builtin-sort"
     },
     {
-      "include": "#discard"
+      "include": "#reserved"
     },
     {
       "include": "#top-level-type-signature-colon-on-first-line"
     },
     {
-      "include": "#top-level-definition-equals-on-first-line"
+      "include": "#discard"
     },
     {
       "comment": "badly placed keywords",
       "name": "invalid.illegal.keyword.agda",
       "match": "(?<=^|[\\s;{}()@\"'])(data|module|record)(?=$|[\\s;{}()@\"])"
-    },
-    {
-      "include": "#reserved"
     }
   ],
   "repository": {
     "module-declaration": {
       "contentName": "meta.declaration.module.agda",
-      "begin": "(^|\\G)(\\s*)(module)(?=$|[\\s;{}()@\"])",
-      "end": "(?<=^|[\\s;{}()@\"'])where(?=$|[\\s;{}()@\"])",
+      "begin": "(^|\\G)\\s*(module)(?=$|[\\s;{}()@\"])",
+      "end": "((?<=^|[\\s;{}()@\"'])where(?=$|[\\s;{}()@\"]))|^\\1\\S",
       "beginCaptures": {
-        "3": {
+        "2": {
           "name": "keyword.control.module.agda"
         }
       },
@@ -76,7 +73,7 @@
       "patterns": [
         {
           "begin": "(?<=(^\\s*|module\\s+))((?!')[^\\s;{}()@\"]+)",
-          "end": "(?=(?<=^|[\\s;{}()@\"'])where(?=$|[\\s;{}()@\"]))",
+          "end": "(?=(^|[\\s;{}()@\"'])where($|[\\s;{}()@\"]))",
           "beginCaptures": {
             "0": {
               "patterns": [
@@ -100,10 +97,10 @@
     },
     "data-declaration": {
       "contentName": "meta.declaration.data.agda",
-      "begin": "(^|\\G)(\\s*)(data)(?=$|[\\s;{}()@\"])",
+      "begin": "(^|\\G)\\s*(data)(?=$|[\\s;{}()@\"])",
       "end": "((?<=[\\s;{}()@\"'])where(?=$|[\\s;{}()@\"]))|^\\1\\S",
       "beginCaptures": {
-        "3": {
+        "2": {
           "name": "keyword.control.data.agda"
         }
       },
@@ -115,7 +112,7 @@
       "patterns": [
         {
           "begin": "(?<=(^\\s*|data\\s+))((?!')[^\\s;{}()@\"]+)",
-          "end": "(?=(?<=^|[\\s;{}()@\"'])where(?=$|[\\s;{}()@\"]))",
+          "end": "(?=(^|[\\s;{}()@\"'])where($|[\\s;{}()@\"]))",
           "beginCaptures": {
             "0": {
               "patterns": [
@@ -142,10 +139,10 @@
     },
     "record-declaration": {
       "contentName": "meta.declaration.record.agda",
-      "begin": "(^|\\G)(\\s*)(record)(?=$|[\\s;{}()@\"])",
+      "begin": "(^|\\G)\\s*(record)(?=$|[\\s;{}()@\"])",
       "end": "((?<=^|[\\s;{}()@\"'])where(?=$|[\\s;{}()@\"]))|^\\1\\S",
       "beginCaptures": {
-        "3": {
+        "2": {
           "name": "keyword.control.record.agda"
         }
       },
@@ -158,7 +155,7 @@
         {
           "comment": "Capture name of record",
           "begin": "(?<=(^\\s*|record\\s+))((?!')[^\\s;{}()@\"]+)",
-          "end": "(?=(?<=^|[\\s;{}()@\"'])where(?=$|[\\s;{}()@\"]))",
+          "end": "(?=(^|[\\s;{}()@\"'])where($|[\\s;{}()@\"]))",
           "beginCaptures": {
             "0": {
               "patterns": [
@@ -276,7 +273,7 @@
       ]
     },
     "explicit-parameter-declaration": {
-      "begin": "(?<=(^|\\G|\\)|\\}|(⦄|forall|->|[=\\?→∀\\\\λ:])[\\s({⦃])[\\s({⦃]*)\\(",
+      "begin": "\\(",
       "end": "\\)",
       "beginCaptures": {
         "0": {
@@ -389,68 +386,41 @@
         }
       ]
     },
-    "variable-type-signature-A": {
-      "match": "(^|\\G|(?<=[\\s;{}()@\"]))((^[:)}]|(?<=^|[\\s;{}()@\"])⦄(?=$|[\\s;{}()@\"]))+)(?<=^|[\\s;{}()@\"])(:)(?=$|[\\s;{}()@\"])",
-      "name": "meta.declaration.variable-type-signature.agda",
-      "captures": {
-        "2": {
-          "patterns": [
-            {
-              "include": "#discard"
-            },
-            {
-              "include": "#variable-name"
-            }
-          ]
-        },
-        "3": {
-          "name": "keyword.operator.colon.agda"
-        }
-      }
-    },
-    "variable-type-signature-B": {
-      "match": "(^|\\G)([^:)}]*)((?<=^|[\\s;{}()@\"]):(?=$|[\\s;{}()@\"])|(?=[)}]|[\\s;{}()@\"]⦄($|[\\s;{}()@\"])))",
-      "name": "meta.declaration.variable-type-signature.agda",
-      "captures": {
-        "2": {
-          "patterns": [
-            {
-              "include": "#discard"
-            },
-            {
-              "include": "#variable-name"
-            }
-          ]
-        },
-        "3": {
-          "name": "keyword.operator.colon.agda"
-        }
-      }
-    },
     "variable-type-signature": {
-      "patterns": [
-        {
-          "include": "#variable-type-signature-A"
+      "match": "(^|\\G)(([^:)}⦄]|(?<!^|[\\s;{}()@\"'])[:⦄]|[:⦄](?!$|[\\s;{}()@\"]))+)[\\s;{}()@\"](:)(?=$|[\\s;{}()@\"])",
+      "name": "meta.declaration.variable-type-signature.agda",
+      "captures": {
+        "2": {
+          "patterns": [
+            {
+              "include": "#reserved"
+            },
+            {
+              "include": "#discard"
+            },
+            {
+              "include": "#variable-name"
+            }
+          ]
         },
-        {
-          "include": "#variable-type-signature-B"
+        "4": {
+          "name": "keyword.operator.colon.agda"
         }
-      ]
+      }
     },
     "type": {
       "patterns": [
         {
-          "include": "#reserved"
-        },
-        {
           "match": "(?<=^|\\G|[\\s;{}()@\":])[^\\s;{}()@\"]+(?=$|[\\s;{}()@\"])",
-          "name": "storage.type.agda",
           "captures": {
             "0": {
+              "name": "storage.type.agda",
               "patterns": [
                 {
-                  "match": "->|→|∀|\\\\|λ",
-                  "name": "keyword.operator.type.agda"
+                  "include": "#reserved"
+                },
+                {
+                  "include": "#builtin-sort"
                 }
               ]
             }
@@ -490,6 +460,9 @@
         "3": {
           "patterns": [
             {
+              "include": "#reserved"
+            },
+            {
               "include": "#term-name"
             }
           ]
@@ -497,16 +470,11 @@
         "4": {
           "name": "keyword.operator.agda"
         }
-      },
-      "patterns": [
-        {
-          "include": "#term-name"
-        }
-      ]
+      }
     },
     "discard": {
       "name": "variable.language.discard.agda",
-      "match": "(?<=^|[\\s;{}()@\"'])_(?=$|[\\s;{}()@\"])"
+      "match": "_"
     },
     "qualify": {
       "name": "punctuation.separator.namespace.dot.agda",
