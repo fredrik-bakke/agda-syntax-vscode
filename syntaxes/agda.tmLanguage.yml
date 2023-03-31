@@ -7,17 +7,20 @@ keyEquivalent: ^~A
 
 patterns:
   - include: "#literal"
+  - include: "#pragma"
+  - include: "#block-comment"
+  - include: "#dash-comment"
+
   - include: "#module-declaration"
   - include: "#data-declaration"
   - include: "#record-declaration"
   - include: "#open-import-statement"
+
   - include: "#infix-statement"
   - include: "#constructor-statement"
-  - include: "#pragma"
-  - include: "#block-comment"
-  - include: "#dash-comment"
-  - include: "#discard"
+
   - include: "#builtin-sort"
+  - include: "#discard"
   - include: "#top-level-type-signature-colon-on-first-line"
   - include: "#top-level-definition-equals-on-first-line"
 
@@ -72,13 +75,14 @@ repository:
   record-declaration:
     contentName: meta.declaration.record.agda
     begin: (^|\G)(\s*)(record)(?=$|[\s;{}()@"])
-    end: ((?<=[\s;{}()@"'])where(?=$|[\s;{}()@"]))|^\1\S
+    end: ((?<=^|[\s;{}()@"'])where(?=$|[\s;{}()@"]))|^\1\S
     beginCaptures:
       "3": { name: keyword.control.record.agda }
     endCaptures:
       "1": { name: keyword.control.where.record.agda }
     patterns:
-      - begin: (?<=(^\s*|record\s+))((?!')[^\s;{}()@"]+)
+      - comment: Capture name of record
+        begin: (?<=(^\s*|record\s+))((?!')[^\s;{}()@"]+)
         end: (?=(?<=^|[\s;{}()@"'])where(?=$|[\s;{}()@"]))
         beginCaptures:
           "0":
@@ -88,7 +92,7 @@ repository:
         contentName: meta.declaration.parameters.record.agda
         patterns:
           - include: "#parameter-declaration"
-          - include: "#type" #TODO: : and reserved tokens are not highlighted properly with #type
+          - include: "#type" #TODO: : and reserved tokens are not highlighted properly with #type, and also, shouldn't match on keywords
 
   open-import-statement:
     begin: (^|\G)(\s*)(import|open(\s+import)?)(?=$|\s)
@@ -132,24 +136,6 @@ repository:
       - include: "#literal"
       - include: "#term-name"
 
-  forall-parameter-declaration:
-    patterns:
-      - include: "#forall-explicit-parameter-declaration" #TODO
-      # - include: "#forall-instance-parameter-declaration"
-      # - include: "#forall-implicit-parameter-declaration"
-
-  forall-explicit-parameter-declaration:
-    begin: (?<=^|[\s;{}()@"'])(forall|∀)\s*(\()
-    end: \)
-    beginCaptures:
-      "1": { name: keyword.operator.forall.agda }
-      "2": { name: punctuation.section.parens.begin.agda }
-    endCaptures:
-      "0": { name: punctuation.section.parens.end.agda }
-    name: meta.declaration.parameters.forall.agda
-    patterns:
-      - include: "#variable-type-signature-multiline"
-
   parameter-declaration:
     patterns:
       - include: "#explicit-parameter-declaration"
@@ -157,7 +143,7 @@ repository:
       - include: "#implicit-parameter-declaration"
 
   explicit-parameter-declaration:
-    begin: \(
+    begin: (?<=(^|\G|\)|\}|(⦄|forall|->|[=\?→∀\\λ:])[\s({⦃])[\s({⦃]*)\(
     end: \)
     beginCaptures:
       "0": { name: punctuation.section.parens.begin.agda }
@@ -170,7 +156,7 @@ repository:
       - include: "#type"
 
   implicit-parameter-declaration:
-    begin: \{
+    begin: (?<=(^|\G|\)|\}|(⦄|forall|->|[=\?→∀\\λ:])[\s({⦃])[\s({⦃]*)\{
     end: \}
     beginCaptures:
       "0": { name: punctuation.section.parens.end.agda }
@@ -188,7 +174,7 @@ repository:
       - include: "#instance-parameter-declaration-unicode"
 
   instance-parameter-declaration-double-brace:
-    begin: \{\{
+    begin: (?<=(^|\G|\)|\}|(⦄|forall|->|[=\?→∀\\λ:])[\s({⦃])[\s({⦃]*)\{\{
     end: \}\}
     name: meta.declaration.parameters.agda
     beginCaptures:
@@ -201,7 +187,7 @@ repository:
       - include: "#type"
 
   instance-parameter-declaration-unicode:
-    begin: (?<=^|[\s;{}()@".'])⦃(?=$|[\s;{}()@".])
+    begin: (?<=(^|\G|\)|\}|(⦄|forall|->|[=\?→∀\\λ:])[\s({⦃])[\s({⦃]*)(?<=^|[\s;{}()@".'])⦃(?=$|[\s;{}()@".])
     end: (?<=^|[\s;{}()@".'])⦄(?=$|[\s;{}()@".])
     name: meta.declaration.parameters.agda
     beginCaptures:
@@ -213,29 +199,35 @@ repository:
       - include: "#variable-type-signature"
       - include: "#type"
 
-  variable-type-signature-multiline:
-    begin: \G
-    end: ((?<=^|[\s;{}()@"]):(?=$|[\s;{}()@"]))|\G
-    endCaptures:
-      "0": { name: punctuation.separator.colon.agda }
-    patterns:
-      - include: "#discard"
-      - include: "#variable-name"
-
-  variable-type-signature:
-    match: \G([^:]*)(?<=^|[\s;{}()@"])(:)(?=$|[\s;{}()@"]) # TODO Allow x:y in \1
+  variable-type-signature-A:
+    match: (^|\G|(?<=[\s;{}()@"]))((^[:)}]|(?<=^|[\s;{}()@"])⦄(?=$|[\s;{}()@"]))+)(?<=^|[\s;{}()@"])(:)(?=$|[\s;{}()@"])
     name: meta.declaration.variable-type-signature.agda
     captures:
-      "1":
+      "2":
         patterns:
           - include: "#discard"
           - include: "#variable-name"
-      "2": { name: keyword.operator.colon.agda }
+      "3": { name: keyword.operator.colon.agda }
+
+  variable-type-signature-B:
+    match: (^|\G)([^:)}]*)((?<=^|[\s;{}()@"]):(?=$|[\s;{}()@"])|(?=[)}]|[\s;{}()@"]⦄($|[\s;{}()@"])))
+    name: meta.declaration.variable-type-signature.agda
+    captures:
+      "2":
+        patterns:
+          - include: "#discard"
+          - include: "#variable-name"
+      "3": { name: keyword.operator.colon.agda }
+
+  variable-type-signature:
+    patterns:
+      - include: "#variable-type-signature-A"
+      - include: "#variable-type-signature-B"
 
   type:
     patterns:
       - include: "#reserved"
-      - match: (?<=^|\G|[\s;{}()@":])\s*[^\s;{}()@"]+(?=$|[\s;{}()@"])
+      - match: (?<=^|\G|[\s;{}()@":])[^\s;{}()@"]+(?=$|[\s;{}()@"])
         name: storage.type.agda
         captures:
           "0":
