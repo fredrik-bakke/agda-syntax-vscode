@@ -71,7 +71,7 @@ repository:
         contentName: meta.declaration.parameters.data.agda
         patterns:
           - include: "#parameter-declaration"
-          - include: "#type" #TODO: : and reserved tokens are not highlighted properly with #type
+          - include: "#type"
 
   record-declaration:
     contentName: meta.declaration.record.agda
@@ -93,7 +93,7 @@ repository:
         contentName: meta.declaration.parameters.record.agda
         patterns:
           - include: "#parameter-declaration"
-          - include: "#type" #TODO: : and reserved tokens are not highlighted properly with #type, and also, shouldn't match on keywords
+          - include: "#type"
 
   open-import-statement:
     begin: (^|\G)(\s*)(import|open(\s+import)?)(?=$|\s)
