@@ -4,7 +4,7 @@
   "description": "Syntax highlighting for Agda",
   "version": "0.2.0",
   "engines": {
-    "vscode": "^1.76.0"
+    "vscode": "^0.0.1"
   },
   "categories": [
     "Programming Languages"

@@ -41,7 +41,7 @@ repository:
     endCaptures:
       "0": { name: keyword.control.where.module.agda }
     patterns:
-      - begin: (?<=(^\s*|module\s+))((?!')[^\s;{}()@"]+)
+      - begin: (?<=(^|(^|[\s;{}()@"'])module\s)\s*)((?!')[^\s;{}()@"]+)
         end: (?=(^|[\s;{}()@"'])where($|[\s;{}()@"]))
         beginCaptures:
           "0":
@@ -61,7 +61,7 @@ repository:
     endCaptures:
       "1": { name: keyword.control.where.data.agda }
     patterns:
-      - begin: (?<=(^\s*|data\s+))((?!')[^\s;{}()@"]+)
+      - begin: (?<=(^|(^|[\s;{}()@"'])data\s)\s*)((?!')[^\s;{}()@"]+)
         end: (?=(^|[\s;{}()@"'])where($|[\s;{}()@"]))
         beginCaptures:
           "0":
@@ -83,7 +83,7 @@ repository:
       "1": { name: keyword.control.where.record.agda }
     patterns:
       - comment: Capture name of record
-        begin: (?<=(^\s*|record\s+))((?!')[^\s;{}()@"]+)
+        begin: (?<=(^|(^|[\s;{}()@"'])record\s)\s*)((?!')[^\s;{}()@"]+)
         end: (?=(^|[\s;{}()@"'])where($|[\s;{}()@"]))
         beginCaptures:
           "0":
@@ -116,7 +116,7 @@ repository:
       - include: "#qualified-module-name"
 
   infix-statement:
-    begin: (^\G)(\s*)(infix(l|r)?)(?=$|[\s;{}()@"])
+    begin: (^|\G)(\s*)(infix(l|r)?)(?=$|[\s;{}()@"])
     while: ^\2\s
     beginCaptures:
       "3": { name: keyword.control.infix.agda }
@@ -127,7 +127,7 @@ repository:
       - include: "#term-name"
 
   constructor-statement:
-    begin: (^\G)(\s*)(constructor)(?=$|[\s;{}()@"])
+    begin: (^|\G)(\s*)(constructor)(?=$|[\s;{}()@"])
     while: ^\2\s
     beginCaptures:
       "3": { name: keyword.control.constructor.agda }
@@ -140,24 +140,11 @@ repository:
   parameter-declaration:
     patterns:
       - include: "#forall-explicit-parameter-declaration"
-      - include: "#forall-implicit-parameter-declaration"
       - include: "#forall-instance-parameter-declaration"
+      - include: "#forall-implicit-parameter-declaration"
       - include: "#explicit-parameter-declaration"
       - include: "#instance-parameter-declaration"
       - include: "#implicit-parameter-declaration"
-
-  explicit-parameter-declaration:
-    begin: \(
-    end: \)
-    beginCaptures:
-      "0": { name: punctuation.section.parens.begin.agda }
-    endCaptures:
-      "0": { name: punctuation.section.parens.end.agda }
-    name: meta.declaration.parameters.agda
-    patterns:
-      - include: "#parameter-declaration"
-      - include: "#variable-type-signature"
-      - include: "#type"
 
   forall-explicit-parameter-declaration:
     begin: (?<=^|[\s;{}()@"])(forall|∀)\s*(\()
@@ -189,8 +176,8 @@ repository:
 
   forall-instance-parameter-declaration:
     patterns:
-      - include: "#forall-instance-parameter-delcaration-double-brace"
-      - include: "#forall-instance-parameter-delcaration-unicode"
+      - include: "#forall-instance-parameter-declaration-double-brace"
+      - include: "#forall-instance-parameter-declaration-unicode"
 
   forall-instance-parameter-declaration-double-brace:
     begin: (?<=^|[\s;{}()@"])(forall|∀)\s*(\{\{)
@@ -218,6 +205,19 @@ repository:
     patterns:
       - include: "#parameter-declaration"
       - include: "#forall-variable-type-signature"
+      - include: "#type"
+
+  explicit-parameter-declaration:
+    begin: \(
+    end: \)
+    beginCaptures:
+      "0": { name: punctuation.section.parens.begin.agda }
+    endCaptures:
+      "0": { name: punctuation.section.parens.end.agda }
+    name: meta.declaration.parameters.agda
+    patterns:
+      - include: "#parameter-declaration"
+      - include: "#variable-type-signature"
       - include: "#type"
 
   implicit-parameter-declaration:
@@ -288,7 +288,7 @@ repository:
 
   type:
     patterns:
-      - match: (?<=^|\G|[\s;{}()@":])[^\s;{}()@"]+(?=$|[\s;{}()@"])
+      - match: (?<=^|\G|[\s;{}()@":])(?!')[^\s;{}()@"]+(?=$|[\s;{}()@"])
         captures:
           "0":
             name: storage.type.agda

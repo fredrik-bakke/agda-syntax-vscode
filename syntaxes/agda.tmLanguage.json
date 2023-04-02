@@ -75,7 +75,7 @@
       },
       "patterns": [
         {
-          "begin": "(?<=(^\\s*|module\\s+))((?!')[^\\s;{}()@\"]+)",
+          "begin": "(?<=(^|(^|[\\s;{}()@\"'])module\\s)\\s*)((?!')[^\\s;{}()@\"]+)",
           "end": "(?=(^|[\\s;{}()@\"'])where($|[\\s;{}()@\"]))",
           "beginCaptures": {
             "0": {
@@ -114,7 +114,7 @@
       },
       "patterns": [
         {
-          "begin": "(?<=(^\\s*|data\\s+))((?!')[^\\s;{}()@\"]+)",
+          "begin": "(?<=(^|(^|[\\s;{}()@\"'])data\\s)\\s*)((?!')[^\\s;{}()@\"]+)",
           "end": "(?=(^|[\\s;{}()@\"'])where($|[\\s;{}()@\"]))",
           "beginCaptures": {
             "0": {
@@ -157,7 +157,7 @@
       "patterns": [
         {
           "comment": "Capture name of record",
-          "begin": "(?<=(^\\s*|record\\s+))((?!')[^\\s;{}()@\"]+)",
+          "begin": "(?<=(^|(^|[\\s;{}()@\"'])record\\s)\\s*)((?!')[^\\s;{}()@\"]+)",
           "end": "(?=(^|[\\s;{}()@\"'])where($|[\\s;{}()@\"]))",
           "beginCaptures": {
             "0": {
@@ -225,7 +225,7 @@
       ]
     },
     "infix-statement": {
-      "begin": "(^\\G)(\\s*)(infix(l|r)?)(?=$|[\\s;{}()@\"])",
+      "begin": "(^|\\G)(\\s*)(infix(l|r)?)(?=$|[\\s;{}()@\"])",
       "while": "^\\2\\s",
       "beginCaptures": {
         "3": {
@@ -244,7 +244,7 @@
       ]
     },
     "constructor-statement": {
-      "begin": "(^\\G)(\\s*)(constructor)(?=$|[\\s;{}()@\"])",
+      "begin": "(^|\\G)(\\s*)(constructor)(?=$|[\\s;{}()@\"])",
       "while": "^\\2\\s",
       "beginCaptures": {
         "3": {
@@ -268,10 +268,10 @@
           "include": "#forall-explicit-parameter-declaration"
         },
         {
-          "include": "#forall-implicit-parameter-declaration"
+          "include": "#forall-instance-parameter-declaration"
         },
         {
-          "include": "#forall-instance-parameter-declaration"
+          "include": "#forall-implicit-parameter-declaration"
         },
         {
           "include": "#explicit-parameter-declaration"
@@ -281,32 +281,6 @@
         },
         {
           "include": "#implicit-parameter-declaration"
-        }
-      ]
-    },
-    "explicit-parameter-declaration": {
-      "begin": "\\(",
-      "end": "\\)",
-      "beginCaptures": {
-        "0": {
-          "name": "punctuation.section.parens.begin.agda"
-        }
-      },
-      "endCaptures": {
-        "0": {
-          "name": "punctuation.section.parens.end.agda"
-        }
-      },
-      "name": "meta.declaration.parameters.agda",
-      "patterns": [
-        {
-          "include": "#parameter-declaration"
-        },
-        {
-          "include": "#variable-type-signature"
-        },
-        {
-          "include": "#type"
         }
       ]
     },
@@ -371,10 +345,10 @@
     "forall-instance-parameter-declaration": {
       "patterns": [
         {
-          "include": "#forall-instance-parameter-delcaration-double-brace"
+          "include": "#forall-instance-parameter-declaration-double-brace"
         },
         {
-          "include": "#forall-instance-parameter-delcaration-unicode"
+          "include": "#forall-instance-parameter-declaration-unicode"
         }
       ]
     },
@@ -430,6 +404,32 @@
         },
         {
           "include": "#forall-variable-type-signature"
+        },
+        {
+          "include": "#type"
+        }
+      ]
+    },
+    "explicit-parameter-declaration": {
+      "begin": "\\(",
+      "end": "\\)",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.section.parens.begin.agda"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.parens.end.agda"
+        }
+      },
+      "name": "meta.declaration.parameters.agda",
+      "patterns": [
+        {
+          "include": "#parameter-declaration"
+        },
+        {
+          "include": "#variable-type-signature"
         },
         {
           "include": "#type"
@@ -571,7 +571,7 @@
     "type": {
       "patterns": [
         {
-          "match": "(?<=^|\\G|[\\s;{}()@\":])[^\\s;{}()@\"]+(?=$|[\\s;{}()@\"])",
+          "match": "(?<=^|\\G|[\\s;{}()@\":])(?!')[^\\s;{}()@\"]+(?=$|[\\s;{}()@\"])",
           "captures": {
             "0": {
               "name": "storage.type.agda",
