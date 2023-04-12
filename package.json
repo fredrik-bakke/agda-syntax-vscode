@@ -28,11 +28,7 @@
           "agda"
         ],
         "extensions": [
-          ".agda",
-          ".lagda",
-          ".lagda.md",
-          ".lagda.rst",
-          ".lagda.tex"
+          ".agda"
         ],
         "configuration": "./language-configuration.json",
         "scopeName": "source.agda"
