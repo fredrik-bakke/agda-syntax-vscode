@@ -25,7 +25,9 @@ patterns:
   - include: "#top-level-type-signature-colon-on-first-line"
   # - include: "#top-level-definition-equals-on-first-line"
 
+  - include: "#wildcard"
   - include: "#discard"
+  - include: "#placeholder"
 
   - comment: badly placed keywords
     name: invalid.illegal.keyword.agda
@@ -121,7 +123,7 @@ repository:
     beginCaptures:
       "3": { name: keyword.control.infix.agda }
     name: meta.statement.infix.agda
-    contentName: invalid
+    contentName: meta.declaration.infix.arguments.agda
     patterns:
       - include: "#literal"
       - include: "#term-name"
@@ -291,11 +293,13 @@ repository:
       - match: (?<=^|\G|[\s;{}()@":])(?!')[^\s;{}()@"]+(?=$|[\s;{}()@"])
         captures:
           "0":
-            name: storage.type.agda
+            name: storage.type.token.agda
             patterns:
               - include: "#reserved"
               - include: "#builtin-sort"
               - include: "#lambda-expression"
+              - include: "#wildcard"
+              - include: "#placeholder"
 
   top-level-type-signature-colon-on-first-line:
     begin: (^|\G)(\s*)((?!')[^\s;{}()@".]+)\s+(:)(?=$|[\s;{}()@"])
@@ -331,10 +335,19 @@ repository:
       "1": { name: keyword.operator.lambda.mapsto.agda }
     patterns:
       - include: "#parameter-declaration"
+      - include: "#discard"
       - include: "#variable-name"
 
   discard:
     name: variable.language.discard.agda
+    match: (?<=^|[\s;{}()@"])_(?=$|[\s;{}()@"])
+
+  wildcard:
+    name: variable.language.wildcard.agda
+    match: (?<=^|[\s;{}()@"])_(?=$|[\s;{}()@"])
+
+  placeholder:
+    name: variable.language.placeholder.agda
     match: _
 
   qualify:
@@ -356,7 +369,7 @@ repository:
           - include: "#name-part"
 
   qualified-name:
-    name: entity.name.qualified-name.agda
+    name: entity.name.qualified.agda
     match: (?<=^|[\s;{}()@"'.])((_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?)(\.(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?)*(?=$|[\s;{}()@".])
     captures:
       "0":
@@ -366,7 +379,7 @@ repository:
 
   qualified-module-name:
     match: (?<=^|[\s;{}()@"'.])((_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?)(\.(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?)*(?=$|[\s;{}()@".])
-    name: entity.name.namespace.module.agda
+    name: entity.name.namespace.module.qualified.agda
     captures:
       "0":
         patterns:
@@ -380,18 +393,17 @@ repository:
       "0":
         patterns:
           - include: "#discard"
-          - name: variable.language.placeholder.agda
-            match: _
+          - include: "#placeholder"
           - include: "#name-part"
 
   variable-name:
     name: variable.parameter.term.agda
-    match: (?<=^|[\s;{}()@"'.])(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?(?=$|[\s;{}()@".])
+    match: (?<=^|[\s;{}()@".])(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?(?=$|[\s;{}()@".])
     captures:
       "0":
         patterns:
           - include: "#reserved"
-          - include: "#discard"
+          - include: "#placeholder"
           - include: "#name-part"
 
   term-name:
@@ -401,8 +413,7 @@ repository:
       "0":
         patterns:
           - include: "#discard"
-          - name: variable.language.placeholder.agda
-            match: _
+          - include: "#placeholder"
           - include: "#name-part"
 
   hole:
