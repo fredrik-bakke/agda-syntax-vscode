@@ -99,6 +99,9 @@
           "patterns": [
             {
               "include": "#parameter-declaration"
+            },
+            {
+              "include": "#reserved"
             }
           ]
         }
@@ -141,6 +144,9 @@
             },
             {
               "include": "#type"
+            },
+            {
+              "include": "#reserved"
             }
           ]
         }
@@ -184,6 +190,9 @@
             },
             {
               "include": "#type"
+            },
+            {
+              "include": "#reserved"
             }
           ]
         }

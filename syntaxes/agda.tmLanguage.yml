@@ -54,6 +54,7 @@ repository:
         contentName: meta.declaration.parameters.module.agda
         patterns:
           - include: "#parameter-declaration"
+          - include: "#reserved"
 
   data-declaration:
     contentName: meta.declaration.data.agda
@@ -75,6 +76,7 @@ repository:
         patterns:
           - include: "#parameter-declaration"
           - include: "#type"
+          - include: "#reserved" # TODO: this is a bit of a hack, would rather recognize the colon more deliberately
 
   record-declaration:
     contentName: meta.declaration.record.agda
@@ -97,6 +99,7 @@ repository:
         patterns:
           - include: "#parameter-declaration"
           - include: "#type"
+          - include: "#reserved" # TODO: this is a bit of a hack, would rather recognize the colon more deliberately
 
   open-import-statement:
     begin: (^|\G)(\s*)(import|open(\s+import)?)(?=$|\s)
