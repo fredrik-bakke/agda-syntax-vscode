@@ -31,20 +31,20 @@ patterns:
 
   - comment: badly placed keywords
     name: invalid.illegal.keyword.agda
-    match: (?<=^|[\s;{}()@"'])(data|module|record)(?=$|[\s;{}()@"])
+    match: (?<=^|[\s;{}()@"])(data|module|record)(?=$|[\s;{}()@"])
 
 repository:
   module-declaration:
     contentName: meta.declaration.module.agda
     begin: (^|\G)\s*(module)(?=$|[\s;{}()@"])
-    end: ((?<=^|[\s;{}()@"'])where(?=$|[\s;{}()@"]))|^\1\S
+    end: ((?<=^|[\s;{}()@"])where(?=$|[\s;{}()@"]))|^\1\S
     beginCaptures:
       "2": { name: keyword.control.module.agda }
     endCaptures:
       "0": { name: keyword.control.where.module.agda }
     patterns:
-      - begin: (?<=(^|(^|[\s;{}()@"'])module\s)\s*)((?!')[^\s;{}()@"]+)
-        end: (?=(^|[\s;{}()@"'])where($|[\s;{}()@"]))
+      - begin: (?<=(^|(^|[\s;{}()@"])module\s)\s*)((?!')[^\s;{}()@"]+)
+        end: (?=(^|[\s;{}()@"])where($|[\s;{}()@"]))
         beginCaptures:
           "0":
             patterns:
@@ -57,14 +57,14 @@ repository:
   data-declaration:
     contentName: meta.declaration.data.agda
     begin: (^|\G)\s*(data)(?=$|[\s;{}()@"])
-    end: ((?<=[\s;{}()@"'])where(?=$|[\s;{}()@"]))|^\1\S
+    end: ((?<=[\s;{}()@"])where(?=$|[\s;{}()@"]))|^\1\S
     beginCaptures:
       "2": { name: keyword.control.data.agda }
     endCaptures:
       "1": { name: keyword.control.where.data.agda }
     patterns:
-      - begin: (?<=(^|(^|[\s;{}()@"'])data\s)\s*)((?!')[^\s;{}()@"]+)
-        end: (?=(^|[\s;{}()@"'])where($|[\s;{}()@"]))
+      - begin: (?<=(^|(^|[\s;{}()@"])data\s)\s*)((?!')[^\s;{}()@"]+)
+        end: (?=(^|[\s;{}()@"])where($|[\s;{}()@"]))
         beginCaptures:
           "0":
             patterns:
@@ -78,15 +78,15 @@ repository:
   record-declaration:
     contentName: meta.declaration.record.agda
     begin: (^|\G)\s*(record)(?=$|[\s;{}()@"])
-    end: ((?<=^|[\s;{}()@"'])where(?=$|[\s;{}()@"]))|^\1\S
+    end: ((?<=^|[\s;{}()@"])where(?=$|[\s;{}()@"]))|^\1\S
     beginCaptures:
       "2": { name: keyword.control.record.agda }
     endCaptures:
       "1": { name: keyword.control.where.record.agda }
     patterns:
       - comment: Capture name of record
-        begin: (?<=(^|(^|[\s;{}()@"'])record\s)\s*)((?!')[^\s;{}()@"]+)
-        end: (?=(^|[\s;{}()@"'])where($|[\s;{}()@"]))
+        begin: (?<=(^|(^|[\s;{}()@"])record\s)\s*)((?!')[^\s;{}()@"]+)
+        end: (?=(^|[\s;{}()@"])where($|[\s;{}()@"]))
         beginCaptures:
           "0":
             patterns:
@@ -111,7 +111,7 @@ repository:
           "0": { name: punctuation.section.parens.end.agda }
         name: meta.statement.open-import.names.agda
         patterns:
-          - match: (?<=^|[\s;{}()@"'])to(?=$|[\s;{}()@"])
+          - match: (?<=^|[\s;{}()@"])to(?=$|[\s;{}()@"])
             name: keyword.other.to.agda
           - include: "#term-name"
       - include: "#reserved"
@@ -197,7 +197,7 @@ repository:
 
   forall-instance-parameter-declaration-unicode:
     begin: (?<=^|[\s;{}()@"])(forall|∀)\s+(⦃)(?=$|[\s;{}()@".])
-    end: (?<=^|[\s;{}()@".'])⦄(?=$|[\s;{}()@".])
+    end: (?<=^|[\s;{}()@".])⦄(?=$|[\s;{}()@".])
     beginCaptures:
       "1": { name: keyword.operator.forall.agda }
       "2": { name: punctuation.section.parens.begin.agda }
@@ -254,8 +254,8 @@ repository:
       - include: "#type"
 
   instance-parameter-declaration-unicode:
-    begin: (?<=^|[\s;{}()@".'])⦃(?=$|[\s;{}()@".])
-    end: (?<=^|[\s;{}()@".'])⦄(?=$|[\s;{}()@".])
+    begin: (?<=^|[\s;{}()@".])⦃(?=$|[\s;{}()@".])
+    end: (?<=^|[\s;{}()@".])⦄(?=$|[\s;{}()@".])
     name: meta.declaration.parameters.agda
     beginCaptures:
       "0": { name: punctuation.section.parens.end.agda }
@@ -267,7 +267,7 @@ repository:
       - include: "#type"
 
   variable-type-signature:
-    match: (^|\G)(([^:)}⦄]|(?<!^|[\s;{}()@"'])[:⦄]|[:⦄](?!$|[\s;{}()@"]))+)[\s;{}()@"](:)(?=$|[\s;{}()@"])
+    match: (^|\G)(([^:)}⦄]|(?<!^|[\s;{}()@"])[:⦄]|[:⦄](?!$|[\s;{}()@"]))+)[\s;{}()@"](:)(?=$|[\s;{}()@"])
     name: meta.declaration.variable-type-signature.agda
     captures:
       "2":
@@ -278,7 +278,7 @@ repository:
       "4": { name: keyword.operator.colon.agda }
 
   forall-variable-type-signature:
-    match: (^|\G)(([^:)}⦄]|(?<!^|[\s;{}()@"'])[:⦄]|[:⦄](?!$|[\s;{}()@"]))+)((:)(?=$|[\s;{}()@"])|(?=$|[)}⦄]))
+    match: (^|\G)(([^:)}⦄]|(?<!^|[\s;{}()@"])[:⦄]|[:⦄](?!$|[\s;{}()@"]))+)((:)(?=$|[\s;{}()@"])|(?=$|[)}⦄]))
     name: meta.declaration.variable-type-signature.agda
     captures:
       "2":
@@ -352,15 +352,15 @@ repository:
 
   qualify:
     name: punctuation.separator.namespace.dot.agda
-    match: (?<!^|[\s;{}()@"'])\.(?!$|[\s;{}()@"])
+    match: (?<!^|[\s;{}()@"])\.(?!$|[\s;{}()@"])
 
   name-part:
     name: entity.name.name-part.agda
-    match: (?<=^|[\s;{}()@"'.])(?!')[^\s;{}()@"._]+(?=$|[\s;{}()@".])
+    match: (?<=^|[\s;{}()@".])(?!')[^\s;{}()@"._]+(?=$|[\s;{}()@".])
 
   name:
     name: entity.name.name.agda
-    match: (?<=^|[\s;{}()@"'.])(?!_$)(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?(?=$|[\s;{}()@".])
+    match: (?<=^|[\s;{}()@".])(?!_$)(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?(?=$|[\s;{}()@".])
     captures:
       "0":
         patterns:
@@ -370,7 +370,7 @@ repository:
 
   qualified-name:
     name: entity.name.qualified.agda
-    match: (?<=^|[\s;{}()@"'.])((_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?)(\.(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?)*(?=$|[\s;{}()@".])
+    match: (?<=^|[\s;{}()@".])((_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?)(\.(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?)*(?=$|[\s;{}()@".])
     captures:
       "0":
         patterns:
@@ -378,7 +378,7 @@ repository:
           - include: "#name"
 
   qualified-module-name:
-    match: (?<=^|[\s;{}()@"'.])((_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?)(\.(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?)*(?=$|[\s;{}()@".])
+    match: (?<=^|[\s;{}()@".])((_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?)(\.(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?)*(?=$|[\s;{}()@".])
     name: entity.name.namespace.module.qualified.agda
     captures:
       "0":
@@ -388,7 +388,7 @@ repository:
 
   module-name:
     name: entity.name.namespace.module.agda
-    match: (?<=^|[\s;{}()@"'.])(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?(?=$|[\s;{}()@".])
+    match: (?<=^|[\s;{}()@".])(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?(?=$|[\s;{}()@".])
     captures:
       "0":
         patterns:
@@ -408,7 +408,7 @@ repository:
 
   term-name:
     name: entity.name.function.term.agda
-    match: (?<=^|[\s;{}()@"'.])(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?(?=$|[\s;{}()@".])
+    match: (?<=^|[\s;{}()@".])(_?(?!')[^\s;{}()@"._]+)(_(?!')[^\s;{}()@"._]+)*_?(?=$|[\s;{}()@".])
     captures:
       "0":
         patterns:
@@ -447,7 +447,7 @@ repository:
 
   dash-comment:
     name: comment.line.double-dash.agda
-    match: (?<=^|[\s(){};"'])(--).*$
+    match: (?<=^|[\s(){};".])(--).*$
     captures:
       "1": { name: punctuation.definition.comment.agda }
 
@@ -483,36 +483,36 @@ repository:
           - include: "#escape-control-character"
 
       - name: constant.numeric.integer.agda
-        match: (?<=^|[\s;{}()@"'])(-?(0[xX]\h+|0[bB][01]+|\d+(_\d+)*))(?=$|[\s;{}()@"])
+        match: (?<=^|[\s;{}()@"])(-?(0[xX]\h+|0[bB][01]+|\d+(_\d+)*))(?=$|[\s;{}()@"])
       - name: constant.numeric.float.agda
-        match: (?<=^|[\s;{}()@"'])(-?\d+\.\d+([eE][+-]?\d+)?|-?\d+[eE][+-]?\d+)(?=$|[\s;{}()@"])
+        match: (?<=^|[\s;{}()@"])(-?\d+\.\d+([eE][+-]?\d+)?|-?\d+[eE][+-]?\d+)(?=$|[\s;{}()@"])
 
   builtin-sort:
     name: support.type.sort.agda
-    match: (?<=^|[\s;{}()@".'])((SSet|Set|Prop)ω?(\d*|[₀₁₂₃₄₅₆₇₈₉]*)|(LevelUniv))(?=$|[\s;{}()@"])
+    match: (?<=^|[\s;{}()@".])((SSet|Set|Prop)ω?(\d*|[₀₁₂₃₄₅₆₇₈₉]*)|(LevelUniv))(?=$|[\s;{}()@"])
 
   reserved:
     patterns:
       - include: "#literal"
 
       - name: keyword.operator.agda
-        match: (?<=^|[\s;{}()@"'])(forall|->|[=\?→∀\\λ:])(?=$|[\s;{}()@"])
+        match: (?<=^|[\s;{}()@"])(forall|->|[=\?→∀\\λ:])(?=$|[\s;{}()@"])
 
       - name: keyword.operator.constraint.agda
-        match: (?<=^|[\s;{}()@"'])\.(?!$|[\s;})])
+        match: (?<=^|[\s;{}()@"])\.(?!$|[\s;})])
 
       - name: keyword.control.agda
-        match: (?<=^|[\s;{}()@"'])(abstract|constructor|do|field|forall|import|in|infix|infixl|infixr|instance|interleaved|let|macro|module|mutual|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with)(?=$|[\s;{}()@"])
+        match: (?<=^|[\s;{}()@"])(abstract|constructor|do|field|forall|import|in|infix|infixl|infixr|instance|interleaved|let|macro|module|mutual|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with)(?=$|[\s;{}()@"])
 
       - name: storage.modifier.agda
         match: (coinductive|eta-equality|inductive|no-eta-equality|private|public)
 
       - comment: match keywords
         name: keyword.control.agda
-        match: (?<=^|[\s;{}()@"'])(overlap|quote|quoteTerm|unquote|unquoteDecl|unquoteDef)(?=$|[\s;{}()@"])
+        match: (?<=^|[\s;{}()@"])(overlap|quote|quoteTerm|unquote|unquoteDecl|unquoteDef)(?=$|[\s;{}()@"])
 
       - name: keyword.control.agda
-        match: (?<=^|[\s;{}()@"'])(abstract|constructor|do|field|forall|import|in|infix|infixl|infixr|instance|interleaved|let|macro|module|mutual|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with)(?=$|[\s;{}()@"])
+        match: (?<=^|[\s;{}()@"])(abstract|constructor|do|field|forall|import|in|infix|infixl|infixr|instance|interleaved|let|macro|module|mutual|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with)(?=$|[\s;{}()@"])
 
       - name: keyword.control.open-import.agda
-        match: (?<=^|[\s;{}()@"'])(hiding|public|renaming|using)(?=$|[\s;{}()@"])
+        match: (?<=^|[\s;{}()@"])(hiding|public|renaming|using)(?=$|[\s;{}()@"])
