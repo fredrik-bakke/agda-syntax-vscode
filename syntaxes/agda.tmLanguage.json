@@ -81,7 +81,7 @@
       },
       "patterns": [
         {
-          "begin": "(?<=(^|(^|[\\s;{}()@\"])module\\s)\\s*)(?!')([^\\s;{}()@\":=]|[^\\s;{}()@\"]{2,})",
+          "begin": "(?<=(^|(^|[\\s;{}()@\"])module\\s)\\s*)(?!')([^\\s;{}()@\":=]|[^\\s;{}()@\"]{2,})(?=$|[\\s;{}()@\"])",
           "end": "(?=(^|[\\s;{}()@\"])where($|[\\s;{}()@\"]))",
           "beginCaptures": {
             "0": {
@@ -120,7 +120,7 @@
       },
       "patterns": [
         {
-          "begin": "(?<=(^|(^|[\\s;{}()@\"])data\\s)\\s*)(?!')([^\\s;{}()@\":=]|[^\\s;{}()@\"]{2,})",
+          "begin": "(?<=(^|(^|[\\s;{}()@\"])data\\s)\\s*)(?!')([^\\s;{}()@\":=]|[^\\s;{}()@\"]{2,})(?=$|[\\s;{}()@\"])",
           "end": "(?=(^|[\\s;{}()@\"])where($|[\\s;{}()@\"]))",
           "beginCaptures": {
             "0": {
@@ -138,6 +138,9 @@
           "patterns": [
             {
               "include": "#parameter-declaration"
+            },
+            {
+              "include": "#lambda-expression"
             },
             {
               "include": "#type"
@@ -163,7 +166,7 @@
       "patterns": [
         {
           "comment": "Capture name of record",
-          "begin": "(?<=(^|(^|[\\s;{}()@\"])record\\s)\\s*)(?!')([^\\s;{}()@\":=]|[^\\s;{}()@\"]{2,})",
+          "begin": "(?<=(^|(^|[\\s;{}()@\"])record\\s)\\s*)(?!')([^\\s;{}()@\":=]|[^\\s;{}()@\"]{2,})(?=$|[\\s;{}()@\"])",
           "end": "(?=(^|[\\s;{}()@\"])where($|[\\s;{}()@\"]))",
           "beginCaptures": {
             "0": {
@@ -181,6 +184,9 @@
           "patterns": [
             {
               "include": "#parameter-declaration"
+            },
+            {
+              "include": "#lambda-expression"
             },
             {
               "include": "#type"
@@ -315,6 +321,9 @@
           "include": "#forall-variable-type-signature"
         },
         {
+          "include": "#lambda-expression"
+        },
+        {
           "include": "#type"
         }
       ]
@@ -342,6 +351,9 @@
         },
         {
           "include": "#forall-variable-type-signature"
+        },
+        {
+          "include": "#lambda-expression"
         },
         {
           "include": "#type"
@@ -383,6 +395,9 @@
           "include": "#forall-variable-type-signature"
         },
         {
+          "include": "#lambda-expression"
+        },
+        {
           "include": "#type"
         }
       ]
@@ -412,6 +427,9 @@
           "include": "#forall-variable-type-signature"
         },
         {
+          "include": "#lambda-expression"
+        },
+        {
           "include": "#type"
         }
       ]
@@ -438,6 +456,9 @@
           "include": "#variable-type-signature"
         },
         {
+          "include": "#lambda-expression"
+        },
+        {
           "include": "#type"
         }
       ]
@@ -462,6 +483,9 @@
         },
         {
           "include": "#variable-type-signature"
+        },
+        {
+          "include": "#lambda-expression"
         },
         {
           "include": "#type"
@@ -500,6 +524,9 @@
           "include": "#variable-type-signature"
         },
         {
+          "include": "#lambda-expression"
+        },
+        {
           "include": "#type"
         }
       ]
@@ -524,6 +551,9 @@
         },
         {
           "include": "#variable-type-signature"
+        },
+        {
+          "include": "#lambda-expression"
         },
         {
           "include": "#type"
@@ -584,7 +614,6 @@
           "match": "(?<=^|\\G|[\\s;{}()@\"])(?!')([^\\s;{}()@\":=]|[^\\s;{}()@\"]{2,})(?=$|[\\s;{}()@\"])",
           "captures": {
             "0": {
-              "name": "storage.type.token.agda",
               "patterns": [
                 {
                   "include": "#reserved"
@@ -599,7 +628,11 @@
                   "include": "#wildcard"
                 },
                 {
-                  "include": "#placeholder"
+                  "include": "#type-token-qualified-name"
+                },
+                {
+                  "name": "invalid.name.type.token.agda",
+                  "match": "\\S+"
                 }
               ]
             }
@@ -630,6 +663,9 @@
       "patterns": [
         {
           "include": "#parameter-declaration"
+        },
+        {
+          "include": "#lambda-expression"
         },
         {
           "include": "#type"
@@ -719,6 +755,22 @@
     },
     "qualified-name": {
       "name": "entity.name.qualified.agda",
+      "match": "(?<=^|[\\s;{}()@\".])((_?((?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,})))(_(?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,}))*_?)(\\.(_?((?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,})))(_(?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,}))*_?)*(?=$|[\\s;{}()@\".])",
+      "captures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#qualify"
+            },
+            {
+              "include": "#name"
+            }
+          ]
+        }
+      }
+    },
+    "type-token-qualified-name": {
+      "name": "storage.type.qualified.agda",
       "match": "(?<=^|[\\s;{}()@\".])((_?((?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,})))(_(?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,}))*_?)(\\.(_?((?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,})))(_(?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,}))*_?)*(?=$|[\\s;{}()@\".])",
       "captures": {
         "0": {

@@ -43,7 +43,7 @@ repository:
     endCaptures:
       "0": { name: keyword.control.where.module.agda }
     patterns:
-      - begin: (?<=(^|(^|[\s;{}()@"])module\s)\s*)(?!')([^\s;{}()@":=]|[^\s;{}()@"]{2,})
+      - begin: (?<=(^|(^|[\s;{}()@"])module\s)\s*)(?!')([^\s;{}()@":=]|[^\s;{}()@"]{2,})(?=$|[\s;{}()@"])
         end: (?=(^|[\s;{}()@"])where($|[\s;{}()@"]))
         beginCaptures:
           "0":
@@ -63,7 +63,7 @@ repository:
     endCaptures:
       "1": { name: keyword.control.where.data.agda }
     patterns:
-      - begin: (?<=(^|(^|[\s;{}()@"])data\s)\s*)(?!')([^\s;{}()@":=]|[^\s;{}()@"]{2,})
+      - begin: (?<=(^|(^|[\s;{}()@"])data\s)\s*)(?!')([^\s;{}()@":=]|[^\s;{}()@"]{2,})(?=$|[\s;{}()@"])
         end: (?=(^|[\s;{}()@"])where($|[\s;{}()@"]))
         beginCaptures:
           "0":
@@ -73,6 +73,7 @@ repository:
         contentName: meta.declaration.parameters.data.agda
         patterns:
           - include: "#parameter-declaration"
+          - include: "#lambda-expression"
           - include: "#type"
 
   record-declaration:
@@ -85,7 +86,7 @@ repository:
       "1": { name: keyword.control.where.record.agda }
     patterns:
       - comment: Capture name of record
-        begin: (?<=(^|(^|[\s;{}()@"])record\s)\s*)(?!')([^\s;{}()@":=]|[^\s;{}()@"]{2,})
+        begin: (?<=(^|(^|[\s;{}()@"])record\s)\s*)(?!')([^\s;{}()@":=]|[^\s;{}()@"]{2,})(?=$|[\s;{}()@"])
         end: (?=(^|[\s;{}()@"])where($|[\s;{}()@"]))
         beginCaptures:
           "0":
@@ -95,6 +96,7 @@ repository:
         contentName: meta.declaration.parameters.record.agda
         patterns:
           - include: "#parameter-declaration"
+          - include: "#lambda-expression"
           - include: "#type"
 
   open-import-statement:
@@ -160,6 +162,7 @@ repository:
     patterns:
       - include: "#parameter-declaration"
       - include: "#forall-variable-type-signature"
+      - include: "#lambda-expression"
       - include: "#type"
 
   forall-implicit-parameter-declaration:
@@ -174,6 +177,7 @@ repository:
     patterns:
       - include: "#parameter-declaration"
       - include: "#forall-variable-type-signature"
+      - include: "#lambda-expression"
       - include: "#type"
 
   forall-instance-parameter-declaration:
@@ -193,6 +197,7 @@ repository:
     patterns:
       - include: "#parameter-declaration"
       - include: "#forall-variable-type-signature"
+      - include: "#lambda-expression"
       - include: "#type"
 
   forall-instance-parameter-declaration-unicode:
@@ -207,6 +212,7 @@ repository:
     patterns:
       - include: "#parameter-declaration"
       - include: "#forall-variable-type-signature"
+      - include: "#lambda-expression"
       - include: "#type"
 
   explicit-parameter-declaration:
@@ -220,6 +226,7 @@ repository:
     patterns:
       - include: "#parameter-declaration"
       - include: "#variable-type-signature"
+      - include: "#lambda-expression"
       - include: "#type"
 
   implicit-parameter-declaration:
@@ -233,6 +240,7 @@ repository:
     patterns:
       - include: "#parameter-declaration"
       - include: "#variable-type-signature"
+      - include: "#lambda-expression"
       - include: "#type"
 
   instance-parameter-declaration:
@@ -251,6 +259,7 @@ repository:
     patterns:
       - include: "#parameter-declaration"
       - include: "#variable-type-signature"
+      - include: "#lambda-expression"
       - include: "#type"
 
   instance-parameter-declaration-unicode:
@@ -264,6 +273,7 @@ repository:
     patterns:
       - include: "#parameter-declaration"
       - include: "#variable-type-signature"
+      - include: "#lambda-expression"
       - include: "#type"
 
   variable-type-signature:
@@ -295,13 +305,14 @@ repository:
       - match: (?<=^|\G|[\s;{}()@"])(?!')([^\s;{}()@":=]|[^\s;{}()@"]{2,})(?=$|[\s;{}()@"])
         captures:
           "0":
-            name: storage.type.token.agda
             patterns:
               - include: "#reserved"
               - include: "#builtin-sort"
               - include: "#lambda-expression"
               - include: "#wildcard"
-              - include: "#placeholder"
+              - include: "#type-token-qualified-name"
+              - name: invalid.name.type.token.agda
+                match: \S+
 
   top-level-type-signature-colon-on-first-line:
     begin: (^|\G)(\s*)(?!')([^\s;{}()@":=]|[^\s;{}()@"]{2,})\s+(:)(?=$|[\s;{}()@"])
@@ -318,6 +329,7 @@ repository:
         name: keyword.operator.agda
     patterns:
       - include: "#parameter-declaration"
+      - include: "#lambda-expression"
       - include: "#type"
 
   top-level-definition-equals-on-first-line:
@@ -375,6 +387,15 @@ repository:
 
   qualified-name:
     name: entity.name.qualified.agda
+    match: (?<=^|[\s;{}()@".])((_?((?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,})))(_(?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,}))*_?)(\.(_?((?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,})))(_(?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,}))*_?)*(?=$|[\s;{}()@".])
+    captures:
+      "0":
+        patterns:
+          - include: "#qualify"
+          - include: "#name"
+
+  type-token-qualified-name:
+    name: storage.type.qualified.agda
     match: (?<=^|[\s;{}()@".])((_?((?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,})))(_(?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,}))*_?)(\.(_?((?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,})))(_(?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,}))*_?)*(?=$|[\s;{}()@".])
     captures:
       "0":
