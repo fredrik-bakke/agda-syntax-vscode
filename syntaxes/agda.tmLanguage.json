@@ -56,12 +56,12 @@
       "include": "#discard"
     },
     {
-      "include": "#placeholder"
-    },
-    {
       "comment": "badly placed keywords",
       "name": "invalid.illegal.keyword.agda",
       "match": "(?<=^|[\\s;{}()@\"])(data|module|record)(?=$|[\\s;{}()@\"])"
+    },
+    {
+      "include": "#qualified-name"
     }
   ],
   "repository": {
@@ -540,10 +540,7 @@
               "include": "#reserved"
             },
             {
-              "include": "#discard"
-            },
-            {
-              "include": "#variable-name"
+              "include": "#variable"
             },
             {
               "name": "invalid.name.variable.agda",
@@ -566,10 +563,7 @@
               "include": "#reserved"
             },
             {
-              "include": "#discard"
-            },
-            {
-              "include": "#variable-name"
+              "include": "#variable"
             }
           ]
         },
@@ -682,10 +676,7 @@
           "include": "#parameter-declaration"
         },
         {
-          "include": "#discard"
-        },
-        {
-          "include": "#variable-name"
+          "include": "#variable"
         }
       ]
     },
@@ -709,18 +700,17 @@
       "name": "entity.name.name-part.agda",
       "match": "(?<=^|[\\s;{}()@\".])(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,})(?=$|[\\s;{}()@\".])"
     },
-    "name": {
+    "name-token": {
       "name": "entity.name.name.agda",
       "match": "(?<=^|[\\s;{}()@\".])(?!_.$)(_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,})))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,})*_?(?=$|[\\s;{}()@\".])",
       "captures": {
         "0": {
           "patterns": [
             {
-              "name": "variable.language.placeholder.agda",
-              "match": "_"
+              "include": "#name-part"
             },
             {
-              "include": "#name-part"
+              "include": "#placeholder"
             }
           ]
         }
@@ -736,7 +726,7 @@
               "include": "#qualify-punctuation"
             },
             {
-              "include": "#name"
+              "include": "#name-token"
             }
           ]
         }
@@ -752,7 +742,7 @@
               "include": "#qualify-punctuation"
             },
             {
-              "include": "#name"
+              "include": "#name-token"
             }
           ]
         }
@@ -792,6 +782,16 @@
           ]
         }
       }
+    },
+    "variable": {
+      "patterns": [
+        {
+          "include": "#discard"
+        },
+        {
+          "include": "#variable-name"
+        }
+      ]
     },
     "variable-name": {
       "name": "variable.parameter.term.agda",

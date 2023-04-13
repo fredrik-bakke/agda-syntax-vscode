@@ -27,11 +27,12 @@ patterns:
 
   - include: "#wildcard"
   - include: "#discard"
-  - include: "#placeholder"
 
   - comment: badly placed keywords
     name: invalid.illegal.keyword.agda
     match: (?<=^|[\s;{}()@"])(data|module|record)(?=$|[\s;{}()@"])
+
+  - include: "#qualified-name"
 
 repository:
   module-declaration:
@@ -273,8 +274,7 @@ repository:
       "2":
         patterns:
           - include: "#reserved"
-          - include: "#discard"
-          - include: "#variable-name"
+          - include: "#variable"
           - name: invalid.name.variable.agda
             match: \S+
       "4": { name: keyword.operator.colon.agda }
@@ -286,8 +286,7 @@ repository:
       "2":
         patterns:
           - include: "#reserved"
-          - include: "#discard"
-          - include: "#variable-name"
+          - include: "#variable"
       "4": { name: keyword.operator.colon.agda }
 
   type:
@@ -345,8 +344,7 @@ repository:
       "1": { name: keyword.operator.lambda.mapsto.agda }
     patterns:
       - include: "#parameter-declaration"
-      - include: "#discard"
-      - include: "#variable-name"
+      - include: "#variable"
 
   discard:
     name: variable.language.discard.agda
@@ -368,15 +366,14 @@ repository:
     name: entity.name.name-part.agda
     match: (?<=^|[\s;{}()@".])(?!')([^\s;{}()@"_.:=]|[^\s;{}()@"_.]{2,})(?=$|[\s;{}()@".])
 
-  name:
+  name-token:
     name: entity.name.name.agda
     match: (?<=^|[\s;{}()@".])(?!_.$)(_?(?!')([^\s;{}()@"_.:=]|[^\s;{}()@"_.]{2,})))(_(?!')([^\s;{}()@"_.:=]|[^\s;{}()@"_.]{2,})*_?(?=$|[\s;{}()@".])
     captures:
       "0":
         patterns:
-          - name: variable.language.placeholder.agda
-            match: _
           - include: "#name-part"
+          - include: "#placeholder"
 
   qualified-name:
     name: entity.name.qualified.agda
@@ -385,7 +382,7 @@ repository:
       "0":
         patterns:
           - include: "#qualify-punctuation"
-          - include: "#name"
+          - include: "#name-token"
 
   type-token-qualified-name:
     name: storage.type.qualified.agda
@@ -394,7 +391,7 @@ repository:
       "0":
         patterns:
           - include: "#qualify-punctuation"
-          - include: "#name"
+          - include: "#name-token"
 
   module-qualified-name:
     match: (?<=^|[\s;{}()@".])((_?(?!')([^\s;{}()@"_.:=]|[^\s;{}()@"_.]{2,}))(_(?!')([^\s;{}()@"_.:=]|[^\s;{}()@"_.]{2,}))*_?)(\.(_?(?!')([^\s;{}()@"_.:=]|[^\s;{}()@"_.]{2,}))(_(?!')([^\s;{}()@"_.:=]|[^\s;{}()@"_.]{2,}))*_?)*(?=$|[\s;{}()@".])
@@ -415,6 +412,11 @@ repository:
           - include: "#placeholder"
           - include: "#name-part"
 
+  variable:
+    patterns:
+      - include: "#discard"
+      - include: "#variable-name"
+
   variable-name:
     name: variable.parameter.term.agda
     match: (?<=^|[\s;{}()@".])(_?(?!')([^\s;{}()@"_.:=]|[^\s;{}()@"_.]{2,}))(_(?!')([^\s;{}()@"_.:=]|[^\s;{}()@"_.]{2,}))*_?(?=$|[\s;{}()@".])
@@ -422,7 +424,7 @@ repository:
       "0":
         patterns:
           - include: "#reserved"
-          - include: "#placeholder"
+          - include: "#placeholder" # TODO: migrate to using #name-token
           - include: "#name-part"
 
   term-name:
