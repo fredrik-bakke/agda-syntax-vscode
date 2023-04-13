@@ -43,7 +43,7 @@ repository:
     endCaptures:
       "0": { name: keyword.control.where.module.agda }
     patterns:
-      - begin: (?<=(^|(^|[\s;{}()@"])module\s)\s*)([^\s;{}()@"':=]|[^\s;{}()@"'][^\s;{}()@"]+)
+      - begin: (?<=(^|(^|[\s;{}()@"])module\s)\s*)(?!')([^\s;{}()@":=]|[^\s;{}()@"]{2,})
         end: (?=(^|[\s;{}()@"])where($|[\s;{}()@"]))
         beginCaptures:
           "0":
@@ -63,7 +63,7 @@ repository:
     endCaptures:
       "1": { name: keyword.control.where.data.agda }
     patterns:
-      - begin: (?<=(^|(^|[\s;{}()@"])data\s)\s*)([^\s;{}()@"':=]|[^\s;{}()@"'][^\s;{}()@"]+)
+      - begin: (?<=(^|(^|[\s;{}()@"])data\s)\s*)(?!')([^\s;{}()@":=]|[^\s;{}()@"]{2,})
         end: (?=(^|[\s;{}()@"])where($|[\s;{}()@"]))
         beginCaptures:
           "0":
@@ -85,7 +85,7 @@ repository:
       "1": { name: keyword.control.where.record.agda }
     patterns:
       - comment: Capture name of record
-        begin: (?<=(^|(^|[\s;{}()@"])record\s)\s*)([^\s;{}()@"':=]|[^\s;{}()@"'][^\s;{}()@"]+)
+        begin: (?<=(^|(^|[\s;{}()@"])record\s)\s*)(?!')([^\s;{}()@":=]|[^\s;{}()@"]{2,})
         end: (?=(^|[\s;{}()@"])where($|[\s;{}()@"]))
         beginCaptures:
           "0":
@@ -275,7 +275,7 @@ repository:
           - include: "#reserved"
           - include: "#discard"
           - include: "#variable-name"
-          - name: invalid
+          - name: invalid.name.variable
             match: \S+
       "4": { name: keyword.operator.colon.agda }
 
@@ -292,7 +292,7 @@ repository:
 
   type:
     patterns:
-      - match: (?<=^|\G|[\s;{}()@":])([^\s;{}()@"':=]|[^\s;{}()@"'][^\s;{}()@"]+)(?=$|[\s;{}()@"])
+      - match: (?<=^|\G|[\s;{}()@"])(?!')([^\s;{}()@":=]|[^\s;{}()@"]{2,})(?=$|[\s;{}()@"])
         captures:
           "0":
             name: storage.type.token.agda
@@ -304,13 +304,16 @@ repository:
               - include: "#placeholder"
 
   top-level-type-signature-colon-on-first-line:
-    begin: (^|\G)(\s*)([^\s;{}()@"':=]|[^\s;{}()@"'][^\s;{}()@"]+)\s+(:)(?=$|[\s;{}()@"])
+    begin: (^|\G)(\s*)(?!')([^\s;{}()@":=]|[^\s;{}()@"]{2,})\s+(:)(?=$|[\s;{}()@"])
     while: ^\2\s
     name: meta.declaration.function.agda
     beginCaptures:
       "3":
         patterns:
           - include: "#term-name"
+          - name: invalid.name.term # TODO: other patterns take precedence, so this one never matches
+            match: \S+
+
       "4":
         name: keyword.operator.agda
     patterns:
@@ -358,11 +361,11 @@ repository:
 
   name-part:
     name: entity.name.name-part.agda
-    match: (?<=^|[\s;{}()@".])([^\s;{}()@"':=_]|[^\s;{}()@"'_][^\s;{}()@"_]+)(?=$|[\s;{}()@".])
+    match: (?<=^|[\s;{}()@".])(?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,})(?=$|[\s;{}()@".])
 
   name:
     name: entity.name.name.agda
-    match: (?<=^|[\s;{}()@".])(?!_$)(_?([^\s;{}()@"':=_]|[^\s;{}()@"'_][^\s;{}()@"_]+))(_([^\s;{}()@"':=_]|[^\s;{}()@"'_][^\s;{}()@"_]+))*_?(?=$|[\s;{}()@".])
+    match: (?<=^|[\s;{}()@".])(?!_$)(_?((?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,})))(_(?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,}))*_?(?=$|[\s;{}()@".])
     captures:
       "0":
         patterns:
@@ -372,7 +375,7 @@ repository:
 
   qualified-name:
     name: entity.name.qualified.agda
-    match: (?<=^|[\s;{}()@".])((_?([^\s;{}()@"':=_]|[^\s;{}()@"'_][^\s;{}()@"_]+))(_([^\s;{}()@"':=_]|[^\s;{}()@"'_][^\s;{}()@"_]+))*_?)(\.(_?([^\s;{}()@"':=_]|[^\s;{}()@"'_][^\s;{}()@"_]+))(_([^\s;{}()@"':=_]|[^\s;{}()@"'_][^\s;{}()@"_]+))*_?)*(?=$|[\s;{}()@".])
+    match: (?<=^|[\s;{}()@".])((_?((?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,})))(_(?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,}))*_?)(\.(_?((?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,})))(_(?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,}))*_?)*(?=$|[\s;{}()@".])
     captures:
       "0":
         patterns:
@@ -380,7 +383,7 @@ repository:
           - include: "#name"
 
   qualified-module-name:
-    match: (?<=^|[\s;{}()@".])((_?([^\s;{}()@"':=_]|[^\s;{}()@"'_][^\s;{}()@"_]+))(_([^\s;{}()@"':=_]|[^\s;{}()@"'_][^\s;{}()@"_]+))*_?)(\.(_?([^\s;{}()@"':=_]|[^\s;{}()@"'_][^\s;{}()@"_]+))(_([^\s;{}()@"':=_]|[^\s;{}()@"'_][^\s;{}()@"_]+))*_?)*(?=$|[\s;{}()@".])
+    match: (?<=^|[\s;{}()@".])((_?((?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,})))(_(?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,}))*_?)(\.(_?((?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,})))(_(?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,}))*_?)*(?=$|[\s;{}()@".])
     name: entity.name.namespace.module.qualified.agda
     captures:
       "0":
@@ -390,7 +393,7 @@ repository:
 
   module-name:
     name: entity.name.namespace.module.agda
-    match: (?<=^|[\s;{}()@".])(_?([^\s;{}()@"':=_]|[^\s;{}()@"'_][^\s;{}()@"_]+))(_([^\s;{}()@"':=_]|[^\s;{}()@"'_][^\s;{}()@"_]+))*_?(?=$|[\s;{}()@".])
+    match: (?<=^|[\s;{}()@".])(_?((?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,})))(_(?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,}))*_?(?=$|[\s;{}()@".])
     captures:
       "0":
         patterns:
@@ -400,7 +403,7 @@ repository:
 
   variable-name:
     name: variable.parameter.term.agda
-    match: (?<=^|[\s;{}()@".])(_?([^\s;{}()@"':=_]|[^\s;{}()@"'_][^\s;{}()@"_]+))(_([^\s;{}()@"':=_]|[^\s;{}()@"'_][^\s;{}()@"_]+))*_?(?=$|[\s;{}()@".])
+    match: (?<=^|[\s;{}()@".])(_?((?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,})))(_(?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,}))*_?(?=$|[\s;{}()@".])
     captures:
       "0":
         patterns:
@@ -410,7 +413,7 @@ repository:
 
   term-name:
     name: entity.name.function.term.agda
-    match: (?<=^|[\s;{}()@".])(_?([^\s;{}()@"':=_]|[^\s;{}()@"'_][^\s;{}()@"_]+))(_([^\s;{}()@"':=_]|[^\s;{}()@"'_][^\s;{}()@"_]+))*_?(?=$|[\s;{}()@".])
+    match: (?<=^|[\s;{}()@".])(_?((?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,})))(_(?!')([^\s;{}()@"_:=]|[^\s;{}()@"_]{2,}))*_?(?=$|[\s;{}()@".])
     captures:
       "0":
         patterns:
