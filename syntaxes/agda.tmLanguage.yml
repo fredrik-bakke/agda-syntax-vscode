@@ -70,12 +70,11 @@ repository:
         beginCaptures:
           "0":
             patterns:
-              - include: "#discard"
-              - include: "#module-name"
+              - include: "#module-label"
         contentName: meta.declaration.parameters.data.agda
         patterns:
           - include: "#parameter-declaration"
-          - include: "#type"
+          - include: "#type" # This one only matches after the colon, as all arguments before the colon will have been matched by #parameter-declaration
           - include: "#reserved" # TODO: this is a bit of a hack, would rather recognize the colon more deliberately
 
   record-declaration:
@@ -93,8 +92,7 @@ repository:
         beginCaptures:
           "0":
             patterns:
-              - include: "#discard"
-              - include: "#module-name"
+              - include: "#module-label"
         contentName: meta.declaration.parameters.record.agda
         patterns:
           - include: "#parameter-declaration"
@@ -277,7 +275,7 @@ repository:
       "2":
         patterns:
           - include: "#reserved"
-          - include: "#variable"
+          - include: "#variable-label"
           - name: invalid.name.variable.agda
             match: \S+
       "4": { name: keyword.operator.colon.agda }
@@ -289,7 +287,7 @@ repository:
       "2":
         patterns:
           - include: "#reserved"
-          - include: "#variable"
+          - include: "#variable-label"
       "4": { name: keyword.operator.colon.agda }
 
   type:
@@ -347,7 +345,7 @@ repository:
       "1": { name: keyword.operator.lambda.mapsto.agda }
     patterns:
       - include: "#parameter-declaration"
-      - include: "#variable"
+      - include: "#variable-label"
 
   discard:
     name: variable.language.discard.agda
@@ -366,11 +364,11 @@ repository:
     match: \.
 
   name-part:
-    name: entity.name.name-part.agda
+    name: entity.name.part.agda
     match: (?<=^|[\s;{}()@".])(?!')([^\s;{}()@"_.:=]|[^\s;{}()@"_.]{2,})(?=$|[\s;{}()@".])
 
   name-token:
-    name: entity.name.name.agda
+    name: entity.name.agda
     match: (?<=^|[\s;{}()@".])(_?(?!')([^\s;{}()@"_.:=]|[^\s;{}()@"_.]{2,}))(_(?!')([^\s;{}()@"_.:=]|[^\s;{}()@"_.]{2,}))*_?(?=$|[\s;{}()@".])
     captures:
       "0":
@@ -403,19 +401,18 @@ repository:
       "0":
         patterns:
           - include: "#qualify-punctuation"
-          - include: "#module-name"
+          - include: "#module-label"
 
-  module-name:
+  module-label:
     name: entity.name.namespace.module.agda
     match: (?<=^|[\s;{}()@".])(_?(?!')([^\s;{}()@"_.:=]|[^\s;{}()@"_.]{2,}))(_(?!')([^\s;{}()@"_.:=]|[^\s;{}()@"_.]{2,}))*_?(?=$|[\s;{}()@".])
     captures:
       "0":
         patterns:
           - include: "#discard"
-          - include: "#placeholder"
-          - include: "#name-part"
+          - include: "#name-token"
 
-  variable:
+  variable-label:
     patterns:
       - include: "#discard"
       - include: "#variable-name"
@@ -427,8 +424,7 @@ repository:
       "0":
         patterns:
           - include: "#reserved"
-          - include: "#placeholder" # TODO: migrate to using #name-token
-          - include: "#name-part"
+          - include: "#name-token"
 
   term-name:
     name: entity.name.function.term.agda
@@ -437,11 +433,11 @@ repository:
       "0":
         patterns:
           - include: "#discard"
-          - include: "#placeholder"
-          - include: "#name-part"
+          - include: "#name-token"
 
   hole:
     name: meta.hole.block.agda
+    contentName: meta.hole.block.content.agda
     begin: \{\!
     end: \!\}
     beginCaptures:
@@ -453,6 +449,7 @@ repository:
 
   pragma:
     name: meta.preprocessor.pragma.block.agda
+    contentName: meta.preprocessor.pragma.block.content.agda
     begin: "{-#"
     captures:
       "0": { name: punctuation.definition.pragma.agda }

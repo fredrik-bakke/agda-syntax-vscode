@@ -129,10 +129,7 @@
             "0": {
               "patterns": [
                 {
-                  "include": "#discard"
-                },
-                {
-                  "include": "#module-name"
+                  "include": "#module-label"
                 }
               ]
             }
@@ -141,9 +138,6 @@
           "patterns": [
             {
               "include": "#parameter-declaration"
-            },
-            {
-              "include": "#type"
             },
             {
               "include": "#reserved"
@@ -175,10 +169,7 @@
             "0": {
               "patterns": [
                 {
-                  "include": "#discard"
-                },
-                {
-                  "include": "#module-name"
+                  "include": "#module-label"
                 }
               ]
             }
@@ -549,7 +540,7 @@
               "include": "#reserved"
             },
             {
-              "include": "#variable"
+              "include": "#variable-label"
             },
             {
               "name": "invalid.name.variable.agda",
@@ -572,7 +563,7 @@
               "include": "#reserved"
             },
             {
-              "include": "#variable"
+              "include": "#variable-label"
             }
           ]
         },
@@ -685,7 +676,7 @@
           "include": "#parameter-declaration"
         },
         {
-          "include": "#variable"
+          "include": "#variable-label"
         }
       ]
     },
@@ -706,11 +697,11 @@
       "match": "\\."
     },
     "name-part": {
-      "name": "entity.name.name-part.agda",
+      "name": "entity.name.part.agda",
       "match": "(?<=^|[\\s;{}()@\".])(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,})(?=$|[\\s;{}()@\".])"
     },
     "name-token": {
-      "name": "entity.name.name.agda",
+      "name": "entity.name.agda",
       "match": "(?<=^|[\\s;{}()@\".])(_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?(?=$|[\\s;{}()@\".])",
       "captures": {
         "0": {
@@ -767,13 +758,13 @@
               "include": "#qualify-punctuation"
             },
             {
-              "include": "#module-name"
+              "include": "#module-label"
             }
           ]
         }
       }
     },
-    "module-name": {
+    "module-label": {
       "name": "entity.name.namespace.module.agda",
       "match": "(?<=^|[\\s;{}()@\".])(_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?(?=$|[\\s;{}()@\".])",
       "captures": {
@@ -783,16 +774,13 @@
               "include": "#discard"
             },
             {
-              "include": "#placeholder"
-            },
-            {
-              "include": "#name-part"
+              "include": "#name-token"
             }
           ]
         }
       }
     },
-    "variable": {
+    "variable-label": {
       "patterns": [
         {
           "include": "#discard"
@@ -812,10 +800,7 @@
               "include": "#reserved"
             },
             {
-              "include": "#placeholder"
-            },
-            {
-              "include": "#name-part"
+              "include": "#name-token"
             }
           ]
         }
@@ -831,10 +816,7 @@
               "include": "#discard"
             },
             {
-              "include": "#placeholder"
-            },
-            {
-              "include": "#name-part"
+              "include": "#name-token"
             }
           ]
         }
@@ -842,6 +824,7 @@
     },
     "hole": {
       "name": "meta.hole.block.agda",
+      "contentName": "meta.hole.block.content.agda",
       "begin": "\\{\\!",
       "end": "\\!\\}",
       "beginCaptures": {
@@ -862,6 +845,7 @@
     },
     "pragma": {
       "name": "meta.preprocessor.pragma.block.agda",
+      "contentName": "meta.preprocessor.pragma.block.content.agda",
       "begin": "{-#",
       "captures": {
         "0": {
