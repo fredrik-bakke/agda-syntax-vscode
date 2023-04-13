@@ -90,7 +90,7 @@
                   "include": "#discard"
                 },
                 {
-                  "include": "#qualified-module-name"
+                  "include": "#module-qualified-name"
                 }
               ]
             }
@@ -140,9 +140,6 @@
               "include": "#parameter-declaration"
             },
             {
-              "include": "#lambda-expression"
-            },
-            {
               "include": "#type"
             }
           ]
@@ -184,9 +181,6 @@
           "patterns": [
             {
               "include": "#parameter-declaration"
-            },
-            {
-              "include": "#lambda-expression"
             },
             {
               "include": "#type"
@@ -232,7 +226,7 @@
           "include": "#reserved"
         },
         {
-          "include": "#qualified-module-name"
+          "include": "#module-qualified-name"
         }
       ]
     },
@@ -321,9 +315,6 @@
           "include": "#forall-variable-type-signature"
         },
         {
-          "include": "#lambda-expression"
-        },
-        {
           "include": "#type"
         }
       ]
@@ -351,9 +342,6 @@
         },
         {
           "include": "#forall-variable-type-signature"
-        },
-        {
-          "include": "#lambda-expression"
         },
         {
           "include": "#type"
@@ -395,9 +383,6 @@
           "include": "#forall-variable-type-signature"
         },
         {
-          "include": "#lambda-expression"
-        },
-        {
           "include": "#type"
         }
       ]
@@ -427,9 +412,6 @@
           "include": "#forall-variable-type-signature"
         },
         {
-          "include": "#lambda-expression"
-        },
-        {
           "include": "#type"
         }
       ]
@@ -456,9 +438,6 @@
           "include": "#variable-type-signature"
         },
         {
-          "include": "#lambda-expression"
-        },
-        {
           "include": "#type"
         }
       ]
@@ -483,9 +462,6 @@
         },
         {
           "include": "#variable-type-signature"
-        },
-        {
-          "include": "#lambda-expression"
         },
         {
           "include": "#type"
@@ -524,9 +500,6 @@
           "include": "#variable-type-signature"
         },
         {
-          "include": "#lambda-expression"
-        },
-        {
           "include": "#type"
         }
       ]
@@ -553,9 +526,6 @@
           "include": "#variable-type-signature"
         },
         {
-          "include": "#lambda-expression"
-        },
-        {
           "include": "#type"
         }
       ]
@@ -576,7 +546,7 @@
               "include": "#variable-name"
             },
             {
-              "name": "invalid.name.variable",
+              "name": "invalid.name.variable.agda",
               "match": "\\S+"
             }
           ]
@@ -611,34 +581,40 @@
     "type": {
       "patterns": [
         {
-          "match": "(?<=^|\\G|[\\s;{}()@\"])(?!')([^\\s;{}()@\":=]|[^\\s;{}()@\"]{2,})(?=$|[\\s;{}()@\"])",
-          "captures": {
-            "0": {
-              "patterns": [
-                {
-                  "include": "#reserved"
-                },
-                {
-                  "include": "#builtin-sort"
-                },
-                {
-                  "include": "#lambda-expression"
-                },
-                {
-                  "include": "#wildcard"
-                },
-                {
-                  "include": "#type-token-qualified-name"
-                },
-                {
-                  "name": "invalid.name.type.token.agda",
-                  "match": "\\S+"
-                }
-              ]
-            }
-          }
+          "include": "#lambda-expression"
+        },
+        {
+          "include": "#type-token"
         }
       ]
+    },
+    "type-token": {
+      "match": "(?<=^|\\G|[\\s;{}()@\"])(?!')([^\\s;{}()@\":=]|[^\\s;{}()@\"]{2,})(?=$|[\\s;{}()@\"])",
+      "captures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#reserved"
+            },
+            {
+              "include": "#builtin-sort"
+            },
+            {
+              "include": "#lambda-expression"
+            },
+            {
+              "include": "#wildcard"
+            },
+            {
+              "include": "#type-token-qualified-name"
+            },
+            {
+              "name": "invalid.name.type.token.agda",
+              "match": "\\S+"
+            }
+          ]
+        }
+      }
     },
     "top-level-type-signature-colon-on-first-line": {
       "begin": "(^|\\G)(\\s*)(?!')([^\\s;{}()@\":=]|[^\\s;{}()@\"]{2,})\\s+(:)(?=$|[\\s;{}()@\"])",
@@ -663,9 +639,6 @@
       "patterns": [
         {
           "include": "#parameter-declaration"
-        },
-        {
-          "include": "#lambda-expression"
         },
         {
           "include": "#type"
@@ -728,17 +701,17 @@
       "name": "variable.language.placeholder.agda",
       "match": "_"
     },
-    "qualify": {
-      "name": "punctuation.separator.namespace.dot.agda",
-      "match": "(?<!^|[\\s;{}()@\"])\\.(?!$|[\\s;{}()@\"])"
+    "qualify-punctiation": {
+      "name": "punctuation.separator.namespace.agda",
+      "match": "\\."
     },
     "name-part": {
       "name": "entity.name.name-part.agda",
-      "match": "(?<=^|[\\s;{}()@\".])(?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,})(?=$|[\\s;{}()@\".])"
+      "match": "(?<=^|[\\s;{}()@\".])(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,})(?=$|[\\s;{}()@\".])"
     },
     "name": {
       "name": "entity.name.name.agda",
-      "match": "(?<=^|[\\s;{}()@\".])(?!_$)(_?((?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,})))(_(?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,}))*_?(?=$|[\\s;{}()@\".])",
+      "match": "(?<=^|[\\s;{}()@\".])(?!_.$)(_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,})))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,})*_?(?=$|[\\s;{}()@\".])",
       "captures": {
         "0": {
           "patterns": [
@@ -755,12 +728,12 @@
     },
     "qualified-name": {
       "name": "entity.name.qualified.agda",
-      "match": "(?<=^|[\\s;{}()@\".])((_?((?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,})))(_(?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,}))*_?)(\\.(_?((?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,})))(_(?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,}))*_?)*(?=$|[\\s;{}()@\".])",
+      "match": "(?<=^|[\\s;{}()@\".])((_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?)(\\.(_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?)*(?=$|[\\s;{}()@\".])",
       "captures": {
         "0": {
           "patterns": [
             {
-              "include": "#qualify"
+              "include": "#qualify-punctuation"
             },
             {
               "include": "#name"
@@ -771,12 +744,12 @@
     },
     "type-token-qualified-name": {
       "name": "storage.type.qualified.agda",
-      "match": "(?<=^|[\\s;{}()@\".])((_?((?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,})))(_(?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,}))*_?)(\\.(_?((?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,})))(_(?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,}))*_?)*(?=$|[\\s;{}()@\".])",
+      "match": "(?<=^|[\\s;{}()@\".])((_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?)(\\.(_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?)*(?=$|[\\s;{}()@\".])",
       "captures": {
         "0": {
           "patterns": [
             {
-              "include": "#qualify"
+              "include": "#qualify-punctuation"
             },
             {
               "include": "#name"
@@ -785,14 +758,14 @@
         }
       }
     },
-    "qualified-module-name": {
-      "match": "(?<=^|[\\s;{}()@\".])((_?((?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,})))(_(?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,}))*_?)(\\.(_?((?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,})))(_(?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,}))*_?)*(?=$|[\\s;{}()@\".])",
+    "module-qualified-name": {
+      "match": "(?<=^|[\\s;{}()@\".])((_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?)(\\.(_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?)*(?=$|[\\s;{}()@\".])",
       "name": "entity.name.namespace.module.qualified.agda",
       "captures": {
         "0": {
           "patterns": [
             {
-              "include": "#qualify"
+              "include": "#qualify-punctuation"
             },
             {
               "include": "#module-name"
@@ -803,7 +776,7 @@
     },
     "module-name": {
       "name": "entity.name.namespace.module.agda",
-      "match": "(?<=^|[\\s;{}()@\".])(_?((?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,})))(_(?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,}))*_?(?=$|[\\s;{}()@\".])",
+      "match": "(?<=^|[\\s;{}()@\".])(_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?(?=$|[\\s;{}()@\".])",
       "captures": {
         "0": {
           "patterns": [
@@ -822,7 +795,7 @@
     },
     "variable-name": {
       "name": "variable.parameter.term.agda",
-      "match": "(?<=^|[\\s;{}()@\".])(_?((?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,})))(_(?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,}))*_?(?=$|[\\s;{}()@\".])",
+      "match": "(?<=^|[\\s;{}()@\".])(_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?(?=$|[\\s;{}()@\".])",
       "captures": {
         "0": {
           "patterns": [
@@ -841,7 +814,7 @@
     },
     "term-name": {
       "name": "entity.name.function.term.agda",
-      "match": "(?<=^|[\\s;{}()@\".])(_?((?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,})))(_(?!')([^\\s;{}()@\"_:=]|[^\\s;{}()@\"_]{2,}))*_?(?=$|[\\s;{}()@\".])",
+      "match": "(?<=^|[\\s;{}()@\".])(_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?(?=$|[\\s;{}()@\".])",
       "captures": {
         "0": {
           "patterns": [
