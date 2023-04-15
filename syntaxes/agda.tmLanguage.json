@@ -234,7 +234,7 @@
       ]
     },
     "infix_statement": {
-      "begin": "(^|\\G)(\\s*)(infix(l|r)?)(?=$|[\\s(){}.;@\"])",
+      "begin": "(^|\\G)(\\s*)(infix[lr]?)(?=$|[\\s(){}.;@\"])",
       "while": "^\\2\\s",
       "beginCaptures": {
         "3": {
@@ -318,12 +318,12 @@
       "end": "\\)",
       "beginCaptures": {
         "0": {
-          "name": "punctuation.section.parens.begin.agda"
+          "name": "punctuation.section.parens.explicit.begin.agda"
         }
       },
       "endCaptures": {
         "0": {
-          "name": "punctuation.section.parens.end.agda"
+          "name": "punctuation.section.parens.explicit.end.agda"
         }
       },
       "name": "meta.declaration.parameters.agda",
@@ -373,12 +373,12 @@
       "end": "\\}",
       "beginCaptures": {
         "0": {
-          "name": "punctuation.section.parens.begin.agda"
+          "name": "punctuation.section.parens.implicit.begin.agda"
         }
       },
       "endCaptures": {
         "0": {
-          "name": "punctuation.section.parens.end.agda"
+          "name": "punctuation.section.parens.implicit.end.agda"
         }
       },
       "name": "meta.declaration.parameters.agda",
@@ -428,12 +428,12 @@
       "end": "\\}\\}",
       "beginCaptures": {
         "0": {
-          "name": "punctuation.section.parens.begin.agda"
+          "name": "punctuation.section.parens.instance_double_brace.begin.agda"
         }
       },
       "endCaptures": {
         "0": {
-          "name": "punctuation.section.parens.end.agda"
+          "name": "punctuation.section.parens.instance_double_brace.end.agda"
         }
       },
       "name": "meta.declaration.parameters.agda",
@@ -483,12 +483,12 @@
       "end": "(?<=^|[\\s(){}.;@\"])⦄(?=$|[\\s(){}.;@\"])",
       "beginCaptures": {
         "0": {
-          "name": "punctuation.section.parens.begin.agda"
+          "name": "punctuation.section.parens.instance_unicode.begin.agda"
         }
       },
       "endCaptures": {
         "0": {
-          "name": "punctuation.section.parens.end.agda"
+          "name": "punctuation.section.parens.instance_unicode.end.agda"
         }
       },
       "name": "meta.declaration.parameters.agda",
@@ -595,7 +595,7 @@
     "type_token": {
       "match": "(?<=^|[\\s(){}.;@\"])(((_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)(\\.(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)*|_)(?=$|[\\s(){}.;@\"])",
       "captures": {
-        "0": {
+        "1": {
           "patterns": [
             {
               "include": "#reserved"
@@ -949,12 +949,15 @@
     },
     "builtin_sort": {
       "name": "support.type.sort.agda",
-      "match": "(?<=^|[\\s(){}.;@\"])((SSet|Set|Prop)ω?(\\d*|[₀₁₂₃₄₅₆₇₈₉]*)|(LevelUniv))(?=$|[\\s(){}.;@\"])"
+      "match": "(?<=^|[\\s(){}.;@\"])((SSet|Set|Prop)ω?(\\d*|[₀-₉]*)|(LevelUniv))(?=$|[\\s(){}.;@\"])"
     },
     "reserved": {
       "patterns": [
         {
           "include": "#literal"
+        },
+        {
+          "include": "#lambda_expression"
         },
         {
           "name": "keyword.operator.agda",
@@ -966,20 +969,16 @@
         },
         {
           "name": "keyword.control.agda",
-          "match": "(?<=^|[\\s(){}.;@\"])(abstract|constructor|do|field|forall|import|in|infix|infixl|infixr|instance|interleaved|let|macro|module|mutual|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with)(?=$|[\\s(){}.;@\"])"
+          "match": "(?<=^|[\\s(){}.;@\"])(abstract|constructor|do|field|forall|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with)(?=$|[\\s(){}.;@\"])"
         },
         {
           "name": "storage.modifier.agda",
-          "match": "(coinductive|eta-equality|inductive|no-eta-equality|private|public)"
+          "match": "(?<=^|[\\s(){}.;@\"])((no-)?eta-equality|(co)?inductive|private|public)(?=$|[\\s(){}.;@\"])"
         },
         {
           "comment": "match keywords",
           "name": "keyword.control.agda",
-          "match": "(?<=^|[\\s(){}.;@\"])(overlap|quote|quoteTerm|unquote|unquoteDecl|unquoteDef)(?=$|[\\s(){}.;@\"])"
-        },
-        {
-          "name": "keyword.control.agda",
-          "match": "(?<=^|[\\s(){}.;@\"])(abstract|constructor|do|field|forall|import|in|infix|infixl|infixr|instance|interleaved|let|macro|module|mutual|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with)(?=$|[\\s(){}.;@\"])"
+          "match": "(?<=^|[\\s(){}.;@\"])(overlap|quote(Term)?|unquote(Decl|Def)?)(?=$|[\\s(){}.;@\"])"
         },
         {
           "name": "keyword.control.open_import.agda",

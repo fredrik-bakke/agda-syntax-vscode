@@ -11,6 +11,8 @@ keyEquivalent: ^~A
 {% set name_token = '(_?' + name_part + ')(_' + name_part + ')*_?' %}
 {% set name_qualified = '(' + name_token + ')(\.' + name_token + ')*' %}
 
+{% macro token(s) %}{{ token_boundary_start }}{{ s }}{{ token_boundary_end }}{% endmacro %}
+
 patterns:
   - include: "#literal"
   - include: "#pragma"
@@ -37,7 +39,7 @@ patterns:
 
   - comment: badly placed keywords
     name: invalid.illegal.keyword.agda
-    match: {{ token_boundary_start }}(data|module|record|where){{ token_boundary_end }}
+    match: {{ token('(data|module|record|where)') }}
 
   - include: "#qualified_name"
 
@@ -45,7 +47,7 @@ repository:
   module_declaration:
     contentName: meta.declaration.module.agda
     begin: (^|\G)\s*(module){{ token_boundary_end }}
-    end: ({{ token_boundary_start }}where{{ token_boundary_end }})|^\1\S
+    end: ({{ token('where') }})|^\1\S
     beginCaptures:
       "2": { name: keyword.control.module.agda }
     endCaptures:
@@ -88,7 +90,7 @@ repository:
   record_declaration:
     contentName: meta.declaration.record.agda
     begin: (^|\G)\s*(record){{ token_boundary_end }}
-    end: ({{ token_boundary_start }}where{{ token_boundary_end }})|^\1\S
+    end: ({{ token('where') }})|^\1\S
     beginCaptures:
       "2": { name: keyword.control.record.agda }
     endCaptures:
@@ -122,14 +124,14 @@ repository:
           "0": { name: punctuation.section.parens.end.agda }
         name: meta.statement.open_import.names.agda
         patterns:
-          - match: {{ token_boundary_start }}to{{ token_boundary_end }}
+          - match: {{ token('to') }}
             name: keyword.other.to.agda
           - include: "#term_name"
       - include: "#reserved"
       - include: "#module_qualified_name"
 
   infix_statement:
-    begin: (^|\G)(\s*)(infix(l|r)?){{ token_boundary_end }}
+    begin: (^|\G)(\s*)(infix[lr]?){{ token_boundary_end }}
     while: ^\2\s
     beginCaptures:
       "3": { name: keyword.control.infix.agda }
@@ -182,9 +184,9 @@ repository:
     begin: {{ param_decl.begin }}
     end: {{ param_decl.end }}
     beginCaptures:
-      "0": { name: punctuation.section.parens.begin.agda }
+      "0": { name: punctuation.section.parens.{{ name_prefix }}.begin.agda }
     endCaptures:
-      "0": { name: punctuation.section.parens.end.agda }
+      "0": { name: punctuation.section.parens.{{ name_prefix }}.end.agda }
     name: meta.declaration.parameters.agda
     patterns:
       - include: "#parameter_declaration"
@@ -237,9 +239,9 @@ repository:
       - include: "#type_token"
 
   type_token:
-    match: {{ token_boundary_start }}({{ name_qualified }}|_){{ token_boundary_end }}
+    match: {{ token('(' + name_qualified + '|_)') }}
     captures:
-      "0":
+      "1":
         patterns:
           - include: "#reserved"
           - include: "#builtin_sort"
@@ -277,8 +279,8 @@ repository:
         name: keyword.operator.agda
 
   lambda_expression:
-    begin: {{ token_boundary_start }}(\\|λ){{ token_boundary_end }}
-    end: {{ token_boundary_start }}(->|→){{ token_boundary_end }}
+    begin: {{ token('(\\\\|λ)') }}
+    end: {{ token('(->|→)') }}
     beginCaptures:
       "1": { name: keyword.operator.lambda.agda }
     endCaptures:
@@ -289,11 +291,11 @@ repository:
 
   discard:
     name: variable.language.discard.agda
-    match: {{ token_boundary_start }}_{{ token_boundary_end }}
+    match: {{ token('_') }}
 
   wildcard:
     name: variable.language.wildcard.agda
-    match: {{ token_boundary_start }}_{{ token_boundary_end }}
+    match: {{ token('_') }}
 
   placeholder:
     name: variable.language.placeholder.agda
@@ -305,11 +307,11 @@ repository:
 
   name_part:
     name: entity.name.part.agda
-    match: {{ token_boundary_start }}{{ name_part }}{{ token_boundary_end }}
+    match: {{ token(name_part) }}
 
   name_token:
     name: entity.name.agda
-    match: {{ token_boundary_start }}{{ name_token }}{{ token_boundary_end }}
+    match: {{ token(name_token) }}
     captures:
       "0":
         patterns:
@@ -318,7 +320,7 @@ repository:
 
   qualified_name:
     name: entity.name.qualified.agda
-    match: {{ token_boundary_start }}{{ name_qualified }}{{ token_boundary_end }}
+    match: {{ token(name_qualified) }}
     captures:
       "0":
         patterns:
@@ -327,14 +329,14 @@ repository:
 
   type_token_qualified_name:
     name: storage.type.qualified.agda
-    match: {{ token_boundary_start }}{{ name_qualified }}{{ token_boundary_end }}
+    match: {{ token(name_qualified) }}
     captures:
       "0":
         patterns:
           - include: "#qualified_name"
 
   module_qualified_name:
-    match: {{ token_boundary_start }}{{ name_qualified }}{{ token_boundary_end }}
+    match: {{ token(name_qualified) }}
     name: entity.name.namespace.module.qualified.agda
     captures:
       "0":
@@ -353,7 +355,7 @@ repository:
 
   variable_name:
     name: variable.parameter.term.agda
-    match: {{ token_boundary_start }}{{ name_token }}{{ token_boundary_end }}
+    match: {{ token(name_token) }}
     captures:
       "0":
         patterns:
@@ -362,7 +364,7 @@ repository:
 
   term_name:
     name: entity.name.function.term.agda
-    match: {{ token_boundary_start }}{{ name_token }}{{ token_boundary_end }}
+    match: {{ token(name_token) }}
     captures:
       "0":
         patterns:
@@ -438,33 +440,35 @@ repository:
           - include: "#escape_control_character"
 
       - name: constant.numeric.integer.agda
-        match: {{ token_boundary_start }}(-?(0[xX]\h+|0[bB][01]+|\d+(_\d+)*)){{ token_boundary_end }}
+        match: {{ token('(-?(0[xX]\h+|0[bB][01]+|\d+(_\d+)*))') }}
       - name: constant.numeric.float.agda
-        match: {{ token_boundary_start }}(-?\d+\.\d+([eE][+-]?\d+)?|-?\d+[eE][+-]?\d+){{ token_boundary_end }}
+        match: {{ token('(-?\d+\.\d+([eE][+-]?\d+)?|-?\d+[eE][+-]?\d+)') }}
 
   builtin_sort:
     name: support.type.sort.agda
-    match: {{ token_boundary_start }}((SSet|Set|Prop)ω?(\d*|[₀₁₂₃₄₅₆₇₈₉]*)|(LevelUniv)){{ token_boundary_end }}
+    match: {{ token('((SSet|Set|Prop)ω?(\d*|[₀-₉]*)|(LevelUniv))') }}
 
   reserved:
     patterns:
       - include: "#literal"
 
+      - include: "#lambda_expression"
+
       - name: keyword.operator.agda
-        match: {{ token_boundary_start }}(forall|->|[=\?→∀\\λ:]){{ token_boundary_end }}
+        match: {{ token('(forall|->|[=\?→∀\\\\λ:])') }}
 
       - name: keyword.operator.constraint.agda
         match: {{ token_boundary_start }}\.(?!$|[\s;})])
 
       - name: keyword.control.agda
-        match: {{ token_boundary_start }}(abstract|constructor|do|field|forall|import|in|infix|infixl|infixr|instance|interleaved|let|macro|module|mutual|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with){{ token_boundary_end }}
+        match: {{ token('(abstract|constructor|do|field|forall|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with)') }}
 
       - name: storage.modifier.agda
-        match: {{ token_boundary_start }}(coinductive|eta-equality|inductive|no-eta-equality|private|public){{ token_boundary_end }}
+        match: {{ token('((no-)?eta-equality|(co)?inductive|private|public)') }}
 
       - comment: match keywords
         name: keyword.control.agda
-        match: {{ token_boundary_start }}(overlap|quote|quoteTerm|unquote|unquoteDecl|unquoteDef){{ token_boundary_end }}
+        match: {{ token('(overlap|quote(Term)?|unquote(Decl|Def)?)') }}
 
       - name: keyword.control.open_import.agda
-        match: {{ token_boundary_start }}(hiding|public|renaming|using){{ token_boundary_end }}
+        match: {{ token('(hiding|public|renaming|using)') }}

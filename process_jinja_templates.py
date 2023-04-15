@@ -8,6 +8,8 @@ def process_jinja_template(template_str):
     template = jinja2.Template(template_str)
     rendered_content = template.render()
 
+    ls = "\n".join(map(str.rstrip, rendered_content.split("\n")))
+
     s = rendered_content.replace("\n\n\n", "\n\n")
     while s != rendered_content:
         rendered_content = s
