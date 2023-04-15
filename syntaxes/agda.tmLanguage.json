@@ -58,7 +58,7 @@
     {
       "comment": "badly placed keywords",
       "name": "invalid.illegal.keyword.agda",
-      "match": "(?<=^|[\\s;{}()@\"])(data|module|record)(?=$|[\\s;{}()@\"])"
+      "match": "(?<=^|[\\s(){}.;@\"])(data|module|record|where)(?=$|[\\s(){}.;@\"])"
     },
     {
       "include": "#qualified-name"
@@ -67,8 +67,8 @@
   "repository": {
     "module-declaration": {
       "contentName": "meta.declaration.module.agda",
-      "begin": "(^|\\G)\\s*(module)(?=$|[\\s;{}()@\"])",
-      "end": "((?<=^|[\\s;{}()@\"])where(?=$|[\\s;{}()@\"]))|^\\1\\S",
+      "begin": "(^|\\G)\\s*(module)(?=$|[\\s(){}.;@\"])",
+      "end": "((?<=^|[\\s(){}.;@\"])where(?=$|[\\s(){}.;@\"]))|^\\1\\S",
       "beginCaptures": {
         "2": {
           "name": "keyword.control.module.agda"
@@ -81,8 +81,8 @@
       },
       "patterns": [
         {
-          "begin": "(?<=(^|(^|[\\s;{}()@\"])module\\s)\\s*)(?!')([^\\s;{}()@\":=]|[^\\s;{}()@\"]{2,})(?=$|[\\s;{}()@\"])",
-          "end": "(?=(^|[\\s;{}()@\"])where($|[\\s;{}()@\"]))",
+          "begin": "(?<=(^|(^|[\\s(){}.;@\"])module\\s)\\s*)(((_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)(\\.(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)*|_)(?=$|[\\s(){}.;@\"])",
+          "end": "(?=[\\s(){}.;@\"]where($|[\\s(){}.;@\"]))",
           "beginCaptures": {
             "0": {
               "patterns": [
@@ -109,8 +109,8 @@
     },
     "data-declaration": {
       "contentName": "meta.declaration.data.agda",
-      "begin": "(^|\\G)\\s*(data)(?=$|[\\s;{}()@\"])",
-      "end": "((?<=[\\s;{}()@\"])where(?=$|[\\s;{}()@\"]))|^\\1\\S",
+      "begin": "(^|\\G)\\s*(data)(?=$|[\\s(){}.;@\"])",
+      "end": "((?<=[\\s(){}.;@\"])where(?=$|[\\s(){}.;@\"]))|^\\1\\S",
       "beginCaptures": {
         "2": {
           "name": "keyword.control.data.agda"
@@ -123,8 +123,8 @@
       },
       "patterns": [
         {
-          "begin": "(?<=(^|(^|[\\s;{}()@\"])data\\s)\\s*)(?!')([^\\s;{}()@\":=]|[^\\s;{}()@\"]{2,})(?=$|[\\s;{}()@\"])",
-          "end": "(?=(^|[\\s;{}()@\"])where($|[\\s;{}()@\"]))",
+          "begin": "(?<=(^|(^|[\\s(){}.;@\"])data\\s)\\s*)((_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?|_)(?=$|[\\s(){}.;@\"])",
+          "end": "(?=[\\s(){}.;@\"]where($|[\\s(){}.;@\"]))",
           "beginCaptures": {
             "0": {
               "patterns": [
@@ -151,8 +151,8 @@
     },
     "record-declaration": {
       "contentName": "meta.declaration.record.agda",
-      "begin": "(^|\\G)\\s*(record)(?=$|[\\s;{}()@\"])",
-      "end": "((?<=^|[\\s;{}()@\"])where(?=$|[\\s;{}()@\"]))|^\\1\\S",
+      "begin": "(^|\\G)\\s*(record)(?=$|[\\s(){}.;@\"])",
+      "end": "((?<=^|[\\s(){}.;@\"])where(?=$|[\\s(){}.;@\"]))|^\\1\\S",
       "beginCaptures": {
         "2": {
           "name": "keyword.control.record.agda"
@@ -166,8 +166,8 @@
       "patterns": [
         {
           "comment": "Capture name of record",
-          "begin": "(?<=(^|(^|[\\s;{}()@\"])record\\s)\\s*)(?!')([^\\s;{}()@\":=]|[^\\s;{}()@\"]{2,})(?=$|[\\s;{}()@\"])",
-          "end": "(?=(^|[\\s;{}()@\"])where($|[\\s;{}()@\"]))",
+          "begin": "(?<=(^|(^|[\\s(){}.;@\"])record\\s)\\s*)((_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?|_)(?=$|[\\s(){}.;@\"])",
+          "end": "(?=[\\s(){}.;@\"]where($|[\\s(){}.;@\"]))",
           "beginCaptures": {
             "0": {
               "patterns": [
@@ -217,7 +217,7 @@
           "name": "meta.statement.open-import.names.agda",
           "patterns": [
             {
-              "match": "(?<=^|[\\s;{}()@\"])to(?=$|[\\s;{}()@\"])",
+              "match": "(?<=^|[\\s(){}.;@\"])to(?=$|[\\s(){}.;@\"])",
               "name": "keyword.other.to.agda"
             },
             {
@@ -234,7 +234,7 @@
       ]
     },
     "infix-statement": {
-      "begin": "(^|\\G)(\\s*)(infix(l|r)?)(?=$|[\\s;{}()@\"])",
+      "begin": "(^|\\G)(\\s*)(infix(l|r)?)(?=$|[\\s(){}.;@\"])",
       "while": "^\\2\\s",
       "beginCaptures": {
         "3": {
@@ -253,7 +253,7 @@
       ]
     },
     "constructor-statement": {
-      "begin": "(^|\\G)(\\s*)(constructor)(?=$|[\\s;{}()@\"])",
+      "begin": "(^|\\G)(\\s*)(constructor)(?=$|[\\s(){}.;@\"])",
       "while": "^\\2\\s",
       "beginCaptures": {
         "3": {
@@ -294,7 +294,7 @@
       ]
     },
     "forall-explicit-parameter-declaration": {
-      "begin": "(?<=^|[\\s;{}()@\"])(forall|∀)\\s*(\\()",
+      "begin": "(?<=^|[\\s(){}.;@\"])(forall|∀)\\s*(\\()",
       "end": "\\)",
       "beginCaptures": {
         "1": {
@@ -323,7 +323,7 @@
       ]
     },
     "forall-implicit-parameter-declaration": {
-      "begin": "(?<=^|[\\s;{}()@\"])(forall|∀)\\s*(\\{)",
+      "begin": "(?<=^|[\\s(){}.;@\"])(forall|∀)\\s*(\\{)",
       "end": "\\}",
       "beginCaptures": {
         "1": {
@@ -362,7 +362,7 @@
       ]
     },
     "forall-instance-parameter-declaration-double-brace": {
-      "begin": "(?<=^|[\\s;{}()@\"])(forall|∀)\\s*(\\{\\{)",
+      "begin": "(?<=^|[\\s(){}.;@\"])(forall|∀)\\s*(\\{\\{)",
       "end": "\\}\\}",
       "beginCaptures": {
         "1": {
@@ -391,8 +391,8 @@
       ]
     },
     "forall-instance-parameter-declaration-unicode": {
-      "begin": "(?<=^|[\\s;{}()@\"])(forall|∀)\\s+(⦃)(?=$|[\\s;{}()@\".])",
-      "end": "(?<=^|[\\s;{}()@\".])⦄(?=$|[\\s;{}()@\".])",
+      "begin": "(?<=^|[\\s(){}.;@\"])(forall|∀)\\s+(⦃)(?=$|[\\s(){}.;@\"])",
+      "end": "(?<=^|[\\s(){}.;@\"])⦄(?=$|[\\s(){}.;@\"])",
       "beginCaptures": {
         "1": {
           "name": "keyword.operator.forall.agda"
@@ -508,8 +508,8 @@
       ]
     },
     "instance-parameter-declaration-unicode": {
-      "begin": "(?<=^|[\\s;{}()@\".])⦃(?=$|[\\s;{}()@\".])",
-      "end": "(?<=^|[\\s;{}()@\".])⦄(?=$|[\\s;{}()@\".])",
+      "begin": "(?<=^|[\\s(){}.;@\"])⦃(?=$|[\\s(){}.;@\"])",
+      "end": "(?<=^|[\\s(){}.;@\"])⦄(?=$|[\\s(){}.;@\"])",
       "name": "meta.declaration.parameters.agda",
       "beginCaptures": {
         "0": {
@@ -534,7 +534,7 @@
       ]
     },
     "variable-type-signature": {
-      "match": "(^|\\G)(([^:)}⦄]|(?<!^|[\\s;{}()@\"])[:⦄]|[:⦄](?!$|[\\s;{}()@\"]))+)[\\s;{}()@\"](:)(?=$|[\\s;{}()@\"])",
+      "match": "(^|\\G)(([^:)}⦄]|(?<!^|[\\s(){}.;@\"])[:⦄]|[:⦄](?!$|[\\s(){}.;@\"]))+)[\\s(){}.;@\"](:)(?=$|[\\s(){}.;@\"])",
       "name": "meta.declaration.variable-type-signature.agda",
       "captures": {
         "2": {
@@ -557,7 +557,7 @@
       }
     },
     "forall-variable-type-signature": {
-      "match": "(^|\\G)(([^:)}⦄]|(?<!^|[\\s;{}()@\"])[:⦄]|[:⦄](?!$|[\\s;{}()@\"]))+)((:)(?=$|[\\s;{}()@\"])|(?=$|[)}⦄]))",
+      "match": "(^|\\G)(([^:)}⦄]|(?<!^|[\\s(){}.;@\"])[:⦄]|[:⦄](?!$|[\\s(){}.;@\"]))+)((:)(?=$|[\\s(){}.;@\"])|(?=$|[)}⦄]))",
       "name": "meta.declaration.variable-type-signature.agda",
       "captures": {
         "2": {
@@ -586,7 +586,7 @@
       ]
     },
     "type-token": {
-      "match": "(?<=^|\\G|[\\s;{}()@\"])(?!')([^\\s;{}()@\":=]|[^\\s;{}()@\"]{2,})(?=$|[\\s;{}()@\"])",
+      "match": "(?<=^|[\\s(){}.;@\"])((_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?|_)(?=$|[\\s(){}.;@\"])",
       "captures": {
         "0": {
           "patterns": [
@@ -614,7 +614,7 @@
       }
     },
     "top-level-type-signature-colon-on-first-line": {
-      "begin": "(^|\\G)(\\s*)(?!')([^\\s;{}()@\":=]|[^\\s;{}()@\"]{2,})\\s+(:)(?=$|[\\s;{}()@\"])",
+      "begin": "(^|\\G)(\\s*)((_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?|_)\\s+(:)(?=$|[\\s(){}.;@\"])",
       "while": "^\\2\\s",
       "name": "meta.declaration.function.agda",
       "beginCaptures": {
@@ -624,7 +624,7 @@
               "include": "#term-name"
             },
             {
-              "name": "invalid.name.term",
+              "name": "invalid.name.term.agda",
               "match": "\\S+"
             }
           ]
@@ -643,7 +643,7 @@
       ]
     },
     "top-level-definition-equals-on-first-line": {
-      "match": "(^|\\G)(\\s*)(\\S.*)\\s+(=)(?=$|[\\s;{}()@\"])",
+      "match": "(^|\\G)(\\s*)(\\S.*)\\s+(=)(?=$|[\\s(){}.;@\"])",
       "name": "meta.declaration.function.agda",
       "captures": {
         "3": {
@@ -662,8 +662,8 @@
       }
     },
     "lambda-expression": {
-      "begin": "(?<=^|[\\s;{}()@\"])(\\\\|λ)(?=$|[\\s;{}()@\"])",
-      "end": "(?<=^|[\\s;{}()@\"])(->|→)(?=$|[\\s;{}()@\"])",
+      "begin": "(?<=^|[\\s(){}.;@\"])(\\\\|λ)(?=$|[\\s(){}.;@\"])",
+      "end": "(?<=^|[\\s(){}.;@\"])(->|→)(?=$|[\\s(){}.;@\"])",
       "beginCaptures": {
         "1": {
           "name": "keyword.operator.lambda.agda"
@@ -685,11 +685,11 @@
     },
     "discard": {
       "name": "variable.language.discard.agda",
-      "match": "(?<=^|[\\s;{}()@\"])_(?=$|[\\s;{}()@\"])"
+      "match": "(?<=^|[\\s(){}.;@\"])_(?=$|[\\s(){}.;@\"])"
     },
     "wildcard": {
       "name": "variable.language.wildcard.agda",
-      "match": "(?<=^|[\\s;{}()@\"])_(?=$|[\\s;{}()@\"])"
+      "match": "(?<=^|[\\s(){}.;@\"])_(?=$|[\\s(){}.;@\"])"
     },
     "placeholder": {
       "name": "variable.language.placeholder.agda",
@@ -701,11 +701,11 @@
     },
     "name-part": {
       "name": "entity.name.part.agda",
-      "match": "(?<=^|[\\s;{}()@\".])(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,})(?=$|[\\s;{}()@\".])"
+      "match": "(?<=^|[\\s(){}.;@\"])(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,})(?=$|[\\s(){}.;@\"])"
     },
     "name-token": {
       "name": "entity.name.agda",
-      "match": "(?<=^|[\\s;{}()@\".])(_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?(?=$|[\\s;{}()@\".])",
+      "match": "(?<=^|[\\s(){}.;@\"])(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?(?=$|[\\s(){}.;@\"])",
       "captures": {
         "0": {
           "patterns": [
@@ -721,7 +721,7 @@
     },
     "qualified-name": {
       "name": "entity.name.qualified.agda",
-      "match": "(?<=^|[\\s;{}()@\".])((_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?)(\\.(_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?)*(?=$|[\\s;{}()@\".])",
+      "match": "(?<=^|[\\s(){}.;@\"])((_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)(\\.(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)*(?=$|[\\s(){}.;@\"])",
       "captures": {
         "0": {
           "patterns": [
@@ -737,7 +737,7 @@
     },
     "type-token-qualified-name": {
       "name": "storage.type.qualified.agda",
-      "match": "(?<=^|[\\s;{}()@\".])((_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?)(\\.(_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?)*(?=$|[\\s;{}()@\".])",
+      "match": "(?<=^|[\\s(){}.;@\"])((_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)(\\.(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)*(?=$|[\\s(){}.;@\"])",
       "captures": {
         "0": {
           "patterns": [
@@ -752,7 +752,7 @@
       }
     },
     "module-qualified-name": {
-      "match": "(?<=^|[\\s;{}()@\".])((_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?)(\\.(_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?)*(?=$|[\\s;{}()@\".])",
+      "match": "(?<=^|[\\s(){}.;@\"])((_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)(\\.(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)*(?=$|[\\s(){}.;@\"])",
       "name": "entity.name.namespace.module.qualified.agda",
       "captures": {
         "0": {
@@ -769,7 +769,7 @@
     },
     "module-label": {
       "name": "entity.name.namespace.module.agda",
-      "match": "(?<=^|[\\s;{}()@\".])(_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?(?=$|[\\s;{}()@\".])",
+      "match": "(?<=^|[\\s(){}.;@\"])(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?(?=$|[\\s(){}.;@\"])",
       "captures": {
         "0": {
           "patterns": [
@@ -795,7 +795,7 @@
     },
     "variable-name": {
       "name": "variable.parameter.term.agda",
-      "match": "(?<=^|[\\s;{}()@\".])(_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?(?=$|[\\s;{}()@\".])",
+      "match": "(?<=^|[\\s(){}.;@\"])(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?(?=$|[\\s(){}.;@\"])",
       "captures": {
         "0": {
           "patterns": [
@@ -811,7 +811,7 @@
     },
     "term-name": {
       "name": "entity.name.function.term.agda",
-      "match": "(?<=^|[\\s;{}()@\".])(_?(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))(_(?!')([^\\s;{}()@\"_.:=]|[^\\s;{}()@\"_.]{2,}))*_?(?=$|[\\s;{}()@\".])",
+      "match": "(?<=^|[\\s(){}.;@\"])(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?(?=$|[\\s(){}.;@\"])",
       "captures": {
         "0": {
           "patterns": [
@@ -859,7 +859,7 @@
     },
     "block-comment": {
       "name": "comment.block.agda",
-      "begin": "\\{-(?!#)",
+      "begin": "\\{-",
       "end": "-\\}",
       "beginCaptures": {
         "0": {
@@ -879,7 +879,7 @@
     },
     "dash-comment": {
       "name": "comment.line.double-dash.agda",
-      "match": "(?<=^|[\\s(){};\".])(--).*$",
+      "match": "(?<=^|[\\s(){}.;@\"])(--).*$",
       "captures": {
         "1": {
           "name": "punctuation.definition.comment.agda"
@@ -921,7 +921,7 @@
         },
         {
           "name": "constant.character.quoted.single.agda",
-          "begin": "(?<=^|[\\s{}()@\"])\\'",
+          "begin": "(?<=^|[\\s(){}.;@\"])\\'",
           "end": "\\'",
           "beginCaptures": {
             "0": {
@@ -944,17 +944,17 @@
         },
         {
           "name": "constant.numeric.integer.agda",
-          "match": "(?<=^|[\\s;{}()@\"])(-?(0[xX]\\h+|0[bB][01]+|\\d+(_\\d+)*))(?=$|[\\s;{}()@\"])"
+          "match": "(?<=^|[\\s(){}.;@\"])(-?(0[xX]\\h+|0[bB][01]+|\\d+(_\\d+)*))(?=$|[\\s(){}.;@\"])"
         },
         {
           "name": "constant.numeric.float.agda",
-          "match": "(?<=^|[\\s;{}()@\"])(-?\\d+\\.\\d+([eE][+-]?\\d+)?|-?\\d+[eE][+-]?\\d+)(?=$|[\\s;{}()@\"])"
+          "match": "(?<=^|[\\s(){}.;@\"])(-?\\d+\\.\\d+([eE][+-]?\\d+)?|-?\\d+[eE][+-]?\\d+)(?=$|[\\s(){}.;@\"])"
         }
       ]
     },
     "builtin-sort": {
       "name": "support.type.sort.agda",
-      "match": "(?<=^|[\\s;{}()@\".])((SSet|Set|Prop)ω?(\\d*|[₀₁₂₃₄₅₆₇₈₉]*)|(LevelUniv))(?=$|[\\s;{}()@\"])"
+      "match": "(?<=^|[\\s(){}.;@\"])((SSet|Set|Prop)ω?(\\d*|[₀₁₂₃₄₅₆₇₈₉]*)|(LevelUniv))(?=$|[\\s(){}.;@\"])"
     },
     "reserved": {
       "patterns": [
@@ -963,15 +963,15 @@
         },
         {
           "name": "keyword.operator.agda",
-          "match": "(?<=^|[\\s;{}()@\"])(forall|->|[=\\?→∀\\\\λ:])(?=$|[\\s;{}()@\"])"
+          "match": "(?<=^|[\\s(){}.;@\"])(forall|->|[=\\?→∀\\\\λ:])(?=$|[\\s(){}.;@\"])"
         },
         {
           "name": "keyword.operator.constraint.agda",
-          "match": "(?<=^|[\\s;{}()@\"])\\.(?!$|[\\s;})])"
+          "match": "(?<=^|[\\s(){}.;@\"])\\.(?!$|[\\s;})])"
         },
         {
           "name": "keyword.control.agda",
-          "match": "(?<=^|[\\s;{}()@\"])(abstract|constructor|do|field|forall|import|in|infix|infixl|infixr|instance|interleaved|let|macro|module|mutual|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with)(?=$|[\\s;{}()@\"])"
+          "match": "(?<=^|[\\s(){}.;@\"])(abstract|constructor|do|field|forall|import|in|infix|infixl|infixr|instance|interleaved|let|macro|module|mutual|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with)(?=$|[\\s(){}.;@\"])"
         },
         {
           "name": "storage.modifier.agda",
@@ -980,15 +980,15 @@
         {
           "comment": "match keywords",
           "name": "keyword.control.agda",
-          "match": "(?<=^|[\\s;{}()@\"])(overlap|quote|quoteTerm|unquote|unquoteDecl|unquoteDef)(?=$|[\\s;{}()@\"])"
+          "match": "(?<=^|[\\s(){}.;@\"])(overlap|quote|quoteTerm|unquote|unquoteDecl|unquoteDef)(?=$|[\\s(){}.;@\"])"
         },
         {
           "name": "keyword.control.agda",
-          "match": "(?<=^|[\\s;{}()@\"])(abstract|constructor|do|field|forall|import|in|infix|infixl|infixr|instance|interleaved|let|macro|module|mutual|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with)(?=$|[\\s;{}()@\"])"
+          "match": "(?<=^|[\\s(){}.;@\"])(abstract|constructor|do|field|forall|import|in|infix|infixl|infixr|instance|interleaved|let|macro|module|mutual|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with)(?=$|[\\s(){}.;@\"])"
         },
         {
           "name": "keyword.control.open-import.agda",
-          "match": "(?<=^|[\\s;{}()@\"])(hiding|public|renaming|using)(?=$|[\\s;{}()@\"])"
+          "match": "(?<=^|[\\s(){}.;@\"])(hiding|public|renaming|using)(?=$|[\\s(){}.;@\"])"
         }
       ]
     }

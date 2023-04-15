@@ -3,26 +3,39 @@ import re
 import jinja2
 
 
-def process_jinja_template(input_file, output_file):
-    with open(input_file, "r") as f:
-        template_str = f.read()
+def process_jinja_template(template_str):
 
     template = jinja2.Template(template_str)
     rendered_content = template.render()
+
+    s = rendered_content.replace("\n\n\n", "\n\n")
+    while s != rendered_content:
+        rendered_content = s
+        s = s.replace("\n\n\n", "\n\n")
 
     # Ensure YAML file ends with a newline character
     if not rendered_content.endswith('\n'):
         rendered_content += '\n'
 
-    with open(output_file, "w") as f:
-        f.write(rendered_content)
+    return rendered_content
 
 
-pattern = re.compile(r".*\.j2(?:.*)?\.ya?ml$")
+if __name__ == "__main__":
 
-for root, _, files in os.walk("."):
-    for file in files:
-        if pattern.match(file):
-            input_file = os.path.join(root, file)
-            output_file = os.path.join(root, file.replace(".j2", ""))
-            process_jinja_template(input_file, output_file)
+    j2file_pattern = re.compile(r".*\.j2(?:.*)?\.ya?ml$")
+    root_dir = "."
+
+    for root, _, files in os.walk(root_dir):
+        for file in files:
+            if j2file_pattern.match(file):
+                input_file = os.path.join(root, file)
+                output_file = os.path.join(root, file.replace(".j2", ""))
+
+                with open(input_file, "r") as f:
+                    template_str = f.read()
+
+                rendered_content = process_jinja_template(
+                    template_str)
+
+                with open(output_file, "w") as f:
+                    f.write(rendered_content)
