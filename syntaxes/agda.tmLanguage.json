@@ -140,6 +140,9 @@
               "include": "#parameter-declaration"
             },
             {
+              "include": "#type"
+            },
+            {
               "include": "#reserved"
             }
           ]

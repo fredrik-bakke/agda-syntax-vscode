@@ -7,6 +7,18 @@
       "label": "convert yaml grammar to json",
       "type": "shell",
       "command": "setopt nullglob; for file in syntaxes/*.tmLanguage.y{a,}ml; do npx js-yaml $file > ${file%.*}.json; done; unsetopt nullglob",
+      "problemMatcher": [],
+      "dependsOn": "process jinja templates"
+    },
+    {
+      "label": "process jinja templates",
+      "type": "shell",
+      "command": "python",
+      "args": ["process_jinja_templates.py"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
       "problemMatcher": []
     }
   ]
