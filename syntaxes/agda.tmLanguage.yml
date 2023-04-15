@@ -275,7 +275,7 @@ repository:
       - include: "#type"
 
   variable_type_signature:
-    match: (^|\G)(([^:)}⦄]|(?<!^|[\s(){}.;@"])[:⦄]|[:⦄](?!$|[\s(){}.;@"]))+)[\s(){}.;@"](:)(?=$|[\s(){}.;@"])
+    match: (^|\G)(([^:)}⦄]|(?<!^|[\s(){}.;@"])[:⦄]|[:⦄](?!$|[\s(){}.;@"]))+)[\s(){}.;@"](:)(?=$|[\s(){}.;@"]) # TODO: refactor, compare to forall_v...
     name: meta.declaration.variable_type_signature.agda
     captures:
       "2":
@@ -294,11 +294,14 @@ repository:
         patterns:
           - include: "#reserved"
           - include: "#variable_label"
+          - name: invalid.name.variable.agda
+            match: \S+
       "4": { name: keyword.operator.colon.agda }
 
   type:
     patterns:
       - include: "#lambda_expression"
+      - include: "#reserved"
       - include: "#type_token"
 
   type_token:
@@ -324,9 +327,8 @@ repository:
           - include: "#term_name"
           - name: invalid.name.term.agda # TODO: other patterns take precedence, so this one never matches
             match: \S+
-
       "4":
-        name: keyword.operator.agda
+        name: keyword.operator.colon.agda
     patterns:
       - include: "#parameter_declaration"
       - include: "#type"

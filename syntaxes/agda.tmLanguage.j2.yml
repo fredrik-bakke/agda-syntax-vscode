@@ -207,7 +207,7 @@ repository:
 {% endfor %}
 
   variable_type_signature:
-    match: (^|\G)(([^:)}⦄]|(?<!^|{{ boundary_char }})[:⦄]|[:⦄](?!$|{{ boundary_char }}))+){{ boundary_char }}(:){{ token_boundary_end }}
+    match: (^|\G)(([^:)}⦄]|(?<!^|{{ boundary_char }})[:⦄]|[:⦄](?!$|{{ boundary_char }}))+){{ boundary_char }}(:){{ token_boundary_end }} # TODO: refactor, compare to forall_v...
     name: meta.declaration.variable_type_signature.agda
     captures:
       "2":
@@ -226,11 +226,14 @@ repository:
         patterns:
           - include: "#reserved"
           - include: "#variable_label"
+          - name: invalid.name.variable.agda
+            match: \S+
       "4": { name: keyword.operator.colon.agda }
 
   type:
     patterns:
       - include: "#lambda_expression"
+      - include: "#reserved"
       - include: "#type_token"
 
   type_token:
@@ -256,9 +259,8 @@ repository:
           - include: "#term_name"
           - name: invalid.name.term.agda # TODO: other patterns take precedence, so this one never matches
             match: \S+
-
       "4":
-        name: keyword.operator.agda
+        name: keyword.operator.colon.agda
     patterns:
       - include: "#parameter_declaration"
       - include: "#type"
@@ -458,14 +460,11 @@ repository:
         match: {{ token_boundary_start }}(abstract|constructor|do|field|forall|import|in|infix|infixl|infixr|instance|interleaved|let|macro|module|mutual|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with){{ token_boundary_end }}
 
       - name: storage.modifier.agda
-        match: (coinductive|eta-equality|inductive|no-eta-equality|private|public)
+        match: {{ token_boundary_start }}(coinductive|eta-equality|inductive|no-eta-equality|private|public){{ token_boundary_end }}
 
       - comment: match keywords
         name: keyword.control.agda
         match: {{ token_boundary_start }}(overlap|quote|quoteTerm|unquote|unquoteDecl|unquoteDef){{ token_boundary_end }}
-
-      - name: keyword.control.agda
-        match: {{ token_boundary_start }}(abstract|constructor|do|field|forall|import|in|infix|infixl|infixr|instance|interleaved|let|macro|module|mutual|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with){{ token_boundary_end }}
 
       - name: keyword.control.open_import.agda
         match: {{ token_boundary_start }}(hiding|public|renaming|using){{ token_boundary_end }}

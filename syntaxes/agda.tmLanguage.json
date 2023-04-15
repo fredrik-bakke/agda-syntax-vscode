@@ -567,6 +567,10 @@
             },
             {
               "include": "#variable_label"
+            },
+            {
+              "name": "invalid.name.variable.agda",
+              "match": "\\S+"
             }
           ]
         },
@@ -579,6 +583,9 @@
       "patterns": [
         {
           "include": "#lambda_expression"
+        },
+        {
+          "include": "#reserved"
         },
         {
           "include": "#type_token"
@@ -630,7 +637,7 @@
           ]
         },
         "4": {
-          "name": "keyword.operator.agda"
+          "name": "keyword.operator.colon.agda"
         }
       },
       "patterns": [
