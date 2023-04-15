@@ -14,23 +14,23 @@ keyEquivalent: ^~A
 patterns:
   - include: "#literal"
   - include: "#pragma"
-  - include: "#block-comment"
-  - include: "#dash-comment"
+  - include: "#block_comment"
+  - include: "#dash_comment"
 
-  - include: "#module-declaration"
-  - include: "#data-declaration"
-  - include: "#record-declaration"
-  - include: "#open-import-statement"
+  - include: "#module_declaration"
+  - include: "#data_declaration"
+  - include: "#record_declaration"
+  - include: "#open_import_statement"
 
-  - include: "#infix-statement"
-  - include: "#constructor-statement"
+  - include: "#infix_statement"
+  - include: "#constructor_statement"
 
-  - include: "#lambda-expression"
-  - include: "#builtin-sort"
+  - include: "#lambda_expression"
+  - include: "#builtin_sort"
   - include: "#reserved"
 
-  - include: "#top-level-type-signature-colon-on-first-line"
-  # - include: "#top-level-definition-equals-on-first-line"
+  - include: "#top_level_type_signature_colon_on_first_line"
+  # - include: "#top_level_definition_equals_on_first_line"
 
   - include: "#wildcard"
   - include: "#discard"
@@ -39,10 +39,10 @@ patterns:
     name: invalid.illegal.keyword.agda
     match: {{ token_boundary_start }}(data|module|record|where){{ token_boundary_end }}
 
-  - include: "#qualified-name"
+  - include: "#qualified_name"
 
 repository:
-  module-declaration:
+  module_declaration:
     contentName: meta.declaration.module.agda
     begin: (^|\G)\s*(module){{ token_boundary_end }}
     end: ({{ token_boundary_start }}where{{ token_boundary_end }})|^\1\S
@@ -57,13 +57,13 @@ repository:
           "0":
             name: entity.name.namespace.module.agda
             patterns:
-              - include: "#module-label"
+              - include: "#module_label"
         contentName: meta.declaration.parameters.module.agda
         patterns:
-          - include: "#parameter-declaration"
+          - include: "#parameter_declaration"
           - include: "#reserved"
 
-  data-declaration:
+  data_declaration:
     contentName: meta.declaration.data.agda
     begin: (^|\G)\s*(data){{ token_boundary_end }}
     end: ((?<={{ boundary_char }})where{{ token_boundary_end }})|^\1\S
@@ -78,14 +78,14 @@ repository:
           "0":
             name: entity.name.namespace.module.agda
             patterns:
-              - include: "#module-label"
+              - include: "#module_label"
         contentName: meta.declaration.parameters.data.agda
         patterns:
-          - include: "#parameter-declaration"
-          - include: "#type" # This one only matches after the colon, as all arguments before the colon will have been matched by #parameter-declaration
+          - include: "#parameter_declaration"
+          - include: "#type" # This one only matches after the colon, as all arguments before the colon will have been matched by #parameter_declaration
           - include: "#reserved" # TODO: this is a bit of a hack, would rather recognize the colon more deliberately
 
-  record-declaration:
+  record_declaration:
     contentName: meta.declaration.record.agda
     begin: (^|\G)\s*(record){{ token_boundary_end }}
     end: ({{ token_boundary_start }}where{{ token_boundary_end }})|^\1\S
@@ -101,17 +101,17 @@ repository:
           "0":
             name: entity.name.namespace.module.agda
             patterns:
-              - include: "#module-label"
+              - include: "#module_label"
         contentName: meta.declaration.parameters.record.agda
         patterns:
-          - include: "#parameter-declaration"
+          - include: "#parameter_declaration"
           - include: "#type"
           - include: "#reserved" # TODO: this is a bit of a hack, would rather recognize the colon more deliberately
 
-  open-import-statement:
+  open_import_statement:
     begin: (^|\G)(\s*)(import|open(\s+import)?)(?=$|\s)
     beginCaptures:
-      "3": { name: keyword.control.open-import }
+      "3": { name: keyword.control.open_import }
     while: ^\2\s
     patterns:
       - begin: \(
@@ -120,15 +120,15 @@ repository:
         end: \)
         endCaptures:
           "0": { name: punctuation.section.parens.end.agda }
-        name: meta.statement.open-import.names.agda
+        name: meta.statement.open_import.names.agda
         patterns:
           - match: {{ token_boundary_start }}to{{ token_boundary_end }}
             name: keyword.other.to.agda
-          - include: "#term-name"
+          - include: "#term_name"
       - include: "#reserved"
-      - include: "#module-qualified-name"
+      - include: "#module_qualified_name"
 
-  infix-statement:
+  infix_statement:
     begin: (^|\G)(\s*)(infix(l|r)?){{ token_boundary_end }}
     while: ^\2\s
     beginCaptures:
@@ -137,9 +137,9 @@ repository:
     contentName: meta.declaration.infix.arguments.agda
     patterns:
       - include: "#literal"
-      - include: "#term-name"
+      - include: "#term_name"
 
-  constructor-statement:
+  constructor_statement:
     begin: (^|\G)(\s*)(constructor){{ token_boundary_end }}
     while: ^\2\s
     beginCaptures:
@@ -148,204 +148,133 @@ repository:
     contentName: invalid
     patterns:
       - include: "#literal"
-      - include: "#term-name"
+      - include: "#term_name"
 
-  parameter-declaration:
+  parameter_declaration:
     patterns:
-      - include: "#forall-explicit-parameter-declaration"
-      - include: "#forall-instance-parameter-declaration"
-      - include: "#forall-implicit-parameter-declaration"
-      - include: "#explicit-parameter-declaration"
-      - include: "#instance-parameter-declaration"
-      - include: "#implicit-parameter-declaration"
+      - include: "#explicit_forall_parameter_declaration"
+      - include: "#instance_forall_parameter_declaration"
+      - include: "#implicit_forall_parameter_declaration"
+      - include: "#explicit_parameter_declaration"
+      - include: "#instance_parameter_declaration"
+      - include: "#implicit_parameter_declaration"
 
-  forall-explicit-parameter-declaration:
-    begin: {{ token_boundary_start }}(forall|∀)\s*(\()
-    end: \)
-    beginCaptures:
-      "1": { name: keyword.operator.forall.agda }
-      "2": { name: punctuation.section.parens.begin.agda }
-    endCaptures:
-      "0": { name: punctuation.section.parens.end.agda }
-    name: meta.declaration.parameters.agda
+  instance_parameter_declaration:
     patterns:
-      - include: "#parameter-declaration"
-      - include: "#forall-variable-type-signature"
-      - include: "#type"
+      - include: "#instance_parameter_declaration_double_brace"
+      - include: "#instance_parameter_declaration_unicode"
 
-  forall-implicit-parameter-declaration:
-    begin: {{ token_boundary_start }}(forall|∀)\s*(\{)
-    end: \}
-    beginCaptures:
-      "1": { name: keyword.operator.forall.agda }
-      "2": { name: punctuation.section.parens.begin.agda }
-    endCaptures:
-      "0": { name: punctuation.section.parens.end.agda }
-    name: meta.declaration.parameters.agda
+  instance_forall_parameter_declaration:
     patterns:
-      - include: "#parameter-declaration"
-      - include: "#forall-variable-type-signature"
-      - include: "#type"
+      - include: "#forall_instance_parameter_declaration_double_brace"
+      - include: "#forall_instance_parameter_declaration_unicode"
 
-  forall-instance-parameter-declaration:
-    patterns:
-      - include: "#forall-instance-parameter-declaration-double-brace"
-      - include: "#forall-instance-parameter-declaration-unicode"
+{% set parameter_declarations = [
+  {"id": "explicit", "begin": "\\(", "end": "\\)"},
+  {"id": "implicit", "begin": "\\{", "end": "\\}"},
+  {"id": "instance_double_brace", "begin": "\\{\\{", "end": "\\}\\}"},
+  {"id": "instance_unicode", "begin": token_boundary_start + "⦃" + token_boundary_end, "end": token_boundary_start + "⦄" + token_boundary_end}
+] %}
 
-  forall-instance-parameter-declaration-double-brace:
-    begin: {{ token_boundary_start }}(forall|∀)\s*(\{\{)
-    end: \}\}
-    beginCaptures:
-      "1": { name: keyword.operator.forall.agda }
-      "2": { name: punctuation.section.parens.begin.agda }
-    endCaptures:
-      "0": { name: punctuation.section.parens.end.agda }
-    name: meta.declaration.parameters.agda
-    patterns:
-      - include: "#parameter-declaration"
-      - include: "#forall-variable-type-signature"
-      - include: "#type"
-
-  forall-instance-parameter-declaration-unicode:
-    begin: {{ token_boundary_start }}(forall|∀)\s+(⦃){{ token_boundary_end }}
-    end: {{ token_boundary_start }}⦄{{ token_boundary_end }}
-    beginCaptures:
-      "1": { name: keyword.operator.forall.agda }
-      "2": { name: punctuation.section.parens.begin.agda }
-    endCaptures:
-      "0": { name: punctuation.section.parens.end.agda }
-    name: meta.declaration.parameters.agda
-    patterns:
-      - include: "#parameter-declaration"
-      - include: "#forall-variable-type-signature"
-      - include: "#type"
-
-  explicit-parameter-declaration:
-    begin: \(
-    end: \)
+{% for param_decl in parameter_declarations %}
+  {% set name_prefix = param_decl.id %}
+  {{ name_prefix }}_parameter_declaration:
+    begin: {{ param_decl.begin }}
+    end: {{ param_decl.end }}
     beginCaptures:
       "0": { name: punctuation.section.parens.begin.agda }
     endCaptures:
       "0": { name: punctuation.section.parens.end.agda }
     name: meta.declaration.parameters.agda
     patterns:
-      - include: "#parameter-declaration"
-      - include: "#variable-type-signature"
+      - include: "#parameter_declaration"
+      - include: "#variable_type_signature"
       - include: "#type"
 
-  implicit-parameter-declaration:
-    begin: \{
-    end: \}
+  {{ name_prefix }}_forall_parameter_declaration:
+    begin: {{ token_boundary_start }}(forall|∀)\s*({{ param_decl.begin }})
+    end: {{ param_decl.end }}
     beginCaptures:
-      "0": { name: punctuation.section.parens.end.agda }
+      "1": { name: keyword.operator.forall.agda }
+      "2": { name: punctuation.section.parens.begin.agda }
     endCaptures:
       "0": { name: punctuation.section.parens.end.agda }
     name: meta.declaration.parameters.agda
     patterns:
-      - include: "#parameter-declaration"
-      - include: "#variable-type-signature"
+      - include: "#parameter_declaration"
+      - include: "#forall_variable_type_signature"
       - include: "#type"
+{% endfor %}
 
-  instance-parameter-declaration:
-    patterns:
-      - include: "#instance-parameter-declaration-double-brace"
-      - include: "#instance-parameter-declaration-unicode"
-
-  instance-parameter-declaration-double-brace:
-    begin: \{\{
-    end: \}\}
-    name: meta.declaration.parameters.agda
-    beginCaptures:
-      "0": { name: punctuation.section.parens.end.agda }
-    endCaptures:
-      "0": { name: punctuation.section.parens.end.agda }
-    patterns:
-      - include: "#parameter-declaration"
-      - include: "#variable-type-signature"
-      - include: "#type"
-
-  instance-parameter-declaration-unicode:
-    begin: {{ token_boundary_start }}⦃{{ token_boundary_end }}
-    end: {{ token_boundary_start }}⦄{{ token_boundary_end }}
-    name: meta.declaration.parameters.agda
-    beginCaptures:
-      "0": { name: punctuation.section.parens.end.agda }
-    endCaptures:
-      "0": { name: punctuation.section.parens.end.agda }
-    patterns:
-      - include: "#parameter-declaration"
-      - include: "#variable-type-signature"
-      - include: "#type"
-
-  variable-type-signature:
+  variable_type_signature:
     match: (^|\G)(([^:)}⦄]|(?<!^|{{ boundary_char }})[:⦄]|[:⦄](?!$|{{ boundary_char }}))+){{ boundary_char }}(:){{ token_boundary_end }}
-    name: meta.declaration.variable-type-signature.agda
+    name: meta.declaration.variable_type_signature.agda
     captures:
       "2":
         patterns:
           - include: "#reserved"
-          - include: "#variable-label"
+          - include: "#variable_label"
           - name: invalid.name.variable.agda
             match: \S+
       "4": { name: keyword.operator.colon.agda }
 
-  forall-variable-type-signature:
+  forall_variable_type_signature:
     match: (^|\G)(([^:)}⦄]|(?<!^|{{ boundary_char }})[:⦄]|[:⦄](?!$|{{ boundary_char }}))+)((:){{ token_boundary_end }}|(?=$|[)}⦄]))
-    name: meta.declaration.variable-type-signature.agda
+    name: meta.declaration.variable_type_signature.agda
     captures:
       "2":
         patterns:
           - include: "#reserved"
-          - include: "#variable-label"
+          - include: "#variable_label"
       "4": { name: keyword.operator.colon.agda }
 
   type:
     patterns:
-      - include: "#lambda-expression"
-      - include: "#type-token"
+      - include: "#lambda_expression"
+      - include: "#type_token"
 
-  type-token:
+  type_token:
     match: {{ token_boundary_start }}({{ name_qualified }}|_){{ token_boundary_end }}
     captures:
       "0":
         patterns:
           - include: "#reserved"
-          - include: "#builtin-sort"
-          - include: "#lambda-expression"
+          - include: "#builtin_sort"
+          - include: "#lambda_expression"
           - include: "#wildcard"
-          - include: "#type-token-qualified-name"
+          - include: "#type_token_qualified_name"
           - name: invalid.name.type.token.agda
             match: \S+
 
-  top-level-type-signature-colon-on-first-line:
+  top_level_type_signature_colon_on_first_line:
     begin: (^|\G)(\s*)({{ name_token }}|_)\s+(:){{ token_boundary_end }}
     while: ^\2\s
     name: meta.declaration.function.agda
     beginCaptures:
       "3":
         patterns:
-          - include: "#term-name"
+          - include: "#term_name"
           - name: invalid.name.term.agda # TODO: other patterns take precedence, so this one never matches
             match: \S+
 
       "4":
         name: keyword.operator.agda
     patterns:
-      - include: "#parameter-declaration"
+      - include: "#parameter_declaration"
       - include: "#type"
 
-  top-level-definition-equals-on-first-line:
+  top_level_definition_equals_on_first_line:
     match: (^|\G)(\s*)(\S.*)\s+(=){{ token_boundary_end }}
     name: meta.declaration.function.agda
     captures:
       "3":
         patterns:
           - include: "#reserved"
-          - include: "#term-name"
+          - include: "#term_name"
       "4":
         name: keyword.operator.agda
 
-  lambda-expression:
+  lambda_expression:
     begin: {{ token_boundary_start }}(\\|λ){{ token_boundary_end }}
     end: {{ token_boundary_start }}(->|→){{ token_boundary_end }}
     beginCaptures:
@@ -353,8 +282,8 @@ repository:
     endCaptures:
       "1": { name: keyword.operator.lambda.mapsto.agda }
     patterns:
-      - include: "#parameter-declaration"
-      - include: "#variable-label"
+      - include: "#parameter_declaration"
+      - include: "#variable_label"
 
   discard:
     name: variable.language.discard.agda
@@ -368,75 +297,75 @@ repository:
     name: variable.language.placeholder.agda
     match: _
 
-  qualify-punctuation:
+  qualify_punctuation:
     name: punctuation.separator.namespace.agda
     match: \.
 
-  name-part:
+  name_part:
     name: entity.name.part.agda
     match: {{ token_boundary_start }}{{ name_part }}{{ token_boundary_end }}
 
-  name-token:
+  name_token:
     name: entity.name.agda
     match: {{ token_boundary_start }}{{ name_token }}{{ token_boundary_end }}
     captures:
       "0":
         patterns:
-          - include: "#name-part"
+          - include: "#name_part"
           - include: "#placeholder"
 
-  qualified-name:
+  qualified_name:
     name: entity.name.qualified.agda
     match: {{ token_boundary_start }}{{ name_qualified }}{{ token_boundary_end }}
     captures:
       "0":
         patterns:
-          - include: "#qualify-punctuation"
-          - include: "#name-token"
+          - include: "#qualify_punctuation"
+          - include: "#name_token"
 
-  type-token-qualified-name:
+  type_token_qualified_name:
     name: storage.type.qualified.agda
     match: {{ token_boundary_start }}{{ name_qualified }}{{ token_boundary_end }}
     captures:
       "0":
         patterns:
-          - include: "#qualified-name"
+          - include: "#qualified_name"
 
-  module-qualified-name:
+  module_qualified_name:
     match: {{ token_boundary_start }}{{ name_qualified }}{{ token_boundary_end }}
     name: entity.name.namespace.module.qualified.agda
     captures:
       "0":
         patterns:
-          - include: "#qualified-name"
+          - include: "#qualified_name"
 
-  module-label:
+  module_label:
     patterns:
       - include: "#discard"
-      - include: "#module-qualified-name"
+      - include: "#module_qualified_name"
 
-  variable-label:
+  variable_label:
     patterns:
       - include: "#discard"
-      - include: "#variable-name"
+      - include: "#variable_name"
 
-  variable-name:
+  variable_name:
     name: variable.parameter.term.agda
     match: {{ token_boundary_start }}{{ name_token }}{{ token_boundary_end }}
     captures:
       "0":
         patterns:
           - include: "#reserved"
-          - include: "#name-token"
+          - include: "#name_token"
 
-  term-name:
+  term_name:
     name: entity.name.function.term.agda
     match: {{ token_boundary_start }}{{ name_token }}{{ token_boundary_end }}
     captures:
       "0":
         patterns:
           - include: "#discard"
-          - include: "#name-token"
+          - include: "#name_token"
 
   hole:
     name: meta.hole.block.agda
@@ -458,7 +387,7 @@ repository:
       "0": { name: punctuation.definition.pragma.agda }
     end: "#-}"
 
-  block-comment:
+  block_comment:
     name: comment.block.agda
     begin: \{-
     end: -\}
@@ -467,18 +396,18 @@ repository:
     endCaptures:
       "0": { name: punctuation.definition.comment.agda }
     patterns:
-      - include: "#block-comment"
+      - include: "#block_comment"
 
-  dash-comment:
-    name: comment.line.double-dash.agda
+  dash_comment:
+    name: comment.line.double_dash.agda
     match: {{ token_boundary_start }}(--).*$
     captures:
       "1": { name: punctuation.definition.comment.agda }
 
-  escape-character:
+  escape_character:
     name: constant.character.escape.agda
     match: \\(\d+|0[xX]\h+|a|b|t|n|v|f|\\|'|"|NUL|SOH|STX|ETX|EOT|ENQ|ACK|BEL|BS|HT|LF|VT|FF|CR|SO|SI|DLE|DC1|DC2|DC3|DC4|NAK|SYN|ETB|CAN|EM|SUB|ESC|FS|GS|RS|US|SP|DEL)
-  escape-control-character:
+  escape_control_character:
     name: constant.character.escape.control.agda
     match: \^[A-Z@\[\]\\\^_]
 
@@ -493,8 +422,8 @@ repository:
           "0": { name: punctuation.definition.string.end.agda }
 
         patterns:
-          - include: "#escape-character"
-          - include: "#escape-control-character"
+          - include: "#escape_character"
+          - include: "#escape_control_character"
       - name: constant.character.quoted.single.agda
         begin: {{ token_boundary_start }}\'
         end: \'
@@ -503,15 +432,15 @@ repository:
         endCaptures:
           "0": { name: punctuation.definition.character.end.agda }
         patterns:
-          - include: "#escape-character"
-          - include: "#escape-control-character"
+          - include: "#escape_character"
+          - include: "#escape_control_character"
 
       - name: constant.numeric.integer.agda
         match: {{ token_boundary_start }}(-?(0[xX]\h+|0[bB][01]+|\d+(_\d+)*)){{ token_boundary_end }}
       - name: constant.numeric.float.agda
         match: {{ token_boundary_start }}(-?\d+\.\d+([eE][+-]?\d+)?|-?\d+[eE][+-]?\d+){{ token_boundary_end }}
 
-  builtin-sort:
+  builtin_sort:
     name: support.type.sort.agda
     match: {{ token_boundary_start }}((SSet|Set|Prop)ω?(\d*|[₀₁₂₃₄₅₆₇₈₉]*)|(LevelUniv)){{ token_boundary_end }}
 
@@ -538,5 +467,5 @@ repository:
       - name: keyword.control.agda
         match: {{ token_boundary_start }}(abstract|constructor|do|field|forall|import|in|infix|infixl|infixr|instance|interleaved|let|macro|module|mutual|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with){{ token_boundary_end }}
 
-      - name: keyword.control.open-import.agda
+      - name: keyword.control.open_import.agda
         match: {{ token_boundary_start }}(hiding|public|renaming|using){{ token_boundary_end }}
