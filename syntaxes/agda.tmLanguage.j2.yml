@@ -55,9 +55,9 @@ repository:
         end: (?={{ boundary_char }}where($|{{ boundary_char }}))
         beginCaptures:
           "0":
+            name: entity.name.namespace.module.agda
             patterns:
-              - include: "#discard"
-              - include: "#module-qualified-name"
+              - include: "#module-label"
         contentName: meta.declaration.parameters.module.agda
         patterns:
           - include: "#parameter-declaration"
@@ -76,6 +76,7 @@ repository:
         end: (?={{ boundary_char }}where($|{{ boundary_char }}))
         beginCaptures:
           "0":
+            name: entity.name.namespace.module.agda
             patterns:
               - include: "#module-label"
         contentName: meta.declaration.parameters.data.agda
@@ -98,6 +99,7 @@ repository:
         end: (?={{ boundary_char }}where($|{{ boundary_char }}))
         beginCaptures:
           "0":
+            name: entity.name.namespace.module.agda
             patterns:
               - include: "#module-label"
         contentName: meta.declaration.parameters.record.agda
@@ -303,7 +305,7 @@ repository:
       - include: "#type-token"
 
   type-token:
-    match: {{ token_boundary_start }}({{ name_token }}|_){{ token_boundary_end }}
+    match: {{ token_boundary_start }}({{ name_qualified }}|_){{ token_boundary_end }}
     captures:
       "0":
         patterns:
@@ -366,7 +368,7 @@ repository:
     name: variable.language.placeholder.agda
     match: _
 
-  qualify-punctiation:
+  qualify-punctuation:
     name: punctuation.separator.namespace.agda
     match: \.
 
@@ -398,8 +400,7 @@ repository:
     captures:
       "0":
         patterns:
-          - include: "#qualify-punctuation"
-          - include: "#name-token"
+          - include: "#qualified-name"
 
   module-qualified-name:
     match: {{ token_boundary_start }}{{ name_qualified }}{{ token_boundary_end }}
@@ -407,17 +408,12 @@ repository:
     captures:
       "0":
         patterns:
-          - include: "#qualify-punctuation"
-          - include: "#module-label"
+          - include: "#qualified-name"
 
   module-label:
-    name: entity.name.namespace.module.agda
-    match: {{ token_boundary_start }}{{ name_token }}{{ token_boundary_end }}
-    captures:
-      "0":
-        patterns:
-          - include: "#discard"
-          - include: "#name-token"
+    patterns:
+      - include: "#discard"
+      - include: "#module-qualified-name"
 
   variable-label:
     patterns:

@@ -85,12 +85,10 @@
           "end": "(?=[\\s(){}.;@\"]where($|[\\s(){}.;@\"]))",
           "beginCaptures": {
             "0": {
+              "name": "entity.name.namespace.module.agda",
               "patterns": [
                 {
-                  "include": "#discard"
-                },
-                {
-                  "include": "#module-qualified-name"
+                  "include": "#module-label"
                 }
               ]
             }
@@ -127,6 +125,7 @@
           "end": "(?=[\\s(){}.;@\"]where($|[\\s(){}.;@\"]))",
           "beginCaptures": {
             "0": {
+              "name": "entity.name.namespace.module.agda",
               "patterns": [
                 {
                   "include": "#module-label"
@@ -170,6 +169,7 @@
           "end": "(?=[\\s(){}.;@\"]where($|[\\s(){}.;@\"]))",
           "beginCaptures": {
             "0": {
+              "name": "entity.name.namespace.module.agda",
               "patterns": [
                 {
                   "include": "#module-label"
@@ -695,7 +695,7 @@
       "name": "variable.language.placeholder.agda",
       "match": "_"
     },
-    "qualify-punctiation": {
+    "qualify-punctuation": {
       "name": "punctuation.separator.namespace.agda",
       "match": "\\."
     },
@@ -742,10 +742,7 @@
         "0": {
           "patterns": [
             {
-              "include": "#qualify-punctuation"
-            },
-            {
-              "include": "#name-token"
+              "include": "#qualified-name"
             }
           ]
         }
@@ -758,30 +755,21 @@
         "0": {
           "patterns": [
             {
-              "include": "#qualify-punctuation"
-            },
-            {
-              "include": "#module-label"
+              "include": "#qualified-name"
             }
           ]
         }
       }
     },
     "module-label": {
-      "name": "entity.name.namespace.module.agda",
-      "match": "(?<=^|[\\s(){}.;@\"])(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?(?=$|[\\s(){}.;@\"])",
-      "captures": {
-        "0": {
-          "patterns": [
-            {
-              "include": "#discard"
-            },
-            {
-              "include": "#name-token"
-            }
-          ]
+      "patterns": [
+        {
+          "include": "#discard"
+        },
+        {
+          "include": "#module-qualified-name"
         }
-      }
+      ]
     },
     "variable-label": {
       "patterns": [
