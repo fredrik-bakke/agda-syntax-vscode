@@ -1,8 +1,10 @@
+comment: This TextMate grammar file has been generated from a jinja2 empowered yaml file.
 $schema: https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
 name: Agda
 scopeName: source.agda
 fileTypes: [agda]
 keyEquivalent: ^~A
+
 
 patterns:
   - include: "#literal"
@@ -162,7 +164,7 @@ repository:
       - include: "#forall_instance_parameter_declaration_double_brace"
       - include: "#forall_instance_parameter_declaration_unicode"
 
-  
+
   explicit_parameter_declaration:
     begin: \(
     end: \)
@@ -189,8 +191,6 @@ repository:
       - include: "#parameter_declaration"
       - include: "#forall_variable_type_signature"
       - include: "#type"
-
-  
   implicit_parameter_declaration:
     begin: \{
     end: \}
@@ -217,8 +217,6 @@ repository:
       - include: "#parameter_declaration"
       - include: "#forall_variable_type_signature"
       - include: "#type"
-
-  
   instance_double_brace_parameter_declaration:
     begin: \{\{
     end: \}\}
@@ -245,8 +243,6 @@ repository:
       - include: "#parameter_declaration"
       - include: "#forall_variable_type_signature"
       - include: "#type"
-
-  
   instance_unicode_parameter_declaration:
     begin: (?<=^|[\s(){}.;@"])⦃(?=$|[\s(){}.;@"])
     end: (?<=^|[\s(){}.;@"])⦄(?=$|[\s(){}.;@"])

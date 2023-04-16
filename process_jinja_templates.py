@@ -5,19 +5,9 @@ import jinja2
 
 def process_jinja_template(template_str):
 
-    template = jinja2.Template(template_str)
+    template = jinja2.Template(
+        template_str, trim_blocks=True, lstrip_blocks=True, keep_trailing_newline=True)
     rendered_content = template.render()
-
-    ls = "\n".join(map(str.rstrip, rendered_content.split("\n")))
-
-    s = rendered_content.replace("\n\n\n", "\n\n")
-    while s != rendered_content:
-        rendered_content = s
-        s = s.replace("\n\n\n", "\n\n")
-
-    # Ensure YAML file ends with a newline character
-    if not rendered_content.endswith('\n'):
-        rendered_content += '\n'
 
     return rendered_content
 

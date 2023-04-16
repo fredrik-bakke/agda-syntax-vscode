@@ -1,4 +1,5 @@
 $schema: https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
+comment: This TextMate grammar file has been generated from a yaml jinja2 template.
 name: Agda
 scopeName: source.agda
 fileTypes: [agda]
@@ -10,7 +11,6 @@ keyEquivalent: ^~A
 {% set name_part = '(?!\')([^\s(){}.;@"_:=]|[^\s(){}.;@"_]{2,})' %}
 {% set name_token = '_?' + name_part + '(_' + name_part + ')*_?' %}
 {% set name_qualified = name_token + '(\.' + name_token + ')*' %}
-
 {% macro token(s) %}{{ token_boundary_start }}{{ s }}{{ token_boundary_end }}{% endmacro %}
 
 patterns:
