@@ -81,7 +81,7 @@
       },
       "patterns": [
         {
-          "begin": "(?<=(^|(^|[\\s(){}.;@\"])module\\s)\\s*)(((_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)(\\.(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)*|_)(?=$|[\\s(){}.;@\"])",
+          "begin": "(?<=(^|(^|[\\s(){}.;@\"])module\\s)\\s*)(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,})(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?(\\._?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,})(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)*|_)(?=$|[\\s(){}.;@\"])",
           "end": "(?=[\\s(){}.;@\"]where($|[\\s(){}.;@\"]))",
           "beginCaptures": {
             "0": {
@@ -121,7 +121,7 @@
       },
       "patterns": [
         {
-          "begin": "(?<=(^|(^|[\\s(){}.;@\"])data\\s)\\s*)((_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?|_)(?=$|[\\s(){}.;@\"])",
+          "begin": "(?<=(^|(^|[\\s(){}.;@\"])data\\s)\\s*)(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,})(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?|_)(?=$|[\\s(){}.;@\"])",
           "end": "(?=[\\s(){}.;@\"]where($|[\\s(){}.;@\"]))",
           "beginCaptures": {
             "0": {
@@ -165,7 +165,7 @@
       "patterns": [
         {
           "comment": "Capture name of record",
-          "begin": "(?<=(^|(^|[\\s(){}.;@\"])record\\s)\\s*)((_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?|_)(?=$|[\\s(){}.;@\"])",
+          "begin": "(?<=(^|(^|[\\s(){}.;@\"])record\\s)\\s*)(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,})(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?|_)(?=$|[\\s(){}.;@\"])",
           "end": "(?=[\\s(){}.;@\"]where($|[\\s(){}.;@\"]))",
           "beginCaptures": {
             "0": {
@@ -326,7 +326,7 @@
           "name": "punctuation.section.parens.explicit.end.agda"
         }
       },
-      "name": "meta.declaration.parameters.agda",
+      "name": "meta.declaration.parameters.explicit.agda",
       "patterns": [
         {
           "include": "#parameter_declaration"
@@ -344,18 +344,18 @@
       "end": "\\)",
       "beginCaptures": {
         "1": {
-          "name": "keyword.operator.forall.agda"
+          "name": "keyword.operator.forall.explicit.agda"
         },
         "2": {
-          "name": "punctuation.section.parens.begin.agda"
+          "name": "punctuation.section.parens.explicit.begin.agda"
         }
       },
       "endCaptures": {
         "0": {
-          "name": "punctuation.section.parens.end.agda"
+          "name": "punctuation.section.parens.explicit.end.agda"
         }
       },
-      "name": "meta.declaration.parameters.agda",
+      "name": "meta.declaration.parameters.explicit.agda",
       "patterns": [
         {
           "include": "#parameter_declaration"
@@ -381,7 +381,7 @@
           "name": "punctuation.section.parens.implicit.end.agda"
         }
       },
-      "name": "meta.declaration.parameters.agda",
+      "name": "meta.declaration.parameters.implicit.agda",
       "patterns": [
         {
           "include": "#parameter_declaration"
@@ -399,18 +399,18 @@
       "end": "\\}",
       "beginCaptures": {
         "1": {
-          "name": "keyword.operator.forall.agda"
+          "name": "keyword.operator.forall.implicit.agda"
         },
         "2": {
-          "name": "punctuation.section.parens.begin.agda"
+          "name": "punctuation.section.parens.implicit.begin.agda"
         }
       },
       "endCaptures": {
         "0": {
-          "name": "punctuation.section.parens.end.agda"
+          "name": "punctuation.section.parens.implicit.end.agda"
         }
       },
-      "name": "meta.declaration.parameters.agda",
+      "name": "meta.declaration.parameters.implicit.agda",
       "patterns": [
         {
           "include": "#parameter_declaration"
@@ -436,7 +436,7 @@
           "name": "punctuation.section.parens.instance_double_brace.end.agda"
         }
       },
-      "name": "meta.declaration.parameters.agda",
+      "name": "meta.declaration.parameters.instance_double_brace.agda",
       "patterns": [
         {
           "include": "#parameter_declaration"
@@ -454,18 +454,18 @@
       "end": "\\}\\}",
       "beginCaptures": {
         "1": {
-          "name": "keyword.operator.forall.agda"
+          "name": "keyword.operator.forall.instance_double_brace.agda"
         },
         "2": {
-          "name": "punctuation.section.parens.begin.agda"
+          "name": "punctuation.section.parens.instance_double_brace.begin.agda"
         }
       },
       "endCaptures": {
         "0": {
-          "name": "punctuation.section.parens.end.agda"
+          "name": "punctuation.section.parens.instance_double_brace.end.agda"
         }
       },
-      "name": "meta.declaration.parameters.agda",
+      "name": "meta.declaration.parameters.instance_double_brace.agda",
       "patterns": [
         {
           "include": "#parameter_declaration"
@@ -491,7 +491,7 @@
           "name": "punctuation.section.parens.instance_unicode.end.agda"
         }
       },
-      "name": "meta.declaration.parameters.agda",
+      "name": "meta.declaration.parameters.instance_unicode.agda",
       "patterns": [
         {
           "include": "#parameter_declaration"
@@ -509,18 +509,18 @@
       "end": "(?<=^|[\\s(){}.;@\"])⦄(?=$|[\\s(){}.;@\"])",
       "beginCaptures": {
         "1": {
-          "name": "keyword.operator.forall.agda"
+          "name": "keyword.operator.forall.instance_unicode.agda"
         },
         "2": {
-          "name": "punctuation.section.parens.begin.agda"
+          "name": "punctuation.section.parens.instance_unicode.begin.agda"
         }
       },
       "endCaptures": {
         "0": {
-          "name": "punctuation.section.parens.end.agda"
+          "name": "punctuation.section.parens.instance_unicode.end.agda"
         }
       },
-      "name": "meta.declaration.parameters.agda",
+      "name": "meta.declaration.parameters.instance_unicode.agda",
       "patterns": [
         {
           "include": "#parameter_declaration"
@@ -593,7 +593,7 @@
       ]
     },
     "type_token": {
-      "match": "(?<=^|[\\s(){}.;@\"])(((_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)(\\.(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)*|_)(?=$|[\\s(){}.;@\"])",
+      "match": "(?<=^|[\\s(){}.;@\"])(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,})(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?(\\._?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,})(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)*|_)(?=$|[\\s(){}.;@\"])",
       "captures": {
         "1": {
           "patterns": [
@@ -621,7 +621,7 @@
       }
     },
     "top_level_type_signature_colon_on_first_line": {
-      "begin": "(^|\\G)(\\s*)((_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?|_)\\s+(:)(?=$|[\\s(){}.;@\"])",
+      "begin": "(^|\\G)(\\s*)(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,})(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?|_)\\s+(:)(?=$|[\\s(){}.;@\"])",
       "while": "^\\2\\s",
       "name": "meta.declaration.function.agda",
       "beginCaptures": {
@@ -636,7 +636,7 @@
             }
           ]
         },
-        "4": {
+        "7": {
           "name": "keyword.operator.colon.agda"
         }
       },
@@ -712,7 +712,7 @@
     },
     "name_token": {
       "name": "entity.name.agda",
-      "match": "(?<=^|[\\s(){}.;@\"])(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?(?=$|[\\s(){}.;@\"])",
+      "match": "(?<=^|[\\s(){}.;@\"])_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,})(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?(?=$|[\\s(){}.;@\"])",
       "captures": {
         "0": {
           "patterns": [
@@ -728,7 +728,7 @@
     },
     "qualified_name": {
       "name": "entity.name.qualified.agda",
-      "match": "(?<=^|[\\s(){}.;@\"])((_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)(\\.(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)*(?=$|[\\s(){}.;@\"])",
+      "match": "(?<=^|[\\s(){}.;@\"])_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,})(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?(\\._?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,})(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)*(?=$|[\\s(){}.;@\"])",
       "captures": {
         "0": {
           "patterns": [
@@ -744,7 +744,7 @@
     },
     "type_token_qualified_name": {
       "name": "storage.type.qualified.agda",
-      "match": "(?<=^|[\\s(){}.;@\"])((_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)(\\.(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)*(?=$|[\\s(){}.;@\"])",
+      "match": "(?<=^|[\\s(){}.;@\"])_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,})(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?(\\._?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,})(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)*(?=$|[\\s(){}.;@\"])",
       "captures": {
         "0": {
           "patterns": [
@@ -756,7 +756,7 @@
       }
     },
     "module_qualified_name": {
-      "match": "(?<=^|[\\s(){}.;@\"])((_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)(\\.(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)*(?=$|[\\s(){}.;@\"])",
+      "match": "(?<=^|[\\s(){}.;@\"])_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,})(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?(\\._?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,})(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?)*(?=$|[\\s(){}.;@\"])",
       "name": "entity.name.namespace.module.qualified.agda",
       "captures": {
         "0": {
@@ -790,7 +790,7 @@
     },
     "variable_name": {
       "name": "variable.parameter.term.agda",
-      "match": "(?<=^|[\\s(){}.;@\"])(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?(?=$|[\\s(){}.;@\"])",
+      "match": "(?<=^|[\\s(){}.;@\"])_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,})(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?(?=$|[\\s(){}.;@\"])",
       "captures": {
         "0": {
           "patterns": [
@@ -806,7 +806,7 @@
     },
     "term_name": {
       "name": "entity.name.function.term.agda",
-      "match": "(?<=^|[\\s(){}.;@\"])(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?(?=$|[\\s(){}.;@\"])",
+      "match": "(?<=^|[\\s(){}.;@\"])(_?(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,})(_(?!')([^\\s(){}.;@\"_:=]|[^\\s(){}.;@\"_]{2,}))*_?|_)(?=$|[\\s(){}.;@\"])",
       "captures": {
         "0": {
           "patterns": [

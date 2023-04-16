@@ -8,8 +8,8 @@ keyEquivalent: ^~A
 {% set token_boundary_start = '(?<=^|' + boundary_char + ')' %}
 {% set token_boundary_end = '(?=$|' + boundary_char + ')' %}
 {% set name_part = '(?!\')([^\s(){}.;@"_:=]|[^\s(){}.;@"_]{2,})' %}
-{% set name_token = '(_?' + name_part + ')(_' + name_part + ')*_?' %}
-{% set name_qualified = '(' + name_token + ')(\.' + name_token + ')*' %}
+{% set name_token = '_?' + name_part + '(_' + name_part + ')*_?' %}
+{% set name_qualified = name_token + '(\.' + name_token + ')*' %}
 
 {% macro token(s) %}{{ token_boundary_start }}{{ s }}{{ token_boundary_end }}{% endmacro %}
 
@@ -187,7 +187,7 @@ repository:
       "0": { name: punctuation.section.parens.{{ name_prefix }}.begin.agda }
     endCaptures:
       "0": { name: punctuation.section.parens.{{ name_prefix }}.end.agda }
-    name: meta.declaration.parameters.agda
+    name: meta.declaration.parameters.{{ name_prefix }}.agda
     patterns:
       - include: "#parameter_declaration"
       - include: "#variable_type_signature"
@@ -197,11 +197,11 @@ repository:
     begin: {{ token_boundary_start }}(forall|∀)\s*({{ param_decl.begin }})
     end: {{ param_decl.end }}
     beginCaptures:
-      "1": { name: keyword.operator.forall.agda }
-      "2": { name: punctuation.section.parens.begin.agda }
+      "1": { name: keyword.operator.forall.{{ name_prefix }}.agda }
+      "2": { name: punctuation.section.parens.{{ name_prefix }}.begin.agda }
     endCaptures:
-      "0": { name: punctuation.section.parens.end.agda }
-    name: meta.declaration.parameters.agda
+      "0": { name: punctuation.section.parens.{{ name_prefix }}.end.agda }
+    name: meta.declaration.parameters.{{ name_prefix }}.agda
     patterns:
       - include: "#parameter_declaration"
       - include: "#forall_variable_type_signature"
@@ -253,7 +253,7 @@ repository:
 
   top_level_type_signature_colon_on_first_line:
     begin: (^|\G)(\s*)({{ name_token }}|_)\s+(:){{ token_boundary_end }}
-    while: ^\2\s
+    while: ^\2\s # TODO: may not want to capture last whitespace character
     name: meta.declaration.function.agda
     beginCaptures:
       "3":
@@ -261,7 +261,7 @@ repository:
           - include: "#term_name"
           - name: invalid.name.term.agda # TODO: other patterns take precedence, so this one never matches
             match: \S+
-      "4":
+      "7":
         name: keyword.operator.colon.agda
     patterns:
       - include: "#parameter_declaration"
@@ -364,7 +364,7 @@ repository:
 
   term_name:
     name: entity.name.function.term.agda
-    match: {{ token(name_token) }}
+    match: {{ token('(' + name_token + '|_)') }}
     captures:
       "0":
         patterns:
