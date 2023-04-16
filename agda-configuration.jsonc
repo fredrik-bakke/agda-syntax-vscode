@@ -1,0 +1,38 @@
+{
+  "comments": {
+    "lineComment": "--",
+    "blockComment": ["{-", "-}"]
+  },
+
+  // symbols used as brackets
+  "brackets": [
+    ["{!", "!}"],
+    ["{-#", "#-}"],
+    // ["{{", "}}"], // VSCode highlights nested curly braces wrong e.g. {{{}}}
+    // ["⦃", "⦄"], // VSCode doesn't recognize the proper token boundaries
+    ["{", "}"],
+    ["(", ")"]
+  ],
+  // symbols that are auto closed when typing
+  "autoClosingPairs": [
+    ["{!", "!}"],
+    ["{-#", "#-}"],
+    ["{-", "-}"],
+    ["⦃", "⦄"]
+    // ["{{", "}}"], // Interferes with agda input mode
+    // ["{", "}"], // Interferes with agda input mode
+    // ["(", ")"], // Interferes with agda input mode
+  ],
+  // symbols that that can be used to surround a selection
+  "surroundingPairs": [
+    ["{!", "!}"],
+    ["{-#", "#-}"],
+    ["{{", "}}"],
+    ["⦃", "⦄"],
+    ["{", "}"],
+    ["(", ")"],
+    ["[", "]"],
+    ["\"", "\""],
+    ["'", "'"]
+  ]
+}

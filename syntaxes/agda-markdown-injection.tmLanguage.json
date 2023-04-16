@@ -1,16 +1,11 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "Agda Markdown Injection",
-  "scopeName": "source.agda.embedded",
+  "scopeName": "source.agda.embedded.markdown",
   "fileTypes": [],
   "injectionSelector": "L:text.html.markdown",
   "patterns": [
     {
-      "include": "#agda-markdown-block"
-    }
-  ],
-  "repository": {
-    "agda-markdown-block": {
       "begin": "(^|\\G)(\\s*)(\\`{3,}|~{3,})\\s*(?i:(agda)(\\s+[^`~]*)?$)",
       "end": "(^|\\G)(\\2|\\s{0,3})(\\3)\\s*$",
       "beginCaptures": {
@@ -42,5 +37,5 @@
         }
       ]
     }
-  }
+  ]
 }

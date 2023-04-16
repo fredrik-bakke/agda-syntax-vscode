@@ -30,8 +30,32 @@
         "extensions": [
           ".agda"
         ],
-        "configuration": "./language-configuration.json",
+        "configuration": "./agda-configuration.jsonc",
         "scopeName": "source.agda"
+      },
+      {
+        "id": "literate agda",
+        "aliases": [
+          "Literate Agda",
+          "literate agda",
+          "Literate Agda LaTeX",
+          "Agda LaTeX",
+          "Literate Agda Latex",
+          "Agda Latex",
+          "literate agda latex",
+          "agda latex",
+          "lagda-latex",
+          "agda-latex",
+          "lagda-tex",
+          "agda-tex",
+          "lagda"
+        ],
+        "extensions": [
+          ".lagda",
+          ".lagda.tex"
+        ],
+        "configuration": "./literate-agda-latex-configuration.jsonc",
+        "scopeName": "text.tex.latex.agda"
       }
     ],
     "grammars": [
@@ -41,14 +65,31 @@
         "path": "./syntaxes/agda.tmLanguage.json"
       },
       {
-        "scopeName": "source.agda.embedded",
+        "scopeName": "source.agda.embedded.markdown",
         "path": "./syntaxes/agda-markdown-injection.tmLanguage.json",
         "injectTo": [
-          "text.html.markdown"
+          "text.html.markdown",
+          "source.markdown",
+          "source.markdown.agda"
         ],
         "embeddedLanguages": {
           "meta.embedded.block.agda": "agda"
         }
+      },
+      {
+        "scopeName": "source.agda.embedded.latex",
+        "path": "./syntaxes/literate-agda-latex-injection.tmLanguage.json",
+        "injectTo": [
+          "text.tex.latex.agda"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.agda": "agda"
+        }
+      },
+      {
+        "language": "literate agda",
+        "scopeName": "text.tex.latex.agda",
+        "path": "./syntaxes/literate-agda-latex.tmLanguage.json"
       }
     ],
     "keybindings": [
@@ -56,17 +97,17 @@
         "command": "agda-mode.load",
         "key": "ctrl+c ctrl+l",
         "mac": "ctrl+c ctrl+l",
-        "when": "editorLangId == markdown && !editorHasSelection && editorTextFocus"
+        "when": "(editorLangId == markdown || editorLangId == 'literate agda') && !editorHasSelection && editorTextFocus"
       },
       {
         "command": "agda-mode.input-symbol[Activate]",
         "key": "\\",
-        "when": "editorLangId == markdown"
+        "when": "editorLangId == markdown || editorLangId == 'literate agda'"
       },
       {
         "command": "agda-mode.input-symbol[Activate]",
         "key": "[Backslash]",
-        "when": "editorLangId == markdown"
+        "when": "editorLangId == markdown || editorLangId == 'literate agda'"
       }
     ]
   },

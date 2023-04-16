@@ -1,0 +1,54 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Literate Agda LaTeX Injection",
+  "scopeName": "source.agda.embedded.latex",
+  "fileTypes": [],
+  "injectionSelector": "L:text.tex.latex.agda",
+  "patterns": [
+    {
+      "begin": "((\\\\)begin)({)(code)(})",
+      "end": "((\\\\)end)({)(code)(})",
+      "name": "meta.function.environment.general.latex",
+      "beginCaptures": {
+        "1": {
+          "name": "support.function.be.latex"
+        },
+        "2": {
+          "name": "punctuation.definition.function.latex"
+        },
+        "3": {
+          "name": "punctuation.definition.arguments.begin.latex"
+        },
+        "4": {
+          "name": "variable.parameter.function.latex"
+        },
+        "5": {
+          "name": "punctuation.definition.arguments.end.latex"
+        }
+      },
+      "endCaptures": {
+        "1": {
+          "name": "support.function.be.latex"
+        },
+        "2": {
+          "name": "punctuation.definition.function.latex"
+        },
+        "3": {
+          "name": "punctuation.definition.arguments.begin.latex"
+        },
+        "4": {
+          "name": "variable.parameter.function.latex"
+        },
+        "5": {
+          "name": "punctuation.definition.arguments.end.latex"
+        }
+      },
+      "contentName": "meta.embedded.block.agda",
+      "patterns": [
+        {
+          "include": "source.agda"
+        }
+      ]
+    }
+  ]
+}

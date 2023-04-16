@@ -1,6 +1,6 @@
 {
-  "comment": "This TextMate grammar file has been generated from a jinja2 empowered yaml file.",
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "comment": "This TextMate grammar file has been generated from a yaml jinja2 template.",
   "name": "Agda",
   "scopeName": "source.agda",
   "fileTypes": [
