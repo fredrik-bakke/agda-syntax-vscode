@@ -1,3 +1,5 @@
 # Set default behavior to automatically normalize line endings.
 * text=auto
-*.tmLanguage.* linguist-language=TextMate Grammar
+*.tmLanguage.ya?ml linguist-language="YAML TextMate Grammar"
+*.tmLanguage.jsonc? linguist-language="JSON TextMate Grammar"
+*.tmLanguage.xml linguist-language="XML TextMate Grammar"
