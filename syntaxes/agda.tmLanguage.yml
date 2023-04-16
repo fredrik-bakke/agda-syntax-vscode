@@ -1,10 +1,9 @@
 $schema: https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
-comment: This TextMate grammar file has been generated from a yaml jinja2 template.
+comment: This TextMate Grammar file has been generated from a YAML Jinja2 template.
 name: Agda
 scopeName: source.agda
 fileTypes: [agda]
 keyEquivalent: ^~A
-
 
 patterns:
   - include: "#literal"
@@ -163,7 +162,6 @@ repository:
     patterns:
       - include: "#forall_instance_parameter_declaration_double_brace"
       - include: "#forall_instance_parameter_declaration_unicode"
-
 
   explicit_parameter_declaration:
     begin: \(

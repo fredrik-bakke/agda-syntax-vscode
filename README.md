@@ -1,18 +1,34 @@
 # Agda syntax highlighting in VSCode
 
-This is a syntax highlighting extension for the Agda programming language.
+A syntax highlighting extension for the Agda programming language.
 
 ## Features
 
-- Highlight Agda syntax in Agda and Markdown files.
+- Highlight Agda syntax in Agda, Literate Agda, and Markdown files.
+- Add keybindings for using [`agda-mode`](https://marketplace.visualstudio.com/items?itemName=banacorn.agda-mode) with Literate Agda and Markdown files.
 
 ## Setup
 
-The extension is ready to be used straight out of the box. However, there are some settings you can change for a better experience
+The extension works straight out of the box. However, if you are using this extension together with [`agda-mode`](https://marketplace.visualstudio.com/items?itemName=banacorn.agda-mode), there are some settings you may want to change for a better user experience.
 
-- You may want to set the option `editor.autoClosingPairs` to `"never"`, as this function interferes with Agda's input-mode.
-- If you are writing literate Agda LaTeX code, you may want to rebind the input-mode key from backslash (`\\`) to some other key.
+You may want to
+
+- set the option `editor.autoClosingPairs` to `"never"`, as this function interferes with Agda's input-mode.
+- rebind the input-mode key from backslash (`\\`) to some other key, if you are writing literate Agda LaTeX code.
 
 ## Release Notes
 
-This is an alpha release.
+### [0.4.0] 2023-04-16
+
+- Define Literate Agda (LaTeX) files
+- Add injection highlighting for Literate Agda files
+- Add supporting configuration for Literate Agda files
+
+### [0.3.0] 2023-04-16
+
+- Migrate to Jinja2 templating
+- Many consistency improvements
+
+### [0.2.0]
+
+- First usable release
