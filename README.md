@@ -21,9 +21,13 @@ You may want to
 
 ## Release Notes
 
+### [0.4.3] 2023-04-17
+
+- add syntax highlighting in holes
+
 ### [0.4.2] 2023-04-17
 
-- add highlighting dot patterns
+- add highlighting for dot patterns
 - add highlighting for symbols used in `with` patterns
 - temporary fix for some parameter highlighting
 
