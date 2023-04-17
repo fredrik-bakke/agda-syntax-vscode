@@ -690,13 +690,11 @@
       "match": "(?<=^|[\\s(){}.;@\"])(?<!\\.)(\\.)\\s*(_?(?!')([^\\s(){}.;@\"_:=|]|[^\\s(){}.;@\"_]{2,})(_(?!')([^\\s(){}.;@\"_:=|]|[^\\s(){}.;@\"_]{2,}))*_?(\\._?(?!')([^\\s(){}.;@\"_:=|]|[^\\s(){}.;@\"_]{2,})(_(?!')([^\\s(){}.;@\"_:=|]|[^\\s(){}.;@\"_]{2,}))*_?)*)(?=$|[\\s(){}.;@\"])",
       "name": "meta.block.dot_pattern.agda",
       "captures": {
-        "0": {
-          "name": "comment.block.dot_pattern.agda"
-        },
         "1": {
           "name": "keyword.operator.dot_pattern.period.agda"
         },
         "2": {
+          "name": "comment.block.dot_pattern.agda",
           "patterns": [
             {
               "include": "#qualified_name"
@@ -707,13 +705,10 @@
     },
     "dot_pattern_parenthesized": {
       "begin": "(?<=^|[\\s(){}.;@\"])(?<!\\.)(\\.)\\s*(\\()",
-      "end": "(\\))",
+      "end": "\\)",
       "name": "meta.block.dot_pattern.agda",
       "contentName": "comment.block.dot_pattern.agda",
       "beginCaptures": {
-        "0": {
-          "name": "comment.block.dot_pattern.agda"
-        },
         "1": {
           "name": "keyword.operator.dot_pattern.period.agda"
         },
@@ -723,9 +718,6 @@
       },
       "endCaptures": {
         "0": {
-          "name": "comment.block.dot_pattern.agda"
-        },
-        "1": {
           "name": "punctuation.definition.dot_pattern.begin.agda"
         }
       },
@@ -742,9 +734,6 @@
       "patterns": [
         {
           "include": "#dot_pattern_internal_parentheses"
-        },
-        {
-          "include": "#agda_syntax"
         }
       ]
     },
