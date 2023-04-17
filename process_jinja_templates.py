@@ -7,7 +7,12 @@ def process_jinja_template(template_str):
 
     template = jinja2.Template(
         template_str, trim_blocks=True, lstrip_blocks=True, keep_trailing_newline=True)
+
     rendered_content = template.render()
+    s = rendered_content.replace("\n\n\n", "\n\n")
+    while s != rendered_content:
+        rendered_content = s
+        s = rendered_content.replace("\n\n\n", "\n\n")
 
     return rendered_content
 
