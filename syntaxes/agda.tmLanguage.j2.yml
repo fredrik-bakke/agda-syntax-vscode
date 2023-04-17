@@ -402,6 +402,7 @@ repository:
       "0": { name: punctuation.definition.hole.end.agda }
     patterns:
       - include: "#hole"
+      - include: "#agda_syntax"
 
   pragma:
     name: meta.preprocessor.pragma.block.agda
@@ -486,6 +487,8 @@ repository:
     patterns:
       - include: "#pragma"
       - include: "#hole"
+      - name: variable.language.questionmark.agda
+        match: {{ token('\?') }}
       - include: "#block_comment"
       - include: "#dash_comment"
 
@@ -504,7 +507,7 @@ repository:
       - include: "#agda_preprocessing_syntax"
 
       - name: keyword.operator.agda
-        match: {{ token('(forall|->|\.\.\.|[=\?→∀\\\\λ:|])') }}
+        match: {{ token('(forall|->|\.\.\.|[=→∀\\\\λ:|])') }}
 
       - include: "#dot_pattern"
 

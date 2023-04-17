@@ -471,6 +471,7 @@ repository:
       "0": { name: punctuation.definition.hole.end.agda }
     patterns:
       - include: "#hole"
+      - include: "#agda_syntax"
 
   pragma:
     name: meta.preprocessor.pragma.block.agda
@@ -609,6 +610,8 @@ repository:
     patterns:
       - include: "#pragma"
       - include: "#hole"
+      - name: variable.language.questionmark.agda
+        match: (?<=^|[\s(){}.;@"])\?(?=$|[\s(){}.;@"])
       - include: "#block_comment"
       - include: "#dash_comment"
 
@@ -627,7 +630,7 @@ repository:
       - include: "#agda_preprocessing_syntax"
 
       - name: keyword.operator.agda
-        match: (?<=^|[\s(){}.;@"])(forall|->|\.\.\.|[=\?→∀\\λ:|])(?=$|[\s(){}.;@"])
+        match: (?<=^|[\s(){}.;@"])(forall|->|\.\.\.|[=→∀\\λ:|])(?=$|[\s(){}.;@"])
 
       - include: "#dot_pattern"
 

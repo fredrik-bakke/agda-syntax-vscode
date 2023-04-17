@@ -869,6 +869,9 @@
       "patterns": [
         {
           "include": "#hole"
+        },
+        {
+          "include": "#agda_syntax"
         }
       ]
     },
@@ -1123,6 +1126,10 @@
           "include": "#hole"
         },
         {
+          "name": "variable.language.questionmark.agda",
+          "match": "(?<=^|[\\s(){}.;@\"])\\?(?=$|[\\s(){}.;@\"])"
+        },
+        {
           "include": "#block_comment"
         },
         {
@@ -1158,7 +1165,7 @@
         },
         {
           "name": "keyword.operator.agda",
-          "match": "(?<=^|[\\s(){}.;@\"])(forall|->|\\.\\.\\.|[=\\?→∀\\\\λ:|])(?=$|[\\s(){}.;@\"])"
+          "match": "(?<=^|[\\s(){}.;@\"])(forall|->|\\.\\.\\.|[=→∀\\\\λ:|])(?=$|[\\s(){}.;@\"])"
         },
         {
           "include": "#dot_pattern"
