@@ -516,6 +516,10 @@
             },
             {
               "include": "#variable_label"
+            },
+            {
+              "name": "invalid.name.variable.agda",
+              "match": "(?<=^|[\\s(){}.;@\"])[^\\s(){};@\"]+(?=$|[\\s(){}.;@\"])"
             }
           ]
         },
@@ -535,6 +539,10 @@
             },
             {
               "include": "#variable_label"
+            },
+            {
+              "name": "invalid.name.variable.forall.agda",
+              "match": "(?<=^|[\\s(){}.;@\"])[^\\s(){};@\"]+(?=$|[\\s(){}.;@\"])"
             }
           ]
         },
@@ -575,7 +583,7 @@
             },
             {
               "name": "invalid.name.type.token.agda",
-              "match": "\\S+"
+              "match": "(?<=^|[\\s(){}.;@\"])[^\\s(){};@\"]+(?=$|[\\s(){}.;@\"])"
             }
           ]
         }
@@ -593,7 +601,7 @@
             },
             {
               "name": "invalid.name.term.agda",
-              "match": "\\S+"
+              "match": "(?<=^|[\\s(){}.;@\"])[^\\s(){};@\"]+(?=$|[\\s(){}.;@\"])"
             }
           ]
         },
@@ -1127,7 +1135,12 @@
         },
         {
           "name": "variable.language.questionmark.agda",
-          "match": "(?<=^|[\\s(){}.;@\"])\\?(?=$|[\\s(){}.;@\"])"
+          "match": "(?<=^|[\\s(){}.;@\"])\\?(?=$|[\\s(){}.;@\"])",
+          "captures": {
+            "0": {
+              "name": "punctuation.hole.questionmark.agda"
+            }
+          }
         },
         {
           "include": "#block_comment"
@@ -1152,6 +1165,13 @@
         },
         {
           "include": "#agda_constants"
+        },
+        {
+          "include": "#wildcard"
+        },
+        {
+          "name": "keyword.operator.agda",
+          "match": "(?<=^|[\\s(){}.;@\"])(forall|->|[∀→\\\\λ])(?=$|[\\s(){}.;@\"])"
         }
       ]
     },
@@ -1165,7 +1185,7 @@
         },
         {
           "name": "keyword.operator.agda",
-          "match": "(?<=^|[\\s(){}.;@\"])(forall|->|\\.\\.\\.|[=→∀\\\\λ:|])(?=$|[\\s(){}.;@\"])"
+          "match": "(?<=^|[\\s(){}.;@\"])(\\.\\.\\.|[=|])(?=$|[\\s(){}.;@\"])"
         },
         {
           "include": "#dot_pattern"

@@ -188,8 +188,8 @@ repository:
         patterns:
           - include: "#agda_syntax"
           - include: "#variable_label"
-          # - name: invalid.name.variable.agda
-          #   match: \S+
+          - name: invalid.name.variable.agda
+            match: {{ token('[^\s(){};@"]+') }}
       "3": { name: keyword.operator.colon.agda }
   # variable_type_signature:
   #   match: \G(((?!{{ token(':') }}).)+){{ token('(:)') }}
@@ -200,7 +200,7 @@ repository:
   #         - include: "#agda_expression"
   #         - include: "#variable_label"
   #         - name: invalid.name.variable.agda
-  #           match: \S+
+  #           match: {{ token('[^\s(){};@"]+') }}
   #     "3": { name: keyword.operator.colon.agda }
 
   forall_variable_type_signature:
@@ -211,8 +211,8 @@ repository:
         patterns:
           - include: "#agda_syntax"
           - include: "#variable_label"
-          # - name: invalid.name.variable.forall.agda
-          #   match: \S+
+          - name: invalid.name.variable.forall.agda
+            match: {{ token('[^\s(){};@"]+') }}
       "3": { name: keyword.operator.colon.agda }
 
   type:
@@ -231,7 +231,7 @@ repository:
           - include: "#wildcard"
           - include: "#type_token_qualified_name"
           - name: invalid.name.type.token.agda
-            match: \S+
+            match: {{ token('[^\s(){};@"]+') }}
 
   term_type_signature_colon_on_first_line:
     begin: \G(\s*)({{ name_token }}|_)\s+(:){{ token_boundary_end }}
@@ -242,7 +242,7 @@ repository:
         patterns:
           - include: "#term_name"
           - name: invalid.name.term.agda # TODO: other patterns take precedence, so this one never matches
-            match: \S+
+            match: {{ token('[^\s(){};@"]+') }}
       "6":
         name: keyword.operator.colon.agda
     patterns:
@@ -489,6 +489,8 @@ repository:
       - include: "#hole"
       - name: variable.language.questionmark.agda
         match: {{ token('\?') }}
+        captures:
+          "0": { name: punctuation.hole.questionmark.agda }
       - include: "#block_comment"
       - include: "#dash_comment"
 
@@ -499,7 +501,13 @@ repository:
   agda_expressions:
     patterns:
       - include: "#lambda_expression_start"
+      # TODO: forall
+      # TODO: parameter decl
       - include: "#agda_constants"
+      - include: "#wildcard"
+      - name: keyword.operator.agda
+        match: {{token('(forall|->|[∀→\\\\λ])')}}
+
 
   agda_syntax:
     patterns:
@@ -507,7 +515,7 @@ repository:
       - include: "#agda_preprocessing_syntax"
 
       - name: keyword.operator.agda
-        match: {{ token('(forall|->|\.\.\.|[=→∀\\\\λ:|])') }}
+        match: {{ token('(\.\.\.|[=|])') }}
 
       - include: "#dot_pattern"
 
