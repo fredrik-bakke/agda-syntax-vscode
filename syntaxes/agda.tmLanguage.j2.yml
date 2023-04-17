@@ -299,31 +299,34 @@ repository:
     match: {{ token_boundary_start }}(?<!\.)(\.)\s*({{ name_qualified }}){{ token_boundary_end }}
     name: meta.block.dot_pattern.agda
     captures:
+      "0": { name: comment.block.dot_pattern.agda }
       "1": { name: keyword.operator.dot_pattern.period.agda }
       "2":
-        name: comment.block.dot_pattern.agda
         patterns:
           - include: "#qualified_name"
 
   dot_pattern_parenthesized:
     begin: {{ token_boundary_start }}(?<!\.)(\.)\s*(\() # TODO: can be a new line here
-    end: \)
+    end: (\))
     name: meta.block.dot_pattern.agda
     contentName: comment.block.dot_pattern.agda
     beginCaptures:
-      "1": { name: keyword.operator.dot_pattern.period.agda}
+      "0": { name: comment.block.dot_pattern.agda }
+      "1": { name: keyword.operator.dot_pattern.period.agda }
       "2": { name: punctuation.definition.dot_pattern.begin.agda }
     endCaptures:
-      "0": { name: punctuation.definition.dot_pattern.begin.agda }
+      "0": { name: comment.block.dot_pattern.agda }
+      "1": { name: punctuation.definition.dot_pattern.begin.agda }
     patterns:
       - include: "#dot_pattern_internal_parentheses"
 
   dot_pattern_internal_parentheses:
-    comment: Ensures that we match the correct closing parenthesis #TODO: include expression matching
+    comment: Ensures that we match the correct closing parenthesis
     begin: \(
     end: \)
     patterns:
       - include: "#dot_pattern_internal_parentheses"
+      - include: "#agda_syntax"
 
   name_part:
     name: entity.name.part.agda
