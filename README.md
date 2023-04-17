@@ -1,5 +1,8 @@
 # Agda syntax highlighting in VSCode
 
+[![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/FredrikBakke.agda-syntax.svg)](https://marketplace.visualstudio.com/items?itemName=FredrikBakke.agda-syntax)
+[![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/FredrikBakke.agda-syntax.svg)](https://marketplace.visualstudio.com/items?itemName=FredrikBakke.agda-syntax)
+
 A syntax highlighting extension for the Agda programming language.
 
 ## Features
@@ -17,6 +20,12 @@ You may want to
 - rebind the input-mode key from backslash (`\\`) to some other key, if you are writing literate Agda LaTeX code.
 
 ## Release Notes
+
+### [0.4.2] 2023-04-17
+
+- add highlighting dot patterns
+- add highlighting for symbols used in `with` patterns
+- temporary fix for some parameter highlighting
 
 ### [0.4.0] 2023-04-16
 
