@@ -7,7 +7,7 @@ A syntax highlighting extension for the Agda programming language.
 
 ## Features
 
-- Highlight Agda syntax in Agda, Literate Agda, and Markdown files.
+- Highlight Agda syntax in Agda, Literate Agda (LaTeX), and Markdown files.
 - Add keybindings for using [`agda-mode`](https://marketplace.visualstudio.com/items?itemName=banacorn.agda-mode) with Literate Agda and Markdown files.
 
 ## Setup
@@ -16,8 +16,8 @@ The extension works straight out of the box. However, if you are using this exte
 
 You may want to
 
-- set the option `editor.autoClosingPairs` to `"never"`, as this function interferes with Agda's input-mode.
-- rebind the input-mode key from backslash (`\\`) to some other key, if you are writing literate Agda LaTeX code.
+- set the option `editor.autoClosingPairs` to `"never"` for files used with [`agda-mode`](https://marketplace.visualstudio.com/items?itemName=banacorn.agda-mode) as this function interferes with Agda's input-mode.
+- rebind the input-mode key (`agda-mode.input-symbol[Activate]`) from backslash (`\`) to some other key if you are writing literate Agda LaTeX code.
 
 ## Release Notes
 
