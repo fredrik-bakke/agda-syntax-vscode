@@ -1044,6 +1044,38 @@
           ]
         },
         {
+          "comment": "macro block",
+          "begin": "\\G(\\s*)(macro)(?=$|[\\s(){}.;@\"])",
+          "while": "\\G\\1(?=\\s)",
+          "name": "meta.block.macro.agda",
+          "beginCaptures": {
+            "2": {
+              "name": "keyword.control.macro.agda"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#the_usual"
+            }
+          ]
+        },
+        {
+          "comment": "mutual block",
+          "begin": "\\G(\\s*)(mutual)(?=$|[\\s(){}.;@\"])",
+          "while": "\\G\\1(?=\\s)",
+          "name": "meta.block.mutual.agda",
+          "beginCaptures": {
+            "2": {
+              "name": "keyword.control.mutual.agda"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#the_usual"
+            }
+          ]
+        },
+        {
           "comment": "postulate block",
           "begin": "\\G(\\s*)(postulate)(?=$|[\\s(){}.;@\"])",
           "while": "\\G\\1(?=\\s)",

@@ -541,6 +541,7 @@ repository:
 
   agda_simple_blocks:
     patterns:
+ # TODO: do, let
       - comment: abstract block #TODO: continue working on this
         begin: \G(\s*)(abstract)(?=$|[\s(){}.;@"])
         while: \G\1(?=\s)
@@ -549,6 +550,7 @@ repository:
           "2": { name: keyword.control.abstract.agda }
         patterns:
           - include: "#the_usual"
+ # TODO: do, let
       - comment: field block #TODO: continue working on this
         begin: \G(\s*)(field)(?=$|[\s(){}.;@"])
         while: \G\1(?=\s)
@@ -557,6 +559,7 @@ repository:
           "2": { name: keyword.control.field.agda }
         patterns:
           - include: "#the_usual"
+ # TODO: do, let
       - comment: instance block #TODO: continue working on this
         begin: \G(\s*)(instance)(?=$|[\s(){}.;@"])
         while: \G\1(?=\s)
@@ -565,6 +568,25 @@ repository:
           "2": { name: keyword.control.instance.agda }
         patterns:
           - include: "#the_usual"
+ # TODO: do, let
+      - comment: macro block #TODO: continue working on this
+        begin: \G(\s*)(macro)(?=$|[\s(){}.;@"])
+        while: \G\1(?=\s)
+        name: meta.block.macro.agda
+        beginCaptures:
+          "2": { name: keyword.control.macro.agda }
+        patterns:
+          - include: "#the_usual"
+ # TODO: do, let
+      - comment: mutual block #TODO: continue working on this
+        begin: \G(\s*)(mutual)(?=$|[\s(){}.;@"])
+        while: \G\1(?=\s)
+        name: meta.block.mutual.agda
+        beginCaptures:
+          "2": { name: keyword.control.mutual.agda }
+        patterns:
+          - include: "#the_usual"
+ # TODO: do, let
       - comment: postulate block #TODO: continue working on this
         begin: \G(\s*)(postulate)(?=$|[\s(){}.;@"])
         while: \G\1(?=\s)
@@ -573,6 +595,7 @@ repository:
           "2": { name: keyword.control.postulate.agda }
         patterns:
           - include: "#the_usual"
+ # TODO: do, let
       - comment: private block #TODO: continue working on this
         begin: \G(\s*)(private)(?=$|[\s(){}.;@"])
         while: \G\1(?=\s)
@@ -581,6 +604,7 @@ repository:
           "2": { name: keyword.control.private.agda }
         patterns:
           - include: "#the_usual"
+ # TODO: do, let
       - comment: public block #TODO: continue working on this
         begin: \G(\s*)(public)(?=$|[\s(){}.;@"])
         while: \G\1(?=\s)
@@ -589,6 +613,7 @@ repository:
           "2": { name: keyword.control.public.agda }
         patterns:
           - include: "#the_usual"
+ # TODO: do, let
       - comment: variable block #TODO: continue working on this
         begin: \G(\s*)(variable)(?=$|[\s(){}.;@"])
         while: \G\1(?=\s)
@@ -597,6 +622,7 @@ repository:
           "2": { name: keyword.control.variable.agda }
         patterns:
           - include: "#the_usual"
+ # TODO: do, let
       - comment: where block #TODO: continue working on this
         begin: \G(\s*)(where)(?=$|[\s(){}.;@"])
         while: \G\1(?=\s)

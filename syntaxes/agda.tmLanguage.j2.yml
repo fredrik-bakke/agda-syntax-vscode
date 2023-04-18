@@ -472,7 +472,7 @@ repository:
 
   agda_simple_blocks:
     patterns:
-{% for block_keyword in ["abstract", "field", "instance", "postulate", "private", "public", "variable", "where"] %}
+{% for block_keyword in ["abstract", "field", "instance", "macro", "mutual", "postulate", "private", "public", "variable", "where"] %} # TODO: do, let
       - comment: {{ block_keyword }} block #TODO: continue working on this
         begin: \G(\s*)({{ block_keyword }}){{ token_boundary_end }}
         while: \G\1(?=\s)
