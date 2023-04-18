@@ -21,6 +21,11 @@ You may want to
 
 ## Release Notes
 
+### [0.4.4] 2023-04-18
+
+- add highlighting for illegal name parts
+- some accuracy improvements
+
 ### [0.4.3] 2023-04-17
 
 - add syntax highlighting in holes
