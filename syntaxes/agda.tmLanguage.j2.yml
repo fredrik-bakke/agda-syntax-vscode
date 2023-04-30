@@ -9,10 +9,10 @@ keyEquivalent: ^~A
 {% set NAME_PART_BOUNDARY_CHARS = TOKEN_BOUNDARY_CHARS + '_' %}
 {% set token_boundary_char = '[' + TOKEN_BOUNDARY_CHARS + ']' %}
 {% set name_part_boundary_char = '[' + NAME_PART_BOUNDARY_CHARS + ']' %}
-{% set token_boundary_start = '(?<=^|' + token_boundary_char + ')' %}
-{% set token_boundary_end = '(?=$|' + token_boundary_char + ')' %}
-{% set name_part_boundary_start = '(?<=^|' + name_part_boundary_char + ')' %}
-{% set name_part_boundary_end = '(?=$|' + name_part_boundary_char + ')' %}
+{% set token_boundary_start = '(?<=^|\{\!|\{-\#|' + token_boundary_char + ')' %}
+{% set token_boundary_end = '(?=$|\!\}|' + token_boundary_char + ')' %}
+{% set name_part_boundary_start = '(?<=^|\{\!|\{-\#|' + name_part_boundary_char + ')' %}
+{% set name_part_boundary_end = '(?=$|\!\}|' + name_part_boundary_char + ')' %}
 {% set name_part = '(?!\')[^' + NAME_PART_BOUNDARY_CHARS + ']+' %}
 {% set name_token = '_?' + name_part + '(_' + name_part + ')*_?' %}
 {% set name_qualified = name_token + '(\.' + name_token + ')*' %}
