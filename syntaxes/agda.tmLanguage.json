@@ -589,11 +589,11 @@
       }
     },
     "term_type_signature_colon_on_first_line": {
-      "begin": "(^|\\G)(\\s*)((_?(?!')[^\\s.;{}()@\"_]+(_(?!')[^\\s.;{}()@\"_]+)*_?|_)\\s+)+(:)(?=$|\\!\\}|[\\s.;{}()@\"])",
+      "begin": "(^|\\G)(\\s*)(((_?(?!')[^\\s.;{}()@\"_]+(_(?!')[^\\s.;{}()@\"_]+)*_?|_)\\s+)+)(:)(?=$|\\!\\}|[\\s.;{}()@\"])",
       "while": "(^|\\G)\\1(?=\\s)",
       "name": "meta.declaration.function.agda",
       "beginCaptures": {
-        "4": {
+        "3": {
           "patterns": [
             {
               "include": "#term_name"
@@ -604,7 +604,7 @@
             }
           ]
         },
-        "6": {
+        "7": {
           "name": "keyword.operator.colon.agda"
         }
       },
@@ -1214,15 +1214,6 @@
       "patterns": [
         {
           "include": "#agda_block_declarations"
-        },
-        {
-          "include": "#infix_block"
-        },
-        {
-          "include": "#constructor_block"
-        },
-        {
-          "include": "#agda_simple_blocks"
         }
       ]
     },

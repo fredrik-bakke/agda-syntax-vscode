@@ -239,16 +239,16 @@ repository:
             match: {{ token_boundary('((?!\.)' + token_boundary_char + ')+') }}
 
   term_type_signature_colon_on_first_line:
-    begin: (^|\G)(\s*)(({{ name_token }}|_)\s+)+(:){{ token_boundary_end }}
+    begin: (^|\G)(\s*)((({{ name_token }}|_)\s+)+)(:){{ token_boundary_end }}
     while: (^|\G)\1(?=\s)
     name: meta.declaration.function.agda
     beginCaptures:
-      "4":
+      "3":
         patterns:
           - include: "#term_name"
           - name: invalid.name.term.agda # TODO: other patterns take precedence, so this one never matches
             match: {{ token_boundary('((?!\.)' + token_boundary_char + ')+') }}
-      "6":
+      "7":
         name: keyword.operator.colon.agda
     patterns:
       - include: "#parameter_declaration"

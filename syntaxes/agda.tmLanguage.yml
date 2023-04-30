@@ -302,16 +302,16 @@ repository:
             match: (?<=^|\{\!|\{-\#|[\s.;{}()@"])((?!\.)[\s.;{}()@"])+(?=$|\!\}|[\s.;{}()@"])
 
   term_type_signature_colon_on_first_line:
-    begin: (^|\G)(\s*)((_?(?!')[^\s.;{}()@"_]+(_(?!')[^\s.;{}()@"_]+)*_?|_)\s+)+(:)(?=$|\!\}|[\s.;{}()@"])
+    begin: (^|\G)(\s*)(((_?(?!')[^\s.;{}()@"_]+(_(?!')[^\s.;{}()@"_]+)*_?|_)\s+)+)(:)(?=$|\!\}|[\s.;{}()@"])
     while: (^|\G)\1(?=\s)
     name: meta.declaration.function.agda
     beginCaptures:
-      "4":
+      "3":
         patterns:
           - include: "#term_name"
           - name: invalid.name.term.agda # TODO: other patterns take precedence, so this one never matches
             match: (?<=^|\{\!|\{-\#|[\s.;{}()@"])((?!\.)[\s.;{}()@"])+(?=$|\!\}|[\s.;{}()@"])
-      "6":
+      "7":
         name: keyword.operator.colon.agda
     patterns:
       - include: "#parameter_declaration"
@@ -662,9 +662,9 @@ repository:
   agda_layout_blocks:
     patterns:
       - include: "#agda_block_declarations"
-      - include: "#infix_block" #! Not documented as a layout block
-      - include: "#constructor_block"
-      - include: "#agda_simple_blocks"
+      # - include: "#infix_block" #! Not documented as a layout block
+      # - include: "#constructor_block"
+      # - include: "#agda_simple_blocks"
 
   agda_preprocessing_syntax:
     patterns:
