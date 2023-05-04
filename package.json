@@ -54,8 +54,25 @@
           ".lagda",
           ".lagda.tex"
         ],
-        "configuration": "./literate-agda-latex-configuration.jsonc",
         "scopeName": "text.tex.latex.agda"
+      },
+      {
+        "id": "literate agda markdown",
+        "aliases": [
+          "Literate Agda Markdown",
+          "literate agda markdown",
+          "Agda Markdown",
+          "agda markdown",
+          "lagda-markdown",
+          "lagda-md",
+          "agda-markdown",
+          "agda-md"
+        ],
+        "extensions": [
+          ".lagda.md"
+        ],
+        "configuration": "./agda-configuration.jsonc",
+        "scopeName": "source.agda.embedded.markdown"
       }
     ],
     "grammars": [
@@ -90,6 +107,15 @@
         "language": "literate agda",
         "scopeName": "text.tex.latex.agda",
         "path": "./syntaxes/literate-agda-latex.tmLanguage.json"
+      },
+      {
+        "language": "literate agda markdown",
+        "scopeName": "text.html.markdown.lagda",
+        "path": "./syntaxes/literate-agda-markdown.tmLanguage.json",
+        "priority": 10000000000,
+        "filenamePatterns": [
+          "*.lagda.md"
+        ]
       }
     ],
     "keybindings": [
@@ -97,17 +123,17 @@
         "command": "agda-mode.load",
         "key": "ctrl+c ctrl+l",
         "mac": "ctrl+c ctrl+l",
-        "when": "(editorLangId == markdown || editorLangId == 'literate agda') && !editorHasSelection && editorTextFocus"
+        "when": "(editorLangId == 'literate agda markdown' || editorLangId == 'literate agda') && !editorHasSelection && editorTextFocus"
       },
       {
         "command": "agda-mode.input-symbol[Activate]",
         "key": "\\",
-        "when": "editorLangId == markdown || editorLangId == 'literate agda'"
+        "when": "editorLangId == 'literate agda markdown' || editorLangId == 'literate agda'"
       },
       {
         "command": "agda-mode.input-symbol[Activate]",
         "key": "[Backslash]",
-        "when": "editorLangId == markdown || editorLangId == 'literate agda'"
+        "when": "editorLangId == 'literate agda markdown' || editorLangId == 'literate agda'"
       }
     ]
   },
