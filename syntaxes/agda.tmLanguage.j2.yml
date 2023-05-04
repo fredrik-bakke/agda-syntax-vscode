@@ -267,7 +267,7 @@ repository:
 
   lambda_abstraction_start:
     begin: {{ token_boundary('(\\\\|λ)') }}
-    end: {{ token_boundary('((->|→)|(where)|\{)') }} # TODO: {} thingy
+    end: {{ token_boundary('((->|→)|(where)|\{|\(\))') }} # TODO: {} thingy
     beginCaptures:
       "1": { name: keyword.operator.lambda.agda }
     endCaptures:

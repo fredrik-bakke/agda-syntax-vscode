@@ -638,7 +638,7 @@
     },
     "lambda_abstraction_start": {
       "begin": "(?<=^|\\{\\!|\\{-\\#|[\\s.;{}()@\"])(\\\\|λ)(?=$|\\!\\}|[\\s.;{}()@\"])",
-      "end": "(?<=^|\\{\\!|\\{-\\#|[\\s.;{}()@\"])((->|→)|(where)|\\{)(?=$|\\!\\}|[\\s.;{}()@\"])",
+      "end": "(?<=^|\\{\\!|\\{-\\#|[\\s.;{}()@\"])((->|→)|(where)|\\{|\\(\\))(?=$|\\!\\}|[\\s.;{}()@\"])",
       "beginCaptures": {
         "1": {
           "name": "keyword.operator.lambda.agda"
@@ -1214,6 +1214,15 @@
       "patterns": [
         {
           "include": "#agda_block_declarations"
+        },
+        {
+          "include": "#infix_block"
+        },
+        {
+          "include": "#constructor_block"
+        },
+        {
+          "include": "#agda_simple_blocks"
         }
       ]
     },

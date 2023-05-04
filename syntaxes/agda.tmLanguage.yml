@@ -330,7 +330,7 @@ repository:
 
   lambda_abstraction_start:
     begin: (?<=^|\{\!|\{-\#|[\s.;{}()@"])(\\|λ)(?=$|\!\}|[\s.;{}()@"])
-    end: (?<=^|\{\!|\{-\#|[\s.;{}()@"])((->|→)|(where)|\{)(?=$|\!\}|[\s.;{}()@"]) # TODO: {} thingy
+    end: (?<=^|\{\!|\{-\#|[\s.;{}()@"])((->|→)|(where)|\{|\(\))(?=$|\!\}|[\s.;{}()@"]) # TODO: {} thingy
     beginCaptures:
       "1": { name: keyword.operator.lambda.agda }
     endCaptures:
@@ -662,9 +662,9 @@ repository:
   agda_layout_blocks:
     patterns:
       - include: "#agda_block_declarations"
-      # - include: "#infix_block" #! Not documented as a layout block
-      # - include: "#constructor_block"
-      # - include: "#agda_simple_blocks"
+      - include: "#infix_block" #! Not documented as a layout block
+      - include: "#constructor_block"
+      - include: "#agda_simple_blocks"
 
   agda_preprocessing_syntax:
     patterns:
