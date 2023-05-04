@@ -15,10 +15,10 @@
   "repository": {
     "module_declaration": {
       "contentName": "meta.declaration.module.agda",
-      "begin": "(^|\\G)\\s*(module)(?=$|\\!\\}|[\\s.;{}()@\"])",
-      "end": "((?<=^|\\{\\!|\\{-\\#|[\\s.;{}()@\"])where(?=$|\\!\\}|[\\s.;{}()@\"]))|^(?!\\1\\s)",
+      "begin": "(^|\\G)(\\s*)(module)(?=$|\\!\\}|[\\s.;{}()@\"])",
+      "end": "((?<=^|\\{\\!|\\{-\\#|[\\s.;{}()@\"])where(?=$|\\!\\}|[\\s.;{}()@\"]))|^(?!\\2\\s)",
       "beginCaptures": {
-        "2": {
+        "3": {
           "name": "keyword.control.module.agda"
         }
       },
@@ -29,7 +29,7 @@
       },
       "patterns": [
         {
-          "begin": "(?<=((^|\\G)|((^|\\G)|[\\s.;{}()@\"])module\\s)\\s*)(_?(?!')[^\\s.;{}()@\"_]+(_(?!')[^\\s.;{}()@\"_]+)*_?(\\._?(?!')[^\\s.;{}()@\"_]+(_(?!')[^\\s.;{}()@\"_]+)*_?)*|_)(?=$|\\!\\}|[\\s.;{}()@\"])",
+          "begin": "(?<=(^|\\G|(^|\\G|[\\s.;{}()@\"])module\\s)\\s*)(_?(?!')[^\\s.;{}()@\"_]+(_(?!')[^\\s.;{}()@\"_]+)*_?(\\._?(?!')[^\\s.;{}()@\"_]+(_(?!')[^\\s.;{}()@\"_]+)*_?)*|_)(?=$|\\!\\}|[\\s.;{}()@\"])",
           "end": "(?=[\\s.;{}()@\"]where($|[\\s.;{}()@\"]))",
           "beginCaptures": {
             "0": {
@@ -56,7 +56,7 @@
     "data_declaration": {
       "contentName": "meta.declaration.data.agda",
       "begin": "(^|\\G)(\\s*)(data)(?=$|\\!\\}|[\\s.;{}()@\"])",
-      "end": "((?<=^|\\{\\!|\\{-\\#|[\\s.;{}()@\"])where(?=$|\\!\\}|[\\s.;{}()@\"]))|^(?!\\1\\s)",
+      "end": "((?<=^|\\{\\!|\\{-\\#|[\\s.;{}()@\"])where(?=$|\\!\\}|[\\s.;{}()@\"]))|^(?!\\2\\s)",
       "beginCaptures": {
         "3": {
           "name": "keyword.control.data.agda"
@@ -69,7 +69,7 @@
       },
       "patterns": [
         {
-          "begin": "(?<=((^|\\G)|((^|\\G)|[\\s.;{}()@\"])data\\s)\\s*)(_?(?!')[^\\s.;{}()@\"_]+(_(?!')[^\\s.;{}()@\"_]+)*_?|_)(?=$|\\!\\}|[\\s.;{}()@\"])",
+          "begin": "(?<=(^|\\G|(^|\\G|[\\s.;{}()@\"])data\\s)\\s*)(_?(?!')[^\\s.;{}()@\"_]+(_(?!')[^\\s.;{}()@\"_]+)*_?|_)(?=$|\\!\\}|[\\s.;{}()@\"])",
           "end": "(?=[\\s.;{}()@\"]where($|[\\s.;{}()@\"]))",
           "beginCaptures": {
             "0": {
@@ -99,7 +99,7 @@
     "record_declaration": {
       "contentName": "meta.declaration.record.agda",
       "begin": "(^|\\G)(\\s*)(record)(?=$|\\!\\}|[\\s.;{}()@\"])",
-      "end": "((?<=^|\\{\\!|\\{-\\#|[\\s.;{}()@\"])where(?=$|\\!\\}|[\\s.;{}()@\"]))|^(?!\\1\\s)",
+      "end": "((?<=^|\\{\\!|\\{-\\#|[\\s.;{}()@\"])where(?=$|\\!\\}|[\\s.;{}()@\"]))|^(?!\\2\\s)",
       "beginCaptures": {
         "3": {
           "name": "keyword.control.record.agda"
@@ -113,7 +113,7 @@
       "patterns": [
         {
           "comment": "Capture name of record",
-          "begin": "(?<=((^|\\G)|((^|\\G)|[\\s.;{}()@\"])record\\s)\\s*)(_?(?!')[^\\s.;{}()@\"_]+(_(?!')[^\\s.;{}()@\"_]+)*_?|_)(?=$|\\!\\}|[\\s.;{}()@\"])",
+          "begin": "(?<=(^|\\G|(^|\\G|[\\s.;{}()@\"])record\\s)\\s*)(_?(?!')[^\\s.;{}()@\"_]+(_(?!')[^\\s.;{}()@\"_]+)*_?|_)(?=$|\\!\\}|[\\s.;{}()@\"])",
           "end": "(?=[\\s.;{}()@\"]where($|[\\s.;{}()@\"]))",
           "beginCaptures": {
             "0": {
@@ -147,7 +147,7 @@
           "name": "keyword.control.open_import"
         }
       },
-      "while": "(^|\\G)(?=\\1\\s)",
+      "while": "(^|\\G)\\2(?=\\s)",
       "patterns": [
         {
           "begin": "\\(",
@@ -183,7 +183,7 @@
     },
     "infix_block": {
       "begin": "(^|\\G)(\\s*)(infix[lr]?)(?=$|\\!\\}|[\\s.;{}()@\"])",
-      "while": "(^|\\G)(?=\\s)",
+      "while": "(^|\\G)\\2(?=\\s)",
       "beginCaptures": {
         "3": {
           "name": "keyword.control.infix.agda"
@@ -202,7 +202,7 @@
     },
     "constructor_block": {
       "begin": "(^|\\G)(\\s*)(constructor)(?=$|\\!\\}|[\\s.;{}()@\"])",
-      "while": "(^|\\G)\\1(?=\\s)",
+      "while": "(^|\\G)\\2(?=\\s)",
       "beginCaptures": {
         "3": {
           "name": "keyword.control.constructor.agda"
@@ -590,7 +590,7 @@
     },
     "term_type_signature_colon_on_first_line": {
       "begin": "(^|\\G)(\\s*)(((_?(?!')[^\\s.;{}()@\"_]+(_(?!')[^\\s.;{}()@\"_]+)*_?|_)\\s+)+)(:)(?=$|\\!\\}|[\\s.;{}()@\"])",
-      "while": "(^|\\G)\\1(?=\\s)",
+      "while": "(^|\\G)\\2(?=\\s)",
       "name": "meta.declaration.function.agda",
       "beginCaptures": {
         "3": {
@@ -1038,7 +1038,7 @@
         {
           "comment": "abstract block",
           "begin": "(^|\\G)(\\s*)(abstract)(?=$|\\!\\}|[\\s.;{}()@\"])",
-          "while": "(^|\\G)\\1(?=\\s)",
+          "while": "(^|\\G)\\2(?=\\s)",
           "name": "meta.block.abstract.agda",
           "beginCaptures": {
             "3": {
@@ -1054,7 +1054,7 @@
         {
           "comment": "field block",
           "begin": "(^|\\G)(\\s*)(field)(?=$|\\!\\}|[\\s.;{}()@\"])",
-          "while": "(^|\\G)\\1(?=\\s)",
+          "while": "(^|\\G)\\2(?=\\s)",
           "name": "meta.block.field.agda",
           "beginCaptures": {
             "3": {
@@ -1070,7 +1070,7 @@
         {
           "comment": "instance block",
           "begin": "(^|\\G)(\\s*)(instance)(?=$|\\!\\}|[\\s.;{}()@\"])",
-          "while": "(^|\\G)\\1(?=\\s)",
+          "while": "(^|\\G)\\2(?=\\s)",
           "name": "meta.block.instance.agda",
           "beginCaptures": {
             "3": {
@@ -1086,7 +1086,7 @@
         {
           "comment": "macro block",
           "begin": "(^|\\G)(\\s*)(macro)(?=$|\\!\\}|[\\s.;{}()@\"])",
-          "while": "(^|\\G)\\1(?=\\s)",
+          "while": "(^|\\G)\\2(?=\\s)",
           "name": "meta.block.macro.agda",
           "beginCaptures": {
             "3": {
@@ -1102,7 +1102,7 @@
         {
           "comment": "mutual block",
           "begin": "(^|\\G)(\\s*)(mutual)(?=$|\\!\\}|[\\s.;{}()@\"])",
-          "while": "(^|\\G)\\1(?=\\s)",
+          "while": "(^|\\G)\\2(?=\\s)",
           "name": "meta.block.mutual.agda",
           "beginCaptures": {
             "3": {
@@ -1118,7 +1118,7 @@
         {
           "comment": "postulate block",
           "begin": "(^|\\G)(\\s*)(postulate)(?=$|\\!\\}|[\\s.;{}()@\"])",
-          "while": "(^|\\G)\\1(?=\\s)",
+          "while": "(^|\\G)\\2(?=\\s)",
           "name": "meta.block.postulate.agda",
           "beginCaptures": {
             "3": {
@@ -1134,7 +1134,7 @@
         {
           "comment": "private block",
           "begin": "(^|\\G)(\\s*)(private)(?=$|\\!\\}|[\\s.;{}()@\"])",
-          "while": "(^|\\G)\\1(?=\\s)",
+          "while": "(^|\\G)\\2(?=\\s)",
           "name": "meta.block.private.agda",
           "beginCaptures": {
             "3": {
@@ -1150,7 +1150,7 @@
         {
           "comment": "public block",
           "begin": "(^|\\G)(\\s*)(public)(?=$|\\!\\}|[\\s.;{}()@\"])",
-          "while": "(^|\\G)\\1(?=\\s)",
+          "while": "(^|\\G)\\2(?=\\s)",
           "name": "meta.block.public.agda",
           "beginCaptures": {
             "3": {
@@ -1166,7 +1166,7 @@
         {
           "comment": "variable block",
           "begin": "(^|\\G)(\\s*)(variable)(?=$|\\!\\}|[\\s.;{}()@\"])",
-          "while": "(^|\\G)\\1(?=\\s)",
+          "while": "(^|\\G)\\2(?=\\s)",
           "name": "meta.block.variable.agda",
           "beginCaptures": {
             "3": {
@@ -1182,7 +1182,7 @@
         {
           "comment": "where block",
           "begin": "(^|\\G)(\\s*)(where)(?=$|\\!\\}|[\\s.;{}()@\"])",
-          "while": "(^|\\G)\\1(?=\\s)",
+          "while": "(^|\\G)\\2(?=\\s)",
           "name": "meta.block.where.agda",
           "beginCaptures": {
             "3": {

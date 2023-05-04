@@ -11,14 +11,14 @@ patterns:
 repository:
   module_declaration:
     contentName: meta.declaration.module.agda
-    begin: (^|\G)\s*(module)(?=$|\!\}|[\s.;{}()@"])
-    end: ((?<=^|\{\!|\{-\#|[\s.;{}()@"])where(?=$|\!\}|[\s.;{}()@"]))|^(?!\1\s) #TODO: when we make this into a block, this will be a new begin instead of an end
+    begin: (^|\G)(\s*)(module)(?=$|\!\}|[\s.;{}()@"])
+    end: ((?<=^|\{\!|\{-\#|[\s.;{}()@"])where(?=$|\!\}|[\s.;{}()@"]))|^(?!\2\s) #TODO: when we make this into a block, this will be a new begin instead of an end
     beginCaptures:
-      "2": { name: keyword.control.module.agda }
+      "3": { name: keyword.control.module.agda }
     endCaptures:
       "0": { name: keyword.control.where.module.agda }
     patterns:
-      - begin: (?<=((^|\G)|((^|\G)|[\s.;{}()@"])module\s)\s*)(_?(?!')[^\s.;{}()@"_]+(_(?!')[^\s.;{}()@"_]+)*_?(\._?(?!')[^\s.;{}()@"_]+(_(?!')[^\s.;{}()@"_]+)*_?)*|_)(?=$|\!\}|[\s.;{}()@"])
+      - begin: (?<=(^|\G|(^|\G|[\s.;{}()@"])module\s)\s*)(_?(?!')[^\s.;{}()@"_]+(_(?!')[^\s.;{}()@"_]+)*_?(\._?(?!')[^\s.;{}()@"_]+(_(?!')[^\s.;{}()@"_]+)*_?)*|_)(?=$|\!\}|[\s.;{}()@"])
         end: (?=[\s.;{}()@"]where($|[\s.;{}()@"]))
         beginCaptures:
           "0":
@@ -33,13 +33,13 @@ repository:
   data_declaration:
     contentName: meta.declaration.data.agda
     begin: (^|\G)(\s*)(data)(?=$|\!\}|[\s.;{}()@"])
-    end: ((?<=^|\{\!|\{-\#|[\s.;{}()@"])where(?=$|\!\}|[\s.;{}()@"]))|^(?!\1\s)
+    end: ((?<=^|\{\!|\{-\#|[\s.;{}()@"])where(?=$|\!\}|[\s.;{}()@"]))|^(?!\2\s)
     beginCaptures:
       "3": { name: keyword.control.data.agda }
     endCaptures:
       "1": { name: keyword.control.where.data.agda }
     patterns:
-      - begin: (?<=((^|\G)|((^|\G)|[\s.;{}()@"])data\s)\s*)(_?(?!')[^\s.;{}()@"_]+(_(?!')[^\s.;{}()@"_]+)*_?|_)(?=$|\!\}|[\s.;{}()@"])
+      - begin: (?<=(^|\G|(^|\G|[\s.;{}()@"])data\s)\s*)(_?(?!')[^\s.;{}()@"_]+(_(?!')[^\s.;{}()@"_]+)*_?|_)(?=$|\!\}|[\s.;{}()@"])
         end: (?=[\s.;{}()@"]where($|[\s.;{}()@"]))
         beginCaptures:
           "0":
@@ -55,14 +55,14 @@ repository:
   record_declaration:
     contentName: meta.declaration.record.agda
     begin: (^|\G)(\s*)(record)(?=$|\!\}|[\s.;{}()@"])
-    end: ((?<=^|\{\!|\{-\#|[\s.;{}()@"])where(?=$|\!\}|[\s.;{}()@"]))|^(?!\1\s)
+    end: ((?<=^|\{\!|\{-\#|[\s.;{}()@"])where(?=$|\!\}|[\s.;{}()@"]))|^(?!\2\s)
     beginCaptures:
       "3": { name: keyword.control.record.agda }
     endCaptures:
       "1": { name: keyword.control.where.record.agda }
     patterns:
       - comment: Capture name of record
-        begin: (?<=((^|\G)|((^|\G)|[\s.;{}()@"])record\s)\s*)(_?(?!')[^\s.;{}()@"_]+(_(?!')[^\s.;{}()@"_]+)*_?|_)(?=$|\!\}|[\s.;{}()@"])
+        begin: (?<=(^|\G|(^|\G|[\s.;{}()@"])record\s)\s*)(_?(?!')[^\s.;{}()@"_]+(_(?!')[^\s.;{}()@"_]+)*_?|_)(?=$|\!\}|[\s.;{}()@"])
         end: (?=[\s.;{}()@"]where($|[\s.;{}()@"]))
         beginCaptures:
           "0":
@@ -79,7 +79,7 @@ repository:
     begin: (^|\G)(\s*)(import|open(\s+import)?)(?=$|\s)
     beginCaptures:
       "3": { name: keyword.control.open_import }
-    while: (^|\G)(?=\1\s)
+    while: (^|\G)\2(?=\s)
     patterns:
       - begin: \(
         beginCaptures:
@@ -97,7 +97,7 @@ repository:
 
   infix_block:
     begin: (^|\G)(\s*)(infix[lr]?)(?=$|\!\}|[\s.;{}()@"])
-    while: (^|\G)(?=\s)
+    while: (^|\G)\2(?=\s)
     beginCaptures:
       "3": { name: keyword.control.infix.agda }
     name: meta.statement.infix.agda
@@ -108,7 +108,7 @@ repository:
 
   constructor_block:
     begin: (^|\G)(\s*)(constructor)(?=$|\!\}|[\s.;{}()@"])
-    while: (^|\G)\1(?=\s)
+    while: (^|\G)\2(?=\s)
     beginCaptures:
       "3": { name: keyword.control.constructor.agda }
     name: meta.statement.constructor.agda
@@ -303,7 +303,7 @@ repository:
 
   term_type_signature_colon_on_first_line:
     begin: (^|\G)(\s*)(((_?(?!')[^\s.;{}()@"_]+(_(?!')[^\s.;{}()@"_]+)*_?|_)\s+)+)(:)(?=$|\!\}|[\s.;{}()@"])
-    while: (^|\G)\1(?=\s)
+    while: (^|\G)\2(?=\s)
     name: meta.declaration.function.agda
     beginCaptures:
       "3":
@@ -565,7 +565,7 @@ repository:
  # TODO: do, let
       - comment: abstract block #TODO: continue working on this
         begin: (^|\G)(\s*)(abstract)(?=$|\!\}|[\s.;{}()@"])
-        while: (^|\G)\1(?=\s)
+        while: (^|\G)\2(?=\s)
         name: meta.block.abstract.agda
         beginCaptures:
           "3": { name: keyword.control.abstract.agda }
@@ -574,7 +574,7 @@ repository:
  # TODO: do, let
       - comment: field block #TODO: continue working on this
         begin: (^|\G)(\s*)(field)(?=$|\!\}|[\s.;{}()@"])
-        while: (^|\G)\1(?=\s)
+        while: (^|\G)\2(?=\s)
         name: meta.block.field.agda
         beginCaptures:
           "3": { name: keyword.control.field.agda }
@@ -583,7 +583,7 @@ repository:
  # TODO: do, let
       - comment: instance block #TODO: continue working on this
         begin: (^|\G)(\s*)(instance)(?=$|\!\}|[\s.;{}()@"])
-        while: (^|\G)\1(?=\s)
+        while: (^|\G)\2(?=\s)
         name: meta.block.instance.agda
         beginCaptures:
           "3": { name: keyword.control.instance.agda }
@@ -592,7 +592,7 @@ repository:
  # TODO: do, let
       - comment: macro block #TODO: continue working on this
         begin: (^|\G)(\s*)(macro)(?=$|\!\}|[\s.;{}()@"])
-        while: (^|\G)\1(?=\s)
+        while: (^|\G)\2(?=\s)
         name: meta.block.macro.agda
         beginCaptures:
           "3": { name: keyword.control.macro.agda }
@@ -601,7 +601,7 @@ repository:
  # TODO: do, let
       - comment: mutual block #TODO: continue working on this
         begin: (^|\G)(\s*)(mutual)(?=$|\!\}|[\s.;{}()@"])
-        while: (^|\G)\1(?=\s)
+        while: (^|\G)\2(?=\s)
         name: meta.block.mutual.agda
         beginCaptures:
           "3": { name: keyword.control.mutual.agda }
@@ -610,7 +610,7 @@ repository:
  # TODO: do, let
       - comment: postulate block #TODO: continue working on this
         begin: (^|\G)(\s*)(postulate)(?=$|\!\}|[\s.;{}()@"])
-        while: (^|\G)\1(?=\s)
+        while: (^|\G)\2(?=\s)
         name: meta.block.postulate.agda
         beginCaptures:
           "3": { name: keyword.control.postulate.agda }
@@ -619,7 +619,7 @@ repository:
  # TODO: do, let
       - comment: private block #TODO: continue working on this
         begin: (^|\G)(\s*)(private)(?=$|\!\}|[\s.;{}()@"])
-        while: (^|\G)\1(?=\s)
+        while: (^|\G)\2(?=\s)
         name: meta.block.private.agda
         beginCaptures:
           "3": { name: keyword.control.private.agda }
@@ -628,7 +628,7 @@ repository:
  # TODO: do, let
       - comment: public block #TODO: continue working on this
         begin: (^|\G)(\s*)(public)(?=$|\!\}|[\s.;{}()@"])
-        while: (^|\G)\1(?=\s)
+        while: (^|\G)\2(?=\s)
         name: meta.block.public.agda
         beginCaptures:
           "3": { name: keyword.control.public.agda }
@@ -637,7 +637,7 @@ repository:
  # TODO: do, let
       - comment: variable block #TODO: continue working on this
         begin: (^|\G)(\s*)(variable)(?=$|\!\}|[\s.;{}()@"])
-        while: (^|\G)\1(?=\s)
+        while: (^|\G)\2(?=\s)
         name: meta.block.variable.agda
         beginCaptures:
           "3": { name: keyword.control.variable.agda }
@@ -646,7 +646,7 @@ repository:
  # TODO: do, let
       - comment: where block #TODO: continue working on this
         begin: (^|\G)(\s*)(where)(?=$|\!\}|[\s.;{}()@"])
-        while: (^|\G)\1(?=\s)
+        while: (^|\G)\2(?=\s)
         name: meta.block.where.agda
         beginCaptures:
           "3": { name: keyword.control.where.agda }

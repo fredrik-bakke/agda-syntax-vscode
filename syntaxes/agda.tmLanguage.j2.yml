@@ -25,14 +25,14 @@ patterns:
 repository:
   module_declaration:
     contentName: meta.declaration.module.agda
-    begin: (^|\G)\s*(module){{ token_boundary_end }}
-    end: ({{ token_boundary('where') }})|^(?!\1\s) #TODO: when we make this into a block, this will be a new begin instead of an end
+    begin: (^|\G)(\s*)(module){{ token_boundary_end }}
+    end: ({{ token_boundary('where') }})|^(?!\2\s) #TODO: when we make this into a block, this will be a new begin instead of an end
     beginCaptures:
-      "2": { name: keyword.control.module.agda }
+      "3": { name: keyword.control.module.agda }
     endCaptures:
       "0": { name: keyword.control.where.module.agda }
     patterns:
-      - begin: (?<=((^|\G)|((^|\G)|{{ token_boundary_char }})module\s)\s*)({{ name_qualified }}|_){{ token_boundary_end }}
+      - begin: (?<=(^|\G|(^|\G|{{ token_boundary_char }})module\s)\s*)({{ name_qualified }}|_){{ token_boundary_end }}
         end: (?={{ token_boundary_char }}where($|{{ token_boundary_char }}))
         beginCaptures:
           "0":
@@ -47,13 +47,13 @@ repository:
   data_declaration:
     contentName: meta.declaration.data.agda
     begin: (^|\G)(\s*)(data){{ token_boundary_end }}
-    end: ({{ token_boundary('where') }})|^(?!\1\s)
+    end: ({{ token_boundary('where') }})|^(?!\2\s)
     beginCaptures:
       "3": { name: keyword.control.data.agda }
     endCaptures:
       "1": { name: keyword.control.where.data.agda }
     patterns:
-      - begin: (?<=((^|\G)|((^|\G)|{{ token_boundary_char }})data\s)\s*)({{ name_token }}|_){{ token_boundary_end }}
+      - begin: (?<=(^|\G|(^|\G|{{ token_boundary_char }})data\s)\s*)({{ name_token }}|_){{ token_boundary_end }}
         end: (?={{ token_boundary_char }}where($|{{ token_boundary_char }}))
         beginCaptures:
           "0":
@@ -69,14 +69,14 @@ repository:
   record_declaration:
     contentName: meta.declaration.record.agda
     begin: (^|\G)(\s*)(record){{ token_boundary_end }}
-    end: ({{ token_boundary('where') }})|^(?!\1\s)
+    end: ({{ token_boundary('where') }})|^(?!\2\s)
     beginCaptures:
       "3": { name: keyword.control.record.agda }
     endCaptures:
       "1": { name: keyword.control.where.record.agda }
     patterns:
       - comment: Capture name of record
-        begin: (?<=((^|\G)|((^|\G)|{{ token_boundary_char }})record\s)\s*)({{ name_token }}|_){{ token_boundary_end }}
+        begin: (?<=(^|\G|(^|\G|{{ token_boundary_char }})record\s)\s*)({{ name_token }}|_){{ token_boundary_end }}
         end: (?={{ token_boundary_char }}where($|{{ token_boundary_char }}))
         beginCaptures:
           "0":
@@ -93,7 +93,7 @@ repository:
     begin: (^|\G)(\s*)(import|open(\s+import)?)(?=$|\s)
     beginCaptures:
       "3": { name: keyword.control.open_import }
-    while: (^|\G)(?=\1\s)
+    while: (^|\G)\2(?=\s)
     patterns:
       - begin: \(
         beginCaptures:
@@ -111,7 +111,7 @@ repository:
 
   infix_block:
     begin: (^|\G)(\s*)(infix[lr]?){{ token_boundary_end }}
-    while: (^|\G)(?=\s)
+    while: (^|\G)\2(?=\s)
     beginCaptures:
       "3": { name: keyword.control.infix.agda }
     name: meta.statement.infix.agda
@@ -122,7 +122,7 @@ repository:
 
   constructor_block:
     begin: (^|\G)(\s*)(constructor){{ token_boundary_end }}
-    while: (^|\G)\1(?=\s)
+    while: (^|\G)\2(?=\s)
     beginCaptures:
       "3": { name: keyword.control.constructor.agda }
     name: meta.statement.constructor.agda
@@ -240,7 +240,7 @@ repository:
 
   term_type_signature_colon_on_first_line:
     begin: (^|\G)(\s*)((({{ name_token }}|_)\s+)+)(:){{ token_boundary_end }}
-    while: (^|\G)\1(?=\s)
+    while: (^|\G)\2(?=\s)
     name: meta.declaration.function.agda
     beginCaptures:
       "3":
@@ -502,7 +502,7 @@ repository:
 {% for block_keyword in ["abstract", "field", "instance", "macro", "mutual", "postulate", "private", "public", "variable", "where"] %} # TODO: do, let
       - comment: {{ block_keyword }} block #TODO: continue working on this
         begin: (^|\G)(\s*)({{ block_keyword }}){{ token_boundary_end }}
-        while: (^|\G)\1(?=\s)
+        while: (^|\G)\2(?=\s)
         name: meta.block.{{block_keyword}}.agda
         beginCaptures:
           "3": { name: keyword.control.{{block_keyword}}.agda }
