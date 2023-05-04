@@ -17,9 +17,23 @@ The extension works straight out of the box. However, if you are using this exte
 You may want to
 
 - set the option `editor.autoClosingPairs` to `"never"` for files used with [`agda-mode`](https://marketplace.visualstudio.com/items?itemName=banacorn.agda-mode) as this function interferes with Agda's input-mode.
-- rebind the input-mode key (`agda-mode.input-symbol[Activate]`) from backslash (`\`) to some other key if you are writing literate Agda LaTeX code.
+- If you are writing literate Agda LaTeX code, rebind the input-mode key (`agda-mode.input-symbol[Activate]`) from backslash (`\`) to some other key.
+- If you are using literate Agda Markdown files, add the following file association to your `settings.json`:
+  ```json
+  "files.associations": {
+      "*.lagda.md": "literate agda markdown"
+  }
+  ```
+  This will make available the appropriate key bindings for using `agda-mode`.
 
 ## Release Notes
+
+### [0.5.0] 2023-05-04
+
+- define the literate agda markdown file format
+- improve hole highlighting
+- a collection of fixes to lambda abstraction highlighting
+- fix highlighting at the start of a line in `.agda` files
 
 ### [0.4.4] 2023-04-18
 

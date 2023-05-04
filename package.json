@@ -71,8 +71,11 @@
         "extensions": [
           ".lagda.md"
         ],
+        "filenamePatterns": [
+          "*.lagda.md"
+        ],
         "configuration": "./agda-configuration.jsonc",
-        "scopeName": "source.agda.embedded.markdown"
+        "scopeName": "text.html.markdown.lagda"
       }
     ],
     "grammars": [
@@ -112,7 +115,6 @@
         "language": "literate agda markdown",
         "scopeName": "text.html.markdown.lagda",
         "path": "./syntaxes/literate-agda-markdown.tmLanguage.json",
-        "priority": 10000000000,
         "filenamePatterns": [
           "*.lagda.md"
         ]
