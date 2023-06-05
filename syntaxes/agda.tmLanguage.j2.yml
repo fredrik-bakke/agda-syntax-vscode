@@ -13,9 +13,10 @@ keyEquivalent: ^~A
 {% set token_boundary_end = '(?=$|\!\}|' + token_boundary_char + ')' %}
 {% set name_part_boundary_start = '(?<=^|\{\!|\{-\#|' + name_part_boundary_char + ')' %}
 {% set name_part_boundary_end = '(?=$|\!\}|' + name_part_boundary_char + ')' %}
-{% set name_part = '(?!\')[^' + NAME_PART_BOUNDARY_CHARS + ']+' %}
+{% set name_part = '(?!\'|--)[^' + NAME_PART_BOUNDARY_CHARS + ']+' %}
 {% set name_token = '_?' + name_part + '(_' + name_part + ')*_?' %}
 {% set name_qualified = name_token + '(\.' + name_token + ')*' %}
+{% set absurd_pattern = '\(\s*\)' %}
 {% macro token_boundary(s) %}{{ token_boundary_start }}{{ s }}{{ token_boundary_end }}{% endmacro %}
 {% macro name_part_boundary(s) %}{{ name_part_boundary_start }}{{ s }}{{ name_part_boundary_end }}{% endmacro %}
 
@@ -267,12 +268,13 @@ repository:
 
   lambda_abstraction_start:
     begin: {{ token_boundary('(\\\\|λ)') }}
-    end: {{ token_boundary('((->|→)|(where)|\{|\(\))') }} # TODO: {} thingy
+    end: {{ token_boundary('((->|→)|(where))') }}|({{ absurd_pattern }})|(?=\{) # TODO: {} thingy
     beginCaptures:
       "1": { name: keyword.operator.lambda.agda }
     endCaptures:
       "2": { name: keyword.operator.lambda.mapsto.agda }
       "3": { name: keyword.control.where.lambda.agda }
+      "4": { name: keyword.operator.lambda.absurd.agda }
     patterns:
       - include: "#explicit_parameter_declaration"
       - include: "#instance_parameter_declaration"
@@ -334,7 +336,7 @@ repository:
 
   illegal_name_parts:
     name: invalid.illegal.name.part.keyword.agda
-    match: {{ name_part_boundary('([=|→:?\\\\λ∀]|->|abstract|(co)?inductive|constructor|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|Set|syntax|tactic|unquote(Decl|Def)?|using|variable|where|with)') }}
+    match: ({{ name_part_boundary('([=|→:?\\\\λ∀\']|->|--|abstract|(co)?inductive|constructor|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|using|variable|where|with)') }})
 
   name_part:
     name: entity.name.part.agda
@@ -342,6 +344,7 @@ repository:
     captures:
       "0":
         patterns:
+          - include: "#agda_builtin_sorts"
           - include: "#illegal_name_parts"
 
   name_token:
@@ -526,7 +529,6 @@ repository:
   agda_preprocessing_syntax:
     patterns:
       - include: "#pragma"
-      - include: "#hole"
       - include: "#block_comment"
       - include: "#dash_comment"
 
@@ -536,8 +538,10 @@ repository:
       - include: "#agda_builtin_sorts"
 
   agda_expression_keywords:
-    name: keyword.operator.agda
-    match: {{token_boundary('(forall|->|[∀→\\\\λ])')}}
+    match: {{token_boundary('(forall|->|[∀→\\\\λ])')}}|({{ absurd_pattern }})
+    captures:
+      "1": { name: keyword.operator.agda }
+      "2": { name: keyword.operator.absurd.agda }
 
   agda_keywords:
     patterns:
@@ -572,8 +576,8 @@ repository:
 
   agda_syntax:
     patterns:
-      - include: "#agda_expressions"
       - include: "#agda_preprocessing_syntax"
+      - include: "#agda_expressions"
       - include: "#dot_pattern"
       - include: "#agda_keywords"
 
@@ -584,8 +588,10 @@ repository:
       - include: "#term_type_signature_colon_on_first_line"
       # - include: "#term_definition_equals_on_first_line"
 
+
   the_usual:
     patterns:
+      - include: "#agda_preprocessing_syntax"
       - include: "#agda_layout_blocks"
       - include: "#agda_statements"
       - include: "#agda_syntax"

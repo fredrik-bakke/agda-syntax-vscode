@@ -125,17 +125,17 @@
         "command": "agda-mode.load",
         "key": "ctrl+c ctrl+l",
         "mac": "ctrl+c ctrl+l",
-        "when": "(editorLangId == 'literate agda markdown' || editorLangId == 'literate agda') && !editorHasSelection && editorTextFocus"
+        "when": "(editorLangId == 'agda' || editorLangId == 'literate agda' || editorLangId == 'literate agda markdown') && !editorHasSelection && editorTextFocus"
       },
       {
         "command": "agda-mode.input-symbol[Activate]",
         "key": "\\",
-        "when": "editorLangId == 'literate agda markdown' || editorLangId == 'literate agda'"
+        "when": "editorLangId == 'agda' || editorLangId == 'literate agda' || editorLangId == 'literate agda markdown'"
       },
       {
         "command": "agda-mode.input-symbol[Activate]",
         "key": "[Backslash]",
-        "when": "editorLangId == 'literate agda markdown' || editorLangId == 'literate agda'"
+        "when": "editorLangId == 'agda' || editorLangId == 'literate agda' || editorLangId == 'literate agda markdown'"
       }
     ]
   },
