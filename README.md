@@ -30,25 +30,25 @@ You may want to
 
 ### [0.5.0] 2023-05-04
 
-- define the literate agda markdown file format
-- improve hole highlighting
-- a collection of fixes to lambda abstraction highlighting
-- fix highlighting at the start of a line in `.agda` files
+- Define the literate agda markdown file format
+- Improve hole highlighting
+- Fix a collection of issues with lambda abstraction highlighting
+- Fix highlighting at the start of a line in `.agda` files
 
 ### [0.4.4] 2023-04-18
 
-- add highlighting for illegal name parts
-- some accuracy improvements
+- Add highlighting for illegal name parts
+- Make some accuracy improvements
 
 ### [0.4.3] 2023-04-17
 
-- add syntax highlighting in holes
+- Add syntax highlighting in holes
 
 ### [0.4.2] 2023-04-17
 
-- add highlighting for dot patterns
-- add highlighting for symbols used in `with` patterns
-- temporary fix for some parameter highlighting
+- Add highlighting for dot patterns
+- Add highlighting for symbols used in `with` patterns
+- Add temporary fix for some parameter highlighting
 
 ### [0.4.0] 2023-04-16
 
@@ -59,8 +59,8 @@ You may want to
 ### [0.3.0] 2023-04-16
 
 - Migrate to Jinja2 templating
-- Many consistency improvements
+- Add many consistency improvements
 
 ### [0.2.0]
 
-- First preview release
+- Release preview
