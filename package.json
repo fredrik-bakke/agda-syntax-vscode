@@ -13,7 +13,7 @@
     "type": "git",
     "url": "https://github.com/fredrik-bakke/agda-syntax-vscode"
   },
-  "icon": "icon.png",
+  "icon": "./icons/colored-light-bg-128.png",
   "publisher": "FredrikBakke",
   "author": {
     "name": "Fredrik Bakke"
@@ -30,6 +30,10 @@
         "extensions": [
           ".agda"
         ],
+        "icon": {
+          "dark": "./icons/simple-dark.png",
+          "light": "./icons/simple-light.png"
+        },
         "configuration": "./agda-language-configuration.json",
         "scopeName": "source.agda"
       },
@@ -54,6 +58,10 @@
           ".lagda",
           ".lagda.tex"
         ],
+        "icon": {
+          "dark": "./icons/simple-dark.png",
+          "light": "./icons/simple-light.png"
+        },
         "scopeName": "text.tex.latex.agda"
       },
       {
@@ -74,6 +82,10 @@
         "filenamePatterns": [
           "*.lagda.md"
         ],
+        "icon": {
+          "dark": "./icons/simple-dark.png",
+          "light": "./icons/simple-light.png"
+        },
         "configuration": "./agda-language-configuration.json",
         "scopeName": "text.html.markdown.lagda"
       }
