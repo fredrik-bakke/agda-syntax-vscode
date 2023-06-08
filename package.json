@@ -30,7 +30,7 @@
         "extensions": [
           ".agda"
         ],
-        "configuration": "./agda-configuration.jsonc",
+        "configuration": "./agda-language-configuration.json",
         "scopeName": "source.agda"
       },
       {
@@ -74,7 +74,7 @@
         "filenamePatterns": [
           "*.lagda.md"
         ],
-        "configuration": "./agda-configuration.jsonc",
+        "configuration": "./agda-language-configuration.json",
         "scopeName": "text.html.markdown.lagda"
       }
     ],
@@ -83,6 +83,29 @@
         "language": "agda",
         "scopeName": "source.agda",
         "path": "./syntaxes/agda.tmLanguage.json"
+      },
+      {
+        "language": "literate agda",
+        "scopeName": "text.tex.latex.agda",
+        "path": "./syntaxes/literate-agda-latex.tmLanguage.json"
+      },
+      {
+        "scopeName": "source.agda.embedded.latex",
+        "path": "./syntaxes/agda-latex-injection.tmLanguage.json",
+        "injectTo": [
+          "text.tex.latex.agda"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.agda": "agda"
+        }
+      },
+      {
+        "language": "literate agda markdown",
+        "scopeName": "text.html.markdown.lagda",
+        "path": "./syntaxes/literate-agda-markdown.tmLanguage.json",
+        "filenamePatterns": [
+          "*.lagda.md"
+        ]
       },
       {
         "scopeName": "source.agda.embedded.markdown",
@@ -95,29 +118,6 @@
         "embeddedLanguages": {
           "meta.embedded.block.agda": "agda"
         }
-      },
-      {
-        "scopeName": "source.agda.embedded.latex",
-        "path": "./syntaxes/literate-agda-latex-injection.tmLanguage.json",
-        "injectTo": [
-          "text.tex.latex.agda"
-        ],
-        "embeddedLanguages": {
-          "meta.embedded.block.agda": "agda"
-        }
-      },
-      {
-        "language": "literate agda",
-        "scopeName": "text.tex.latex.agda",
-        "path": "./syntaxes/literate-agda-latex.tmLanguage.json"
-      },
-      {
-        "language": "literate agda markdown",
-        "scopeName": "text.html.markdown.lagda",
-        "path": "./syntaxes/literate-agda-markdown.tmLanguage.json",
-        "filenamePatterns": [
-          "*.lagda.md"
-        ]
       }
     ],
     "keybindings": [

@@ -1,37 +1,37 @@
 {
-  "editor.formatOnPaste": true,
-  "editor.formatOnSave": true,
-  "editor.formatOnType": true,
-  "files.insertFinalNewline": true,
-  "files.trimFinalNewlines": true,
-  "files.trimTrailingWhitespace": true,
-  "editor.trimAutoWhitespace": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[json][json-tmlanguage][jsonc]": {
     "editor.quickSuggestions": {
       "strings": true
     },
     "editor.suggest.insertMode": "replace",
-    "gitlens.codeLens.scopes": ["document"],
-    "editor.tabSize": 2
-  },
-  "[yaml][yaml-tmlanguage]": {
-    "editor.insertSpaces": true,
     "editor.tabSize": 2,
-    "editor.autoIndent": "advanced",
-    "diffEditor.ignoreTrimWhitespace": false,
     "gitlens.codeLens.scopes": ["document"]
   },
   "[markdown]": {
-    "editor.unicodeHighlight.ambiguousCharacters": false,
-    "editor.unicodeHighlight.invisibleCharacters": false,
     "diffEditor.ignoreTrimWhitespace": false,
-    "editor.wordWrap": "on",
+    "editor.autoClosingBrackets": "never",
     "editor.quickSuggestions": {
       "comments": "off",
-      "strings": "off",
-      "other": "off"
+      "other": "off",
+      "strings": "off"
     },
-    "editor.autoClosingBrackets": "never"
-  }
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+    "editor.unicodeHighlight.invisibleCharacters": false,
+    "editor.wordWrap": "on"
+  },
+  "[yaml][yaml-tmlanguage]": {
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.autoIndent": "advanced",
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "gitlens.codeLens.scopes": ["document"]
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "editor.trimAutoWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true
 }

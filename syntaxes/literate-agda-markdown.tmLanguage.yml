@@ -1,7 +1,0 @@
-$schema: https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
-comment: This TextMate Grammar file has been generated from a YAML file.
-name: Literate Agda Markdown
-scopeName: text.html.markdown.lagda
-fileTypes: [lagda.md]
-patterns:
-  - include: text.html.markdown
