@@ -21,6 +21,11 @@ You may want to
 
 ## Release Notes
 
+### [0.6.0] 2023-06-09
+
+- Improve extension logo
+- Add file icons based on [Trebor Huang](https://github.com/Trebor-Huang)'s [contribution](https://github.com/banacorn/agda-mode-vscode/pull/123) to `agda-mode`
+
 ### [0.5.1] 2023-06-05
 
 - Fix a possible keybinding conflict with `agda-mode`
