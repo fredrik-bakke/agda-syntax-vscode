@@ -21,6 +21,10 @@ You may want to
 
 ## Release Notes
 
+### [0.6.1] 2023-06-10
+
+- Reduce extension size
+
 ### [0.6.0] 2023-06-09
 
 - Improve extension logo
