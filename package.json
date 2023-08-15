@@ -23,71 +23,11 @@
     "languages": [
       {
         "id": "agda",
-        "aliases": [
-          "Agda",
-          "agda"
-        ],
-        "extensions": [
-          ".agda"
-        ],
-        "icon": {
-          "dark": "./icons/simple-dark.png",
-          "light": "./icons/simple-light.png"
-        },
-        "configuration": "./agda-language-configuration.json",
-        "scopeName": "source.agda"
+        "configuration": "./agda-language-configuration.json"
       },
       {
-        "id": "literate agda",
-        "aliases": [
-          "Literate Agda",
-          "literate agda",
-          "Literate Agda LaTeX",
-          "Agda LaTeX",
-          "Literate Agda Latex",
-          "Agda Latex",
-          "literate agda latex",
-          "agda latex",
-          "lagda-latex",
-          "agda-latex",
-          "lagda-tex",
-          "agda-tex",
-          "lagda"
-        ],
-        "extensions": [
-          ".lagda",
-          ".lagda.tex"
-        ],
-        "icon": {
-          "dark": "./icons/simple-dark.png",
-          "light": "./icons/simple-light.png"
-        },
-        "scopeName": "text.tex.latex.agda"
-      },
-      {
-        "id": "literate agda markdown",
-        "aliases": [
-          "Literate Agda Markdown",
-          "literate agda markdown",
-          "Agda Markdown",
-          "agda markdown",
-          "lagda-markdown",
-          "lagda-md",
-          "agda-markdown",
-          "agda-md"
-        ],
-        "extensions": [
-          ".lagda.md"
-        ],
-        "filenamePatterns": [
-          "*.lagda.md"
-        ],
-        "icon": {
-          "dark": "./icons/simple-dark.png",
-          "light": "./icons/simple-light.png"
-        },
-        "configuration": "./agda-language-configuration.json",
-        "scopeName": "text.html.markdown.lagda"
+        "id": "lagda-md",
+        "configuration": "./agda-language-configuration.json"
       }
     ],
     "grammars": [
@@ -97,7 +37,7 @@
         "path": "./syntaxes/agda.tmLanguage.json"
       },
       {
-        "language": "literate agda",
+        "language": "lagda-tex",
         "scopeName": "text.tex.latex.agda",
         "path": "./syntaxes/literate-agda-latex.tmLanguage.json"
       },
@@ -112,12 +52,9 @@
         }
       },
       {
-        "language": "literate agda markdown",
+        "language": "lagda-md",
         "scopeName": "text.html.markdown.lagda",
-        "path": "./syntaxes/literate-agda-markdown.tmLanguage.json",
-        "filenamePatterns": [
-          "*.lagda.md"
-        ]
+        "path": "./syntaxes/literate-agda-markdown.tmLanguage.json"
       },
       {
         "scopeName": "source.agda.embedded.markdown",
@@ -130,24 +67,6 @@
         "embeddedLanguages": {
           "meta.embedded.block.agda": "agda"
         }
-      }
-    ],
-    "keybindings": [
-      {
-        "command": "agda-mode.load",
-        "key": "ctrl+c ctrl+l",
-        "mac": "ctrl+c ctrl+l",
-        "when": "(editorLangId == 'agda' || editorLangId == 'literate agda' || editorLangId == 'literate agda markdown') && !editorHasSelection && editorTextFocus"
-      },
-      {
-        "command": "agda-mode.input-symbol[Activate]",
-        "key": "\\",
-        "when": "editorLangId == 'agda' || editorLangId == 'literate agda' || editorLangId == 'literate agda markdown'"
-      },
-      {
-        "command": "agda-mode.input-symbol[Activate]",
-        "key": "[Backslash]",
-        "when": "editorLangId == 'agda' || editorLangId == 'literate agda' || editorLangId == 'literate agda markdown'"
       }
     ]
   },

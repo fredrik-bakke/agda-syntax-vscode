@@ -3,7 +3,7 @@
 [![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/FredrikBakke.agda-syntax.svg)](https://marketplace.visualstudio.com/items?itemName=FredrikBakke.agda-syntax)
 [![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/FredrikBakke.agda-syntax.svg)](https://marketplace.visualstudio.com/items?itemName=FredrikBakke.agda-syntax)
 
-A syntax highlighting extension for the Agda programming language.
+A simple syntax highlighting extension for the Agda programming language.
 
 ## Features
 
@@ -20,6 +20,10 @@ You may want to
 - if writing literate Agda LaTeX code, rebind the input-mode key (`agda-mode.input-symbol[Activate]`) from backslash (`\`) to some other key.
 
 ## Release Notes
+
+### [0.6.2] 2023-08-15
+
+- Update for [`agda-mode`](https://marketplace.visualstudio.com/items?itemName=banacorn.agda-mode) version `0.4.0`
 
 ### [0.6.1] 2023-06-10
 
