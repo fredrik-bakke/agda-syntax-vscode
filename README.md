@@ -21,6 +21,11 @@ You may want to
 
 ## Release Notes
 
+### [0.6.3] 2023-08-21
+
+- Add highlighting for attributes
+- Fix some instances where comments were not highlighted as such
+
 ### [0.6.2] 2023-08-15
 
 - Update for [`agda-mode`](https://marketplace.visualstudio.com/items?itemName=banacorn.agda-mode) version `0.4.0`
