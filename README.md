@@ -1,4 +1,4 @@
-# Agda syntax highlighting in VSCode
+# Agda syntax highlighting in VS Code
 
 [![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/FredrikBakke.agda-syntax.svg)](https://marketplace.visualstudio.com/items?itemName=FredrikBakke.agda-syntax)
 [![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/FredrikBakke.agda-syntax.svg)](https://marketplace.visualstudio.com/items?itemName=FredrikBakke.agda-syntax)
@@ -21,7 +21,11 @@ You may want to
 
 ## Release Notes
 
-### [0.6.3] 2023-08-21
+### [0.6.5] 2023-08-24
+
+- Define the appropriate word pattern for VS Code.
+
+### [0.6.4] 2023-08-21
 
 - Add highlighting for attributes
 - Fix some instances where comments were not highlighted as such

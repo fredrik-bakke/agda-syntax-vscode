@@ -10,8 +10,8 @@
     ["{", "}"],
     ["{!", "!}"],
     ["{-#", "#-}"]
-    // ["{{", "}}"], // VSCode highlights nested curly braces wrong e.g. {{{}}}
-    // ["⦃", "⦄"], // VSCode doesn't recognize the proper token boundaries
+    // ["{{", "}}"], // VS Code highlights nested curly braces wrong e.g. {{{}}}
+    // ["⦃", "⦄"] // VS Code doesn't recognize the proper token boundaries
   ],
   // symbols that are auto closed when typing
   "autoClosingPairs": [
@@ -50,5 +50,6 @@
     ["{-#", "#-}"],
     ["{{", "}}"],
     ["⦃", "⦄"]
-  ]
+  ],
+  "wordPattern": "[^\\s\\n\\.\\;\\{\\}\\(\\)\\@\\\"]+"
 }
