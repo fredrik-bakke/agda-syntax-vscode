@@ -21,6 +21,10 @@ You may want to
 
 ## Release Notes
 
+### [0.6.6] 2023-08-24
+
+- Define rules for automatic indentation.
+
 ### [0.6.5] 2023-08-24
 
 - Define the appropriate word pattern for VS Code.

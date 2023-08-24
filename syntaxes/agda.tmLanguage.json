@@ -1190,22 +1190,6 @@
           ]
         },
         {
-          "comment": "public block",
-          "begin": "(^|\\G)(\\s*)(public)(?=$|\\!\\}|[\\s;{}()@\".])",
-          "while": "(^|\\G)\\2(?=\\s)",
-          "name": "meta.block.public.agda",
-          "beginCaptures": {
-            "3": {
-              "name": "keyword.control.public.agda"
-            }
-          },
-          "patterns": [
-            {
-              "include": "#the_usual"
-            }
-          ]
-        },
-        {
           "comment": "variable block",
           "begin": "(^|\\G)(\\s*)(variable)(?=$|\\!\\}|[\\s;{}()@\".])",
           "while": "(^|\\G)\\2(?=\\s)",

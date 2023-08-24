@@ -638,15 +638,6 @@ repository:
         patterns:
           - include: "#the_usual"
  # TODO: do, let
-      - comment: public block #TODO: continue working on this
-        begin: (^|\G)(\s*)(public)(?=$|\!\}|[\s;{}()@".])
-        while: (^|\G)\2(?=\s)
-        name: meta.block.public.agda
-        beginCaptures:
-          "3": { name: keyword.control.public.agda }
-        patterns:
-          - include: "#the_usual"
- # TODO: do, let
       - comment: variable block #TODO: continue working on this
         begin: (^|\G)(\s*)(variable)(?=$|\!\}|[\s;{}()@".])
         while: (^|\G)\2(?=\s)
