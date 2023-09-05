@@ -10,24 +10,19 @@ A simple syntax highlighting extension for the Agda programming language.
 - Highlight Agda syntax in Agda, Literate Agda (LaTeX), and Markdown files.
 - Add keybindings for using [`agda-mode`](https://marketplace.visualstudio.com/items?itemName=banacorn.agda-mode) with Literate Agda and Markdown files.
 
-## Setup
-
-The extension works straight out of the box. However, if you are using this extension together with [`agda-mode`](https://marketplace.visualstudio.com/items?itemName=banacorn.agda-mode), there are some settings you may want to change for a better user experience.
-
-You may want to
-
-- set the option `editor.autoClosingPairs` to `"never"` for files used with [`agda-mode`](https://marketplace.visualstudio.com/items?itemName=banacorn.agda-mode) as this function interferes with Agda's input-mode.
-- if writing literate Agda LaTeX code, rebind the input-mode key (`agda-mode.input-symbol[Activate]`) from backslash (`\`) to some other key.
-
 ## Release Notes
+
+### [0.6.7] 2023-09-05
+
+- Remove language configurations, these have now been incorporated in [`agda-mode`](https://marketplace.visualstudio.com/items?itemName=banacorn.agda-mode)
 
 ### [0.6.6] 2023-08-24
 
-- Define rules for automatic indentation.
+- Define rules for automatic indentation
 
 ### [0.6.5] 2023-08-24
 
-- Define the appropriate word pattern for VS Code.
+- Define the appropriate word pattern for VS Code
 
 ### [0.6.4] 2023-08-21
 

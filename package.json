@@ -20,16 +20,6 @@
   },
   "preview": true,
   "contributes": {
-    "languages": [
-      {
-        "id": "agda",
-        "configuration": "./agda-language-configuration.json"
-      },
-      {
-        "id": "lagda-md",
-        "configuration": "./agda-language-configuration.json"
-      }
-    ],
     "grammars": [
       {
         "language": "agda",
