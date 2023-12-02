@@ -7,10 +7,14 @@ A simple syntax highlighting extension for the Agda programming language.
 
 ## Features
 
-- Highlight Agda syntax in Agda, Literate Agda (LaTeX), and Markdown files.
-- Add keybindings for using [`agda-mode`](https://marketplace.visualstudio.com/items?itemName=banacorn.agda-mode) with Literate Agda and Markdown files.
+- Highlight Agda syntax in basic Agda, Literate Agda (LaTeX), and Markdown files.
 
 ## Release Notes
+
+### [0.6.8] 2023-12-02
+
+- Use larger extension icon.
+- Support `opaque` keyword.
 
 ### [0.6.7] 2023-09-05
 
