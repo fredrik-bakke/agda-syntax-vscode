@@ -362,7 +362,7 @@ repository:
 
   illegal_name_parts:
     name: invalid.illegal.name.part.keyword.agda
-    match: ({{ name_part_boundary('([=|→:?\\\\λ∀\']|->|--|abstract|(co)?inductive|constructor|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|using|variable|where|with)') }})
+    match: ({{ name_part_boundary('([=|→:?\\\\λ∀\']|->|--|abstract|(co)?inductive|constructor|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with)') }})
 
   name_part:
     name: entity.name.part.agda
@@ -592,7 +592,7 @@ repository:
       - name: keyword.operator.agda
         match: {{ token_boundary('([=|:]|\.\.\.?)') }}|\@
       - name: keyword.control.agda
-        match: {{ token_boundary('(abstract|constructor|do|field|forall|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with)') }}
+        match: {{ token_boundary('(abstract|constructor|do|field|forall|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|unfolding|variable|where|with)') }}
       - name: storage.modifier.agda
         match: {{ token_boundary('((co)?inductive|(no-)?eta-equality|private|public)') }}
       - name: keyword.control.agda

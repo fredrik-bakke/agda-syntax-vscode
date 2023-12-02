@@ -1,10 +1,14 @@
 # Changelog
 
+## [0.6.9] - 2023-12-02
+
+- Support `unfolding` keyword
+
 ## [0.6.8] - 2023-12-02
 
-- Use larger extension icon.
-- Support `opaque` and `as` keyword.
-- Move changelog.
+- Use larger extension icon
+- Support `opaque` and `as` keyword
+- Move changelog
 
 ## [0.6.7] - 2023-09-05
 
