@@ -14,7 +14,7 @@ A simple syntax highlighting extension for the Agda programming language.
 ### [0.6.8] 2023-12-02
 
 - Use larger extension icon.
-- Support `opaque` keyword.
+- Support `opaque` and `as` keyword.
 
 ### [0.6.7] 2023-09-05
 

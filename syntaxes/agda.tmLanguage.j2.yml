@@ -125,6 +125,8 @@ repository:
           - match: {{ token_boundary('to') }}
             name: keyword.other.to.agda
           - include: "#term_name"
+      - match: {{ token_boundary('as') }}
+        name: keyword.other.as.agda
       - include: "#agda_syntax"
       - include: "#module_qualified_name"
 

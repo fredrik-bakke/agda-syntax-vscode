@@ -97,6 +97,8 @@ repository:
           - match: (?<=^|\{\!|\{-\#|[\s;{}()@".])to(?=$|\!\}|[\s;{}()@".])
             name: keyword.other.to.agda
           - include: "#term_name"
+      - match: (?<=^|\{\!|\{-\#|[\s;{}()@".])as(?=$|\!\}|[\s;{}()@".])
+        name: keyword.other.as.agda
       - include: "#agda_syntax"
       - include: "#module_qualified_name"
 
@@ -409,7 +411,7 @@ repository:
 
   illegal_name_parts:
     name: invalid.illegal.name.part.keyword.agda
-    match: ((?<=^|\{\!|\{-\#|[\s;{}()@"._])([=|→:?\\λ∀']|->|--|abstract|(co)?inductive|constructor|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|using|variable|where|with)(?=$|\!\}|[\s;{}()@"._]))
+    match: ((?<=^|\{\!|\{-\#|[\s;{}()@"._])([=|→:?\\λ∀']|->|--|abstract|(co)?inductive|constructor|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|using|variable|where|with)(?=$|\!\}|[\s;{}()@"._]))
 
   name_part:
     name: entity.name.part.agda
@@ -620,6 +622,15 @@ repository:
         patterns:
           - include: "#the_usual"
  # TODO: do, let
+      - comment: opaque block #TODO: continue working on this
+        begin: (^|\G)(\s*)(opaque)(?=$|\!\}|[\s;{}()@".])
+        while: (^|\G)\2(?=\s)
+        name: meta.block.opaque.agda
+        beginCaptures:
+          "3": { name: keyword.control.opaque.agda }
+        patterns:
+          - include: "#the_usual"
+ # TODO: do, let
       - comment: postulate block #TODO: continue working on this
         begin: (^|\G)(\s*)(postulate)(?=$|\!\}|[\s;{}()@".])
         while: (^|\G)\2(?=\s)
@@ -710,7 +721,7 @@ repository:
       - name: keyword.operator.agda
         match: (?<=^|\{\!|\{-\#|[\s;{}()@".])([=|:]|\.\.\.?)(?=$|\!\}|[\s;{}()@".])|\@
       - name: keyword.control.agda
-        match: (?<=^|\{\!|\{-\#|[\s;{}()@".])(abstract|constructor|do|field|forall|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with)(?=$|\!\}|[\s;{}()@".])
+        match: (?<=^|\{\!|\{-\#|[\s;{}()@".])(abstract|constructor|do|field|forall|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|variable|where|with)(?=$|\!\}|[\s;{}()@".])
       - name: storage.modifier.agda
         match: (?<=^|\{\!|\{-\#|[\s;{}()@".])((co)?inductive|(no-)?eta-equality|private|public)(?=$|\!\}|[\s;{}()@".])
       - name: keyword.control.agda
