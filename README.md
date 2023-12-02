@@ -27,7 +27,7 @@ A simple syntax highlighting extension for the Agda programming language.
 ### [0.6.4] 2023-08-21
 
 - Add highlighting for attributes
-- Fix some instances where comments were not highlighted as such
+- Fix some instances wherse comments were not highlighted as such
 
 ### [0.6.2] 2023-08-15
 

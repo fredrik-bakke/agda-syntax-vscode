@@ -13,12 +13,11 @@
     "type": "git",
     "url": "https://github.com/fredrik-bakke/agda-syntax-vscode"
   },
-  "icon": "./icons/colored-light-bg-128.png",
+  "icon": "./icons/colored-light-bg.png",
   "publisher": "FredrikBakke",
   "author": {
     "name": "Fredrik Bakke"
   },
-  "preview": true,
   "contributes": {
     "grammars": [
       {

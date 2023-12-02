@@ -16,8 +16,9 @@ TODO
 syntaxes/*.yml
 syntaxes/*.yaml
 
+icons/agda-icon.svg
 icons/colored-dark-128.png
 icons/colored-dark.png
 icons/colored-light-128.png
-icons/colored-light-bg.png
+icons/colored-light-bg-128.png
 icons/colored-light.png
