@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.6.10] - 2024-04-29
+
+- Only match the standard digit characters `0` through `9` in numeric literals
+- Only match Agda attribute `@` when preceded by a token boundary
+
 ## [0.6.9] - 2023-12-02
 
 - Support `unfolding` keyword
