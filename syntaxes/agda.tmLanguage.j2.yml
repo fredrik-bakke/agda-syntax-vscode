@@ -567,7 +567,7 @@ repository:
       - include: "#agda_builtin_sorts"
 
   agda_attributes:
-    begin: \@
+    begin: {{ token_boundary_start }}\@
     end: {{ NAME_QUALIFIED }}{{ token_boundary_end }}
     beginCaptures:
       "0": { name: keyword.operator.attribute.agda }

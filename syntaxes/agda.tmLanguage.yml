@@ -696,7 +696,7 @@ repository:
       - include: "#agda_builtin_sorts"
 
   agda_attributes:
-    begin: \@
+    begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])\@
     end: _?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?(\._?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?)*(?=$|\!\}|[\s;{}()@".])
     beginCaptures:
       "0": { name: keyword.operator.attribute.agda }
