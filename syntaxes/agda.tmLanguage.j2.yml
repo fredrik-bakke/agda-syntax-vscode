@@ -488,7 +488,7 @@ repository:
 
   escape_character:
     name: constant.character.escape.agda
-    match: \\(\d+|0[xX]\h+|a|b|t|n|v|f|\\|'|"|NUL|SOH|STX|ETX|EOT|ENQ|ACK|BEL|BS|HT|LF|VT|FF|CR|SO|SI|DLE|DC1|DC2|DC3|DC4|NAK|SYN|ETB|CAN|EM|SUB|ESC|FS|GS|RS|US|SP|DEL)
+    match: \\([0-9]+|0[xX]\h+|a|b|t|n|v|f|\\|'|"|NUL|SOH|STX|ETX|EOT|ENQ|ACK|BEL|BS|HT|LF|VT|FF|CR|SO|SI|DLE|DC1|DC2|DC3|DC4|NAK|SYN|ETB|CAN|EM|SUB|ESC|FS|GS|RS|US|SP|DEL)
 
   escape_control_character:
     name: constant.character.escape.control.agda
@@ -517,13 +517,13 @@ repository:
           - include: "#escape_character"
           - include: "#escape_control_character"
       - name: constant.numeric.integer.agda
-        match: {{ token_boundary('(-?(0[xX]\h+|0[bB][01]+|\d+(_\d+)*))') }}
+        match: {{ token_boundary('(-?(0[xX]\h+|0[bB][01]+|[0-9]+(_[0-9]+)*))') }}
       - name: constant.numeric.float.agda
-        match: {{ token_boundary('(-?\d+\.\d+([eE][+-]?\d+)?|-?\d+[eE][+-]?\d+)') }}
+        match: {{ token_boundary('(-?[0-9]+\.[0-9]+([eE][+-]?[0-9]+)?|-?[0-9]+[eE][+-]?[0-9]+)') }}
 
   agda_builtin_sorts:
     name: support.type.sort.agda
-    match: {{ token_boundary('((SSet|Set|Prop)ω?(\d*|[₀-₉]*)|LevelUniv)') }}
+    match: {{ token_boundary('((SSet|Set|Prop)ω?([0-9]*|[₀-₉]*)|LevelUniv)') }}
 
   agda_simple_blocks:
     patterns:
