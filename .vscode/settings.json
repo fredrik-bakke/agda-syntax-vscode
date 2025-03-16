@@ -33,5 +33,11 @@
   "editor.trimAutoWhitespace": true,
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
-  "files.trimTrailingWhitespace": true
+  "files.trimTrailingWhitespace": true,
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.tmLanguage": "${capture}.tmLanguage.j2.yml, ${capture}.tmLanguage.yml, ${capture}.tmLanguage.json",
+    "*.tmLanguage.j2.yml": "${capture}.tmLanguage.yml, ${capture}.tmLanguage.json",
+    "*.tmLanguage.yml": "${capture}.tmLanguage.json"
+  }
 }
