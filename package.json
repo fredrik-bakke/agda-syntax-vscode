@@ -41,6 +41,19 @@
         }
       },
       {
+        "scopeName": "source.agda.embedded.rst",
+        "path": "./syntaxes/agda-restructuredtext-injection.tmLanguage.json",
+        "injectTo": [
+          "source.rst",
+          "source.rst.agda",
+          "source.restructuredtext",
+          "source.restructuredtext.agda"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.agda": "agda"
+        }
+      },
+      {
         "language": "lagda-md",
         "scopeName": "text.html.markdown.agda",
         "path": "./syntaxes/literate-agda-markdown.tmLanguage.json"

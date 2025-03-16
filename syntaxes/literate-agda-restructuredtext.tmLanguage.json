@@ -1,0 +1,11 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Literate Agda (reStructuredText)",
+  "scopeName": "source.rst.agda",
+  "fileTypes": ["lagda.rst"],
+  "patterns": [
+    {
+      "include": "source.rst"
+    }
+  ]
+}

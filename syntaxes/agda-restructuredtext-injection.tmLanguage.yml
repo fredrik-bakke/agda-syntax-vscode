@@ -1,0 +1,25 @@
+$schema: https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
+comment: This TextMate Grammar file has been generated from a YAML file.
+name: Agda Markdown Injection
+scopeName: source.agda.embedded.rst
+fileTypes: []
+injectionSelector: "L:source.rst, L:source.restructuredtext"
+
+patterns:
+  - name: meta.embedded.block.agda
+    begin: (^|\G)(?!\.\.).*(::)\s*$
+    beginCaptures:
+      2:
+        name: punctuation.section.embedded.begin.agda
+    end: (?=(^|\G)(?!\.\.)\S)
+    endCaptures:
+      0:
+        name: punctuation.section.embedded.end.agda
+    contentName: meta.embedded.block.agda
+    patterns:
+      - match: (^|\G)(\.\.).*$
+        name: comment.line.rst.agda
+        captures:
+          2:
+            name: punctuation.definition.comment.rst
+      - include: source.agda
