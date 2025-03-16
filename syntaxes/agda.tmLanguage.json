@@ -59,7 +59,7 @@
     "data_declaration": {
       "contentName": "meta.declaration.data.agda",
       "begin": "(^|\\G)(\\s*)(data)(?=$|\\!\\}|[\\s;{}()@\".])",
-      "end": "((?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])where(?=$|\\!\\}|[\\s;{}()@\".]))|^(?!\\2\\s)",
+      "end": "((?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])where(?=$|\\!\\}|[\\s;{}()@\".]))|^(?=\\2\\S)",
       "beginCaptures": {
         "3": {
           "name": "storage.type.class.data.agda"
@@ -105,7 +105,7 @@
     "record_declaration": {
       "contentName": "meta.declaration.record.agda",
       "begin": "(^|\\G)(\\s*)(record)(?=$|\\!\\}|[\\s;{}()@\".])",
-      "end": "((?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])where(?=$|\\!\\}|[\\s;{}()@\".]))|^(?!\\2\\s)",
+      "end": "((?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])where(?=$|\\!\\}|[\\s;{}()@\".]))|^(?=\\2\\S)",
       "beginCaptures": {
         "3": {
           "name": "storage.type.class.record.agda"
@@ -1506,7 +1506,7 @@
           "include": "#agda_token"
         },
         {
-          "comment": "badly placed keywords",
+          "comment": "misplaced keywords",
           "name": "invalid.illegal.keyword.agda",
           "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])(data|module|record|where)(?=$|\\!\\}|[\\s;{}()@\".])"
         }
