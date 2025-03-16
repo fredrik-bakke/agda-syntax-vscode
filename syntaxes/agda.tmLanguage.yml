@@ -14,15 +14,15 @@ repository:
     begin: (^|\G)(\s*)(module)(?=$|\!\}|[\s;{}()@".])
     end: ((?<=^|\{\!|\{-\#|[\s;{}()@".])where(?=$|\!\}|[\s;{}()@".]))|^(?!\2\s) #TODO: when we make this into a block, this will be a new begin instead of an end
     beginCaptures:
-      "3": { name: storage.type.namespace.module.agda }
+      3: { name: storage.type.namespace.module.agda }
     endCaptures:
-      "0": { name: keyword.control.where.module.agda }
+      0: { name: keyword.control.where.module.agda }
     patterns:
       - include: "#agda_comments"
       - begin: (?<=(^|\G|(^|\G|[\s;{}()@".])module\s)\s*)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?(\._?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?)*|_)(?=$|\!\}|[\s;{}()@".])
         end: (?=[\s;{}()@".]where($|[\s;{}()@".]))
         beginCaptures:
-          "0":
+          0:
             name: entity.name.section.module.agda
             patterns:
               - include: "#module_label"
@@ -36,15 +36,15 @@ repository:
     begin: (^|\G)(\s*)(data)(?=$|\!\}|[\s;{}()@".])
     end: ((?<=^|\{\!|\{-\#|[\s;{}()@".])where(?=$|\!\}|[\s;{}()@".]))|^(?!\2\s)
     beginCaptures:
-      "3": { name: storage.type.class.data.agda }
+      3: { name: storage.type.class.data.agda }
     endCaptures:
-      "1": { name: keyword.control.where.data.agda }
+      1: { name: keyword.control.where.data.agda }
     patterns:
       - include: "#agda_comments"
       - begin: (?<=(^|\G|(^|\G|[\s;{}()@".])data\s)\s*)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?|_)(?=$|\!\}|[\s;{}()@".])
         end: (?=[\s;{}()@".]where($|[\s;{}()@".]))
         beginCaptures:
-          "0":
+          0:
             name: entity.name.type.data.agda
             patterns:
               - include: "#qualified_name"
@@ -59,16 +59,16 @@ repository:
     begin: (^|\G)(\s*)(record)(?=$|\!\}|[\s;{}()@".])
     end: ((?<=^|\{\!|\{-\#|[\s;{}()@".])where(?=$|\!\}|[\s;{}()@".]))|^(?!\2\s)
     beginCaptures:
-      "3": { name: storage.type.class.record.agda }
+      3: { name: storage.type.class.record.agda }
     endCaptures:
-      "1": { name: keyword.control.where.record.agda }
+      1: { name: keyword.control.where.record.agda }
     patterns:
       - include: "#agda_comments"
       - comment: Capture name of record
         begin: (?<=(^|\G|(^|\G|[\s;{}()@".])record\s)\s*)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?|_)(?=$|\!\}|[\s;{}()@".])
         end: (?=[\s;{}()@".]where($|[\s;{}()@".]))
         beginCaptures:
-          "0":
+          0:
             name: entity.name.type.record.agda
             patterns:
               - include: "#qualified_name"
@@ -81,16 +81,16 @@ repository:
   open_import_statement:
     begin: (^|\G)(\s*)(import|open(\s+import)?)(?=$|\s)
     beginCaptures:
-      "3": { name: keyword.control.import.agda }
+      3: { name: keyword.control.import.agda }
     while: (^|\G)\2(?=\s)
     patterns:
       - include: "#agda_comments"
       - begin: \(
         beginCaptures:
-          "0": { name: punctuation.section.parens.begin.agda }
+          0: { name: punctuation.section.parens.begin.agda }
         end: \)
         endCaptures:
-          "0": { name: punctuation.section.parens.end.agda }
+          0: { name: punctuation.section.parens.end.agda }
         name: meta.statement.import.names.agda
         patterns:
           - include: "#agda_comments"
@@ -106,7 +106,7 @@ repository:
     begin: (^|\G)(\s*)(infix[lr]?)(?=$|\!\}|[\s;{}()@".])
     while: (^|\G)\2(?=\s)
     beginCaptures:
-      "3": { name: keyword.control.infix.agda }
+      3: { name: keyword.control.infix.agda }
     name: meta.statement.infix.agda
     contentName: meta.declaration.infix.arguments.agda
     patterns:
@@ -118,7 +118,7 @@ repository:
     begin: (^|\G)(\s*)(constructor)(?=$|\!\}|[\s;{}()@".])
     while: (^|\G)\2(?=\s)
     beginCaptures:
-      "3": { name: keyword.control.constructor.agda }
+      3: { name: keyword.control.constructor.agda }
     name: meta.statement.constructor.agda
     patterns:
       - include: "#agda_comments"
@@ -148,9 +148,9 @@ repository:
     begin: \(
     end: \)
     beginCaptures:
-      "0": { name: punctuation.section.parens.explicit.begin.agda }
+      0: { name: punctuation.section.parens.explicit.begin.agda }
     endCaptures:
-      "0": { name: punctuation.section.parens.explicit.end.agda }
+      0: { name: punctuation.section.parens.explicit.end.agda }
     name: meta.declaration.parameters.explicit.agda
     patterns:
       - include: "#agda_syntax" # TODO: refine
@@ -162,10 +162,10 @@ repository:
     begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])(forall|∀)\s*(\()
     end: \)
     beginCaptures:
-      "1": { name: keyword.operator.forall.explicit.agda }
-      "2": { name: punctuation.section.parens.explicit.begin.agda }
+      1: { name: keyword.operator.forall.explicit.agda }
+      2: { name: punctuation.section.parens.explicit.begin.agda }
     endCaptures:
-      "0": { name: punctuation.section.parens.explicit.end.agda }
+      0: { name: punctuation.section.parens.explicit.end.agda }
     name: meta.declaration.parameters.explicit.agda
     patterns:
       - include: "#agda_syntax" # TODO: refine
@@ -176,9 +176,9 @@ repository:
     begin: \{(?!-)
     end: (?<!-)\}
     beginCaptures:
-      "0": { name: punctuation.section.parens.implicit.begin.agda }
+      0: { name: punctuation.section.parens.implicit.begin.agda }
     endCaptures:
-      "0": { name: punctuation.section.parens.implicit.end.agda }
+      0: { name: punctuation.section.parens.implicit.end.agda }
     name: meta.declaration.parameters.implicit.agda
     patterns:
       - include: "#agda_syntax" # TODO: refine
@@ -190,10 +190,10 @@ repository:
     begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])(forall|∀)\s*(\{(?!-))
     end: (?<!-)\}
     beginCaptures:
-      "1": { name: keyword.operator.forall.implicit.agda }
-      "2": { name: punctuation.section.parens.implicit.begin.agda }
+      1: { name: keyword.operator.forall.implicit.agda }
+      2: { name: punctuation.section.parens.implicit.begin.agda }
     endCaptures:
-      "0": { name: punctuation.section.parens.implicit.end.agda }
+      0: { name: punctuation.section.parens.implicit.end.agda }
     name: meta.declaration.parameters.implicit.agda
     patterns:
       - include: "#agda_syntax" # TODO: refine
@@ -204,9 +204,9 @@ repository:
     begin: \{\{(?!-)
     end: (?<!-)\}\}
     beginCaptures:
-      "0": { name: punctuation.section.parens.instance_double_brace.begin.agda }
+      0: { name: punctuation.section.parens.instance_double_brace.begin.agda }
     endCaptures:
-      "0": { name: punctuation.section.parens.instance_double_brace.end.agda }
+      0: { name: punctuation.section.parens.instance_double_brace.end.agda }
     name: meta.declaration.parameters.instance_double_brace.agda
     patterns:
       - include: "#agda_syntax" # TODO: refine
@@ -218,10 +218,10 @@ repository:
     begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])(forall|∀)\s*(\{\{(?!-))
     end: (?<!-)\}\}
     beginCaptures:
-      "1": { name: keyword.operator.forall.instance_double_brace.agda }
-      "2": { name: punctuation.section.parens.instance_double_brace.begin.agda }
+      1: { name: keyword.operator.forall.instance_double_brace.agda }
+      2: { name: punctuation.section.parens.instance_double_brace.begin.agda }
     endCaptures:
-      "0": { name: punctuation.section.parens.instance_double_brace.end.agda }
+      0: { name: punctuation.section.parens.instance_double_brace.end.agda }
     name: meta.declaration.parameters.instance_double_brace.agda
     patterns:
       - include: "#agda_syntax" # TODO: refine
@@ -232,9 +232,9 @@ repository:
     begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])⦃(?=$|\!\}|[\s;{}()@".])
     end: (?<=^|\{\!|\{-\#|[\s;{}()@".])⦄(?=$|\!\}|[\s;{}()@".])
     beginCaptures:
-      "0": { name: punctuation.section.parens.instance_unicode.begin.agda }
+      0: { name: punctuation.section.parens.instance_unicode.begin.agda }
     endCaptures:
-      "0": { name: punctuation.section.parens.instance_unicode.end.agda }
+      0: { name: punctuation.section.parens.instance_unicode.end.agda }
     name: meta.declaration.parameters.instance_unicode.agda
     patterns:
       - include: "#agda_syntax" # TODO: refine
@@ -246,10 +246,10 @@ repository:
     begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])(forall|∀)\s*((?<=^|\{\!|\{-\#|[\s;{}()@".])⦃(?=$|\!\}|[\s;{}()@".]))
     end: (?<=^|\{\!|\{-\#|[\s;{}()@".])⦄(?=$|\!\}|[\s;{}()@".])
     beginCaptures:
-      "1": { name: keyword.operator.forall.instance_unicode.agda }
-      "2": { name: punctuation.section.parens.instance_unicode.begin.agda }
+      1: { name: keyword.operator.forall.instance_unicode.agda }
+      2: { name: punctuation.section.parens.instance_unicode.begin.agda }
     endCaptures:
-      "0": { name: punctuation.section.parens.instance_unicode.end.agda }
+      0: { name: punctuation.section.parens.instance_unicode.end.agda }
     name: meta.declaration.parameters.instance_unicode.agda
     patterns:
       - include: "#agda_syntax" # TODO: refine
@@ -261,36 +261,36 @@ repository:
     match: (^|\G)(([^:)}⦄]|(?<!^|[\s;{}()@".])[:⦄]|[:⦄](?!$|[\s;{}()@".]))+)[\s;{}()@".](:)(?=$|\!\}|[\s;{}()@".]) # TODO: refactor, compare to forall...
     name: meta.declaration.variable_type_signature.agda
     captures:
-      "2":
+      2:
         patterns:
           - include: "#agda_syntax"
           - include: "#variable_label"
           - name: invalid.name.variable.agda
             match: (?<=^|\{\!|\{-\#|[\s;{}()@".])((?!\.)[\s;{}()@".])+(?=$|\!\}|[\s;{}()@".])
-      "4": { name: keyword.operator.colon.agda }
+      4: { name: keyword.operator.colon.agda }
   # variable_type_signature:
   #   match: (^|\G)(((?!(?<=^|\{\!|\{-\#|[\s;{}()@".]):(?=$|\!\}|[\s;{}()@".])).)+)(?<=^|\{\!|\{-\#|[\s;{}()@".])(:)(?=$|\!\}|[\s;{}()@".])
   #   name: meta.declaration.variable_type_signature.agda
   #   captures:
-  #     "2":
+  #     2:
   #       patterns:
   #         - include: "#agda_expression"
   #         - include: "#variable_label"
   #         - name: invalid.name.variable.agda
   #           match: (?<=^|\{\!|\{-\#|[\s;{}()@".])((?!\.)[\s;{}()@".])+(?=$|\!\}|[\s;{}()@".])
-  #     "4": { name: keyword.operator.colon.agda }
+  #     4: { name: keyword.operator.colon.agda }
 
   forall_variable_type_signature:
     match: (^|\G)(([^:)}⦄]|(?<!^|[\s;{}()@".])[:⦄]|[:⦄](?!$|[\s;{}()@".]))+)((:)(?=$|\!\}|[\s;{}()@".])|(?=$|[)}⦄]))
     name: meta.declaration.variable_type_signature.agda
     captures:
-      "2":
+      2:
         patterns:
           - include: "#agda_syntax"
           - include: "#variable_label"
           - name: invalid.name.variable.forall.agda
             match: (?<=^|\{\!|\{-\#|[\s;{}()@".])((?!\.)[\s;{}()@".])+(?=$|\!\}|[\s;{}()@".])
-      "4": { name: keyword.operator.colon.agda }
+      4: { name: keyword.operator.colon.agda }
 
   type:
     patterns:
@@ -300,7 +300,7 @@ repository:
   type_token:
     match: (?<=^|\{\!|\{-\#|[\s;{}()@"])(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?(\._?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?)*|_)(?=$|\!\}|[\s;{}()@"])
     captures:
-      "1":
+      1:
         patterns:
           - include: "#agda_syntax"
           - include: "#agda_builtin"
@@ -315,13 +315,13 @@ repository:
     while: (^|\G)\2(?=\s)
     name: meta.declaration.function.agda
     beginCaptures:
-      "3":
+      3:
         patterns:
           - include: "#agda_comments"
           - include: "#term_name"
           - name: invalid.name.term.agda # TODO: other patterns take precedence, so this one never matches
             match: (?<=^|\{\!|\{-\#|[\s;{}()@".])((?!\.)[\s;{}()@".])+(?=$|\!\}|[\s;{}()@".])
-      "7":
+      7:
         name: keyword.operator.colon.agda
     patterns:
       - include: "#parameter_declaration"
@@ -331,22 +331,22 @@ repository:
     match: (^|\G)(\s*)(\S.*)\s+(=)(?=$|\!\}|[\s;{}()@".])
     name: meta.declaration.function.agda
     captures:
-      "3":
+      3:
         patterns:
           - include: "#agda_syntax"
           - include: "#term_name"
-      "4":
+      4:
         name: keyword.operator.agda
 
   lambda_abstraction_start:
     begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])(\\|λ)(?=$|\!\}|[\s;{}()@".])
     end: (?<=^|\{\!|\{-\#|[\s;{}()@".])((->|→)|(where))(?=$|\!\}|[\s;{}()@".])|(\(\s*\))|(?=\{) # TODO: λ{} syntax
     beginCaptures:
-      "1": { name: keyword.operator.lambda.agda }
+      1: { name: keyword.operator.lambda.agda }
     endCaptures:
-      "2": { name: keyword.operator.lambda.mapsto.agda }
-      "3": { name: keyword.control.where.lambda.agda }
-      "4": { name: keyword.operator.lambda.absurd.agda }
+      2: { name: keyword.operator.lambda.mapsto.agda }
+      3: { name: keyword.control.where.lambda.agda }
+      4: { name: keyword.operator.lambda.absurd.agda }
     patterns:
       - include: "#agda_comments"
       - include: "#explicit_parameter_declaration"
@@ -380,8 +380,8 @@ repository:
     match: (?<=^|\{\!|\{-\#|[\s;{}()@".])(?<!\.)(\.)\s*(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?(\._?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?)*)(?=$|\!\}|[\s;{}()@"])
     name: meta.block.dot_pattern.agda
     captures:
-      "1": { name: keyword.operator.dot_pattern.period.agda }
-      "2":
+      1: { name: keyword.operator.dot_pattern.period.agda }
+      2:
         name: comment.block.dot_pattern.agda
         patterns:
           - include: "#qualified_name"
@@ -392,10 +392,10 @@ repository:
     name: meta.block.dot_pattern.agda
     contentName: comment.block.dot_pattern.agda
     beginCaptures:
-      "1": { name: keyword.operator.dot_pattern.period.agda}
-      "2": { name: punctuation.definition.dot_pattern.begin.agda }
+      1: { name: keyword.operator.dot_pattern.period.agda}
+      2: { name: punctuation.definition.dot_pattern.begin.agda }
     endCaptures:
-      "0": { name: punctuation.definition.dot_pattern.begin.agda }
+      0: { name: punctuation.definition.dot_pattern.begin.agda }
     patterns:
       - include: "#agda_comments"
       - include: "#dot_pattern_internal_parentheses"
@@ -416,7 +416,7 @@ repository:
   name_part:
     match: (?<=^|\{\!|\{-\#|[\s;{}()@"._])(?!'|--)[^\s;{}()@"._]+(?=$|\!\}|[\s;{}()@"._])
     captures:
-      "0":
+      0:
         patterns:
           - name: keyword.operator.overloaded.agda
             match: (?<=^|\{\!|\{-\#|[\s;{}()@"._])(<-|←)(?=$|\!\}|[\s;{}()@"._])
@@ -425,7 +425,7 @@ repository:
   name_token:
     match: (?<=^|\{\!|\{-\#|[\s;{}()@".])_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?(?=$|\!\}|[\s;{}()@".])
     captures:
-      "0":
+      0:
         patterns:
           - include: "#name_part"
           - include: "#agda_builtin"
@@ -434,7 +434,7 @@ repository:
   qualified_name:
     match: (?<=^|\{\!|\{-\#|[\s;{}()@"])_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?(\._?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?)*(?=$|\!\}|[\s;{}()@"])
     captures:
-      "0":
+      0:
         patterns:
           - include: "#agda_names_syntactic_sugar"
           - include: "#qualify_punctuation"
@@ -444,14 +444,14 @@ repository:
     name: storage.type.qualified.agda
     match: (?<=^|\{\!|\{-\#|[\s;{}()@"])_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?(\._?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?)*(?=$|\!\}|[\s;{}()@"])
     captures:
-      "0":
+      0:
         patterns:
           - include: "#qualified_name"
 
   module_qualified_name:
     match: (?<=^|\{\!|\{-\#|[\s;{}()@"])_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?(\._?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?)*(?=$|\!\}|[\s;{}()@"])
     captures:
-      "0":
+      0:
         name: entity.name.section.module.agda
         patterns:
           - include: "#qualified_name"
@@ -470,7 +470,7 @@ repository:
     name: variable.parameter.term.agda
     match: (?<=^|\{\!|\{-\#|[\s;{}()@".])_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?(?=$|\!\}|[\s;{}()@".])
     captures:
-      "0":
+      0:
         patterns:
           - include: "#agda_constants"
           - include: "#name_token"
@@ -478,7 +478,7 @@ repository:
   term_name:
     match: (?<=^|\{\!|\{-\#|[\s;{}()@".])(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?|_)(?=$|\!\}|[\s;{}()@".])
     captures:
-      "0":
+      0:
         patterns:
           - include: "#discard"
           - include: "#name_token"
@@ -492,7 +492,7 @@ repository:
     match: (?<=^|\{\!|\{-\#|[\s;{}()@".])\?(?=$|\!\}|[\s;{}()@".])
     name: variable.language.questionmark.agda
     captures:
-      "0": { name: punctuation.hole.questionmark.agda }
+      0: { name: punctuation.hole.questionmark.agda }
 
   hole_parenthesized:
     name: meta.block.hole.agda
@@ -500,9 +500,9 @@ repository:
     begin: \{\!
     end: \!\}
     beginCaptures:
-      "0": { name: punctuation.definition.hole.begin.agda }
+      0: { name: punctuation.definition.hole.begin.agda }
     endCaptures:
-      "0": { name: punctuation.definition.hole.end.agda }
+      0: { name: punctuation.definition.hole.end.agda }
     patterns:
       - include: "#agda_comments"
       - include: "#hole_parenthesized"
@@ -514,7 +514,7 @@ repository:
     contentName: meta.preprocessor.pragma.block.content.agda
     begin: "{-#"
     captures:
-      "0": { name: punctuation.definition.pragma.agda }
+      0: { name: punctuation.definition.pragma.agda }
     end: "#-}"
 
   block_comment:
@@ -522,9 +522,9 @@ repository:
     begin: \{-
     end: -\}
     beginCaptures:
-      "0": { name: punctuation.definition.comment.agda }
+      0: { name: punctuation.definition.comment.agda }
     endCaptures:
-      "0": { name: punctuation.definition.comment.agda }
+      0: { name: punctuation.definition.comment.agda }
     patterns:
       - include: "#block_comment"
 
@@ -532,7 +532,7 @@ repository:
     name: comment.line.double_dash.agda
     match: (?<=^|\{\!|\{-\#|[\s;{}()@".])(--).*$
     captures:
-      "1": { name: punctuation.definition.comment.agda }
+      1: { name: punctuation.definition.comment.agda }
 
   escape_character:
     name: constant.character.escape.agda
@@ -548,9 +548,9 @@ repository:
         begin: \"
         end: \"
         beginCaptures:
-          "0": { name: punctuation.definition.string.begin.agda }
+          0: { name: punctuation.definition.string.begin.agda }
         endCaptures:
-          "0": { name: punctuation.definition.string.end.agda }
+          0: { name: punctuation.definition.string.end.agda }
         patterns:
           - include: "#escape_character"
           - include: "#escape_control_character"
@@ -558,9 +558,9 @@ repository:
         begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])\'
         end: \'
         beginCaptures:
-          "0": { name: punctuation.definition.character.begin.agda }
+          0: { name: punctuation.definition.character.begin.agda }
         endCaptures:
-          "0": { name: punctuation.definition.character.end.agda }
+          0: { name: punctuation.definition.character.end.agda }
         patterns:
           - include: "#escape_character"
           - include: "#escape_control_character"
@@ -592,7 +592,7 @@ repository:
         while: (^|\G)\2(?=\s)
         name: meta.block.abstract.agda
         beginCaptures:
-          "3": { name: keyword.control.abstract.agda }
+          3: { name: keyword.control.abstract.agda }
         patterns:
           - include: "#the_usual"
  # TODO: do, let
@@ -601,7 +601,7 @@ repository:
         while: (^|\G)\2(?=\s)
         name: meta.block.field.agda
         beginCaptures:
-          "3": { name: keyword.control.field.agda }
+          3: { name: keyword.control.field.agda }
         patterns:
           - include: "#the_usual"
  # TODO: do, let
@@ -610,7 +610,7 @@ repository:
         while: (^|\G)\2(?=\s)
         name: meta.block.instance.agda
         beginCaptures:
-          "3": { name: keyword.control.instance.agda }
+          3: { name: keyword.control.instance.agda }
         patterns:
           - include: "#the_usual"
  # TODO: do, let
@@ -619,7 +619,7 @@ repository:
         while: (^|\G)\2(?=\s)
         name: meta.block.macro.agda
         beginCaptures:
-          "3": { name: keyword.control.macro.agda }
+          3: { name: keyword.control.macro.agda }
         patterns:
           - include: "#the_usual"
  # TODO: do, let
@@ -628,7 +628,7 @@ repository:
         while: (^|\G)\2(?=\s)
         name: meta.block.mutual.agda
         beginCaptures:
-          "3": { name: keyword.control.mutual.agda }
+          3: { name: keyword.control.mutual.agda }
         patterns:
           - include: "#the_usual"
  # TODO: do, let
@@ -637,7 +637,7 @@ repository:
         while: (^|\G)\2(?=\s)
         name: meta.block.opaque.agda
         beginCaptures:
-          "3": { name: keyword.control.opaque.agda }
+          3: { name: keyword.control.opaque.agda }
         patterns:
           - include: "#the_usual"
  # TODO: do, let
@@ -646,7 +646,7 @@ repository:
         while: (^|\G)\2(?=\s)
         name: meta.block.postulate.agda
         beginCaptures:
-          "3": { name: keyword.control.postulate.agda }
+          3: { name: keyword.control.postulate.agda }
         patterns:
           - include: "#the_usual"
  # TODO: do, let
@@ -655,7 +655,7 @@ repository:
         while: (^|\G)\2(?=\s)
         name: meta.block.private.agda
         beginCaptures:
-          "3": { name: keyword.control.private.agda }
+          3: { name: keyword.control.private.agda }
         patterns:
           - include: "#the_usual"
  # TODO: do, let
@@ -664,7 +664,7 @@ repository:
         while: (^|\G)\2(?=\s)
         name: meta.block.variable.agda
         beginCaptures:
-          "3": { name: keyword.control.variable.agda }
+          3: { name: keyword.control.variable.agda }
         patterns:
           - include: "#the_usual"
  # TODO: do, let
@@ -673,7 +673,7 @@ repository:
         while: (^|\G)\2(?=\s)
         name: meta.block.where.agda
         beginCaptures:
-          "3": { name: keyword.control.where.agda }
+          3: { name: keyword.control.where.agda }
         patterns:
           - include: "#the_usual"
 
@@ -732,11 +732,11 @@ repository:
     begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])\@
     end: _?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?(\._?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?)*(?=$|\!\}|[\s;{}()@".])
     beginCaptures:
-      "0": { name: keyword.operator.attribute.agda }
+      0: { name: keyword.operator.attribute.agda }
     captures:
-      "0": { name: meta.attribute.agda }
+      0: { name: meta.attribute.agda }
     endCaptures:
-      "0": { name: keyword.control.attribute.agda }
+      0: { name: keyword.control.attribute.agda }
     patterns:
       - include: "#agda_comments"
 
@@ -745,8 +745,8 @@ repository:
     - include: "#agda_attributes"
     - match: (?<=^|\{\!|\{-\#|[\s;{}()@".])(forall|->|[∀→\\λ])(?=$|\!\}|[\s;{}()@".])|(\(\s*\))
       captures:
-        "1": { name: keyword.operator.agda }
-        "2": { name: keyword.operator.absurd.agda }
+        1: { name: keyword.operator.agda }
+        2: { name: keyword.operator.absurd.agda }
 
   agda_keywords:
     patterns:
