@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.6.12] - 2024-03-16
+
+- Add language support for reStructuredText, Org, Typst, and Forester
+
 ## [0.6.10] - 2024-04-29
 
 - Only match the standard digit characters `0` through `9` in numeric literals
