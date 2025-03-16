@@ -1,0 +1,37 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "comment": "This TextMate Grammar file has been generated from a YAML file.",
+  "name": "Agda Markdown Injection",
+  "scopeName": "source.agda.embedded.org",
+  "fileTypes": [],
+  "injectionSelector": "L:source.org",
+  "patterns": [
+    {
+      "begin": "(?i)(^\\s*)(#\\+begin_src\\s+(agda2?\\s*)?)$",
+      "end": "(?i)(^\\s*)(#\\+end_src)$",
+      "name": "markup.fenced_code.block.org.agda",
+      "beginCaptures": {
+        "2": {
+          "name": "punctuation.definition.block.org"
+        }
+      },
+      "endCaptures": {
+        "2": {
+          "name": "punctuation.definition.block.org"
+        }
+      },
+      "patterns": [
+        {
+          "begin": "(^|\\G)",
+          "while": "(?i)(^|\\G)(?!^\\s*#\\+end_src\\s*$)",
+          "contentName": "meta.embedded.block.agda",
+          "patterns": [
+            {
+              "include": "source.agda"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

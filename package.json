@@ -68,6 +68,18 @@
         "embeddedLanguages": {
           "meta.embedded.block.agda": "agda"
         }
+      },
+      {
+        "scopeName": "source.agda.embedded.org",
+        "path": "./syntaxes/agda-org-injection.tmLanguage.json",
+        "injectTo": [
+          "text.org",
+          "source.org",
+          "source.org.agda"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.agda": "agda"
+        }
       }
     ]
   },
