@@ -104,7 +104,7 @@
     },
     "record_declaration": {
       "contentName": "meta.declaration.record.agda",
-      "begin": "(^|\\G)(\\s*)(record)(?=$|\\!\\}|[\\s;{}()@\".])",
+      "begin": "(^|\\G)(\\s*)(record)(?=$|\\!\\}|[\\s;{}()@\".])(?!\\s*\\{)",
       "end": "((?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])where(?=$|\\!\\}|[\\s;{}()@\".]))|^(?=\\2\\S)",
       "beginCaptures": {
         "3": {
