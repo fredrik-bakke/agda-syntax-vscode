@@ -411,7 +411,7 @@ repository:
 
   illegal_name_parts:
     name: invalid.illegal.name.part.keyword.agda
-    match: ((?<=^|\{\!|\{-\#|[\s;{}()@"._])([=|→:?\\λ∀']|->|--|abstract|(co)?inductive|constructor|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with)(?=$|\!\}|[\s;{}()@"._]))
+    match: ((?<=^|\{\!|\{-\#|[\s;{}()@"._])([=|→:?\\λ∀'⦇⦈⦃⦄]|->|--|abstract|(co)?inductive|constructor|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with)(?=$|\!\}|[\s;{}()@"._]))
 
   name_part:
     name: entity.name.part.agda
@@ -572,7 +572,7 @@ repository:
 
   agda_builtin_sorts:
     name: support.type.sort.agda
-    match: (?<=^|\{\!|\{-\#|[\s;{}()@".])((SSet|Set|Prop)ω?([0-9]*|[₀-₉]*)|LevelUniv)(?=$|\!\}|[\s;{}()@".])
+    match: (?<=^|\{\!|\{-\#|[\s;{}()@".])(Level|LevelUniv|(SSet|Set|Prop)ω?([0-9]*|[₀-₉]*))(?=$|\!\}|[\s;{}()@".])
 
   agda_simple_blocks:
     patterns:
@@ -719,7 +719,7 @@ repository:
     patterns:
       - include: "#agda_expression_keywords"
       - name: keyword.operator.agda
-        match: (?<=^|\{\!|\{-\#|[\s;{}()@".])([=|:]|\.\.\.?)(?=$|\!\}|[\s;{}()@".])|\@
+        match: (?<=^|\{\!|\{-\#|[\s;{}()@".])([=|:←⦇⦈⦃⦄]|<-|\.\.\.?)(?=$|\!\}|[\s;{}()@".])|\@
       - name: keyword.control.agda
         match: (?<=^|\{\!|\{-\#|[\s;{}()@".])(abstract|constructor|do|field|forall|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|unfolding|variable|where|with)(?=$|\!\}|[\s;{}()@".])
       - name: storage.modifier.agda

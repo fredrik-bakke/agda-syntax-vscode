@@ -362,7 +362,7 @@ repository:
 
   illegal_name_parts:
     name: invalid.illegal.name.part.keyword.agda
-    match: ({{ name_part_boundary('([=|→:?\\\\λ∀\']|->|--|abstract|(co)?inductive|constructor|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with)') }})
+    match: ({{ name_part_boundary('([=|→:?\\\\λ∀\'⦇⦈⦃⦄]|->|--|abstract|(co)?inductive|constructor|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with)') }})
 
   name_part:
     name: entity.name.part.agda
@@ -370,7 +370,7 @@ repository:
     captures:
       "0":
         patterns:
-          - include: "#agda_builtin_sorts"
+          - include: "#agda_special_names"
           - include: "#illegal_name_parts"
 
   name_token:
@@ -523,7 +523,7 @@ repository:
 
   agda_builtin_sorts:
     name: support.type.sort.agda
-    match: {{ token_boundary('((SSet|Set|Prop)ω?([0-9]*|[₀-₉]*)|LevelUniv)') }}
+    match: {{ token_boundary('(Level|LevelUniv|(SSet|Set|Prop)ω?([0-9]*|[₀-₉]*))') }}
 
   agda_simple_blocks:
     patterns:
@@ -566,6 +566,17 @@ repository:
       - include: "#agda_literals"
       - include: "#agda_builtin_sorts"
 
+  agda_special_names:
+    patterns:
+      # >>=
+      # >>
+      # pure
+      # <*>
+      # <|>
+
+      # overloaded names: <-|← TODO
+      - include: "#agda_builtin_sorts"
+
   agda_attributes:
     begin: {{ token_boundary_start }}\@
     end: {{ NAME_QUALIFIED }}{{ token_boundary_end }}
@@ -590,7 +601,7 @@ repository:
     patterns:
       - include: "#agda_expression_keywords"
       - name: keyword.operator.agda
-        match: {{ token_boundary('([=|:]|\.\.\.?)') }}|\@
+        match: {{ token_boundary('([=|:←⦇⦈⦃⦄]|<-|\.\.\.?)') }}|\@
       - name: keyword.control.agda
         match: {{ token_boundary('(abstract|constructor|do|field|forall|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|unfolding|variable|where|with)') }}
       - name: storage.modifier.agda
