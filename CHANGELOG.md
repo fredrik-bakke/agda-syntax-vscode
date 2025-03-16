@@ -1,8 +1,11 @@
 # Changelog
 
-## [0.6.12] - 2024-03-16
+## [0.7.0] - 2024-03-16
 
 - Add language support for reStructuredText, Org, Typst, and Forester
+- Add special highlighting for names used with syntactic sugars (`>>`, `>>=`, `<*>`, `<|>`, `force`, `empty`)
+- Add highlighting for the symbols `←`, `<-`, `⦇`, `⦈`, `⦃`, and `⦄`
+- Miscellaneous highlighting tweaks
 
 ## [0.6.10] - 2024-04-29
 
