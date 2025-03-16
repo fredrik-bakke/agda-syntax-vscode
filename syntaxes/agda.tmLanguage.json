@@ -594,7 +594,7 @@
               "include": "#agda_syntax"
             },
             {
-              "include": "#agda_builtin_sorts"
+              "include": "#agda_builtin"
             },
             {
               "include": "#lambda_abstraction_start"
@@ -801,7 +801,11 @@
         "0": {
           "patterns": [
             {
-              "include": "#agda_builtin_sorts"
+              "include": "#agda_builtin"
+            },
+            {
+              "name": "keyword.operator.overloaded.agda",
+              "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\"._])(<-|←)(?=$|\\!\\}|[\\s;{}()@\"._])"
             },
             {
               "include": "#illegal_name_parts"
@@ -832,6 +836,9 @@
       "captures": {
         "0": {
           "patterns": [
+            {
+              "include": "#agda_names_syntactic_sugar"
+            },
             {
               "include": "#qualify_punctuation"
             },
@@ -1075,9 +1082,29 @@
         }
       ]
     },
-    "agda_builtin_sorts": {
-      "name": "support.type.sort.agda",
-      "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])(Level|LevelUniv|(SSet|Set|Prop)ω?([0-9]*|[₀-₉]*))(?=$|\\!\\}|[\\s;{}()@\".])"
+    "agda_builtin": {
+      "patterns": [
+        {
+          "name": "support.type.sort.agda",
+          "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])((SSet|Set|Prop)ω([0-9]*|[₀-₉]*))(?=$|\\!\\}|[\\s;{}()@\".])"
+        },
+        {
+          "name": "support.class.sort.agda",
+          "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])((SSet|Set|Prop)([0-9]*|[₀-₉]*))(?=$|\\!\\}|[\\s;{}()@\".])"
+        },
+        {
+          "name": "support.type.level.agda",
+          "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])LevelUniv(?=$|\\!\\}|[\\s;{}()@\".])"
+        },
+        {
+          "name": "support.class.interval.agda",
+          "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])Level(?=$|\\!\\}|[\\s;{}()@\".])"
+        },
+        {
+          "name": "support.type.interval.agda",
+          "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])IUniv(?=$|\\!\\}|[\\s;{}()@\".])"
+        }
+      ]
     },
     "agda_simple_blocks": {
       "patterns": [
@@ -1298,7 +1325,43 @@
           "include": "#agda_literals"
         },
         {
-          "include": "#agda_builtin_sorts"
+          "include": "#agda_builtin"
+        }
+      ]
+    },
+    "agda_names_syntactic_sugar": {
+      "patterns": [
+        {
+          "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\"])(_?)(>>=?)(_?)(?=$|\\!\\}|[\\s;{}()@\"])",
+          "captures": {
+            "1": {
+              "name": "variable.language.wildcard.agda"
+            },
+            "2": {
+              "name": "support.function.monad.agda"
+            },
+            "3": {
+              "name": "variable.language.wildcard.agda"
+            }
+          }
+        },
+        {
+          "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\"])(_?)(<*>|<\\|>)(_?)(?=$|\\!\\}|[\\s;{}()@\"])",
+          "captures": {
+            "1": {
+              "name": "variable.language.wildcard.agda"
+            },
+            "2": {
+              "name": "support.function.applicative_functor.agda"
+            },
+            "3": {
+              "name": "variable.language.wildcard.agda"
+            }
+          }
+        },
+        {
+          "name": "support.function.applicative_functor.agda",
+          "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\"])pure|empty(?=$|\\!\\}|[\\s;{}()@\"])"
         }
       ]
     },

@@ -254,7 +254,7 @@ repository:
       "1":
         patterns:
           - include: "#agda_syntax"
-          - include: "#agda_builtin_sorts"
+          - include: "#agda_builtin"
           - include: "#lambda_abstraction_start"
           - include: "#wildcard"
           - include: "#type_token_qualified_name"
@@ -370,7 +370,9 @@ repository:
     captures:
       "0":
         patterns:
-          - include: "#agda_special_names"
+          - include: "#agda_builtin"
+          - name: keyword.operator.overloaded.agda
+            match: {{name_part_boundary('(<-|←)')}}
           - include: "#illegal_name_parts"
 
   name_token:
@@ -388,6 +390,7 @@ repository:
     captures:
       "0":
         patterns:
+          - include: "#agda_names_syntactic_sugar"
           - include: "#qualify_punctuation"
           - include: "#name_token"
 
@@ -521,9 +524,20 @@ repository:
       - name: constant.numeric.float.agda
         match: {{ token_boundary('(-?[0-9]+\.[0-9]+([eE][+-]?[0-9]+)?|-?[0-9]+[eE][+-]?[0-9]+)') }}
 
-  agda_builtin_sorts:
-    name: support.type.sort.agda
-    match: {{ token_boundary('(Level|LevelUniv|(SSet|Set|Prop)ω?([0-9]*|[₀-₉]*))') }}
+  agda_builtin:
+    patterns:
+      - name: support.type.sort.agda
+        match: {{ token_boundary('((SSet|Set|Prop)ω([0-9]*|[₀-₉]*))') }}
+      - name: support.class.sort.agda
+        match: {{ token_boundary('((SSet|Set|Prop)([0-9]*|[₀-₉]*))') }}
+      - name: support.type.level.agda
+        match:  {{ token_boundary('LevelUniv') }}
+      - name: support.class.interval.agda
+        match:  {{ token_boundary('Level') }}
+      - name: support.type.interval.agda
+        match:  {{ token_boundary('IUniv') }}
+      # - name: support.class.interval.agda
+      #   match:  {{ token_boundary('I') }}
 
   agda_simple_blocks:
     patterns:
@@ -564,18 +578,30 @@ repository:
   agda_constants:
     patterns:
       - include: "#agda_literals"
-      - include: "#agda_builtin_sorts"
+      - include: "#agda_builtin"
 
-  agda_special_names:
+  # Names with special meaning for certain notations
+  # https://agda.readthedocs.io/en/latest/language/syntactic-sugar.html
+  agda_names_syntactic_sugar:
     patterns:
-      # >>=
-      # >>
-      # pure
-      # <*>
-      # <|>
-
-      # overloaded names: <-|← TODO
-      - include: "#agda_builtin_sorts"
+      - match: {{name_qualified_boundary('(_?)(>>=?)(_?)')}}
+        captures:
+          1:
+            name: variable.language.wildcard.agda
+          2:
+            name: support.function.monad.agda
+          3:
+            name: variable.language.wildcard.agda
+      - match: {{name_qualified_boundary('(_?)(<*>|<\|>)(_?)')}}
+        captures:
+          1:
+            name: variable.language.wildcard.agda
+          2:
+            name: support.function.applicative_functor.agda
+          3:
+            name: variable.language.wildcard.agda
+      - name: support.function.applicative_functor.agda
+        match: {{name_qualified_boundary('pure|empty')}}
 
   agda_attributes:
     begin: {{ token_boundary_start }}\@

@@ -303,7 +303,7 @@ repository:
       "1":
         patterns:
           - include: "#agda_syntax"
-          - include: "#agda_builtin_sorts"
+          - include: "#agda_builtin"
           - include: "#lambda_abstraction_start"
           - include: "#wildcard"
           - include: "#type_token_qualified_name"
@@ -419,7 +419,9 @@ repository:
     captures:
       "0":
         patterns:
-          - include: "#agda_builtin_sorts"
+          - include: "#agda_builtin"
+          - name: keyword.operator.overloaded.agda
+            match: (?<=^|\{\!|\{-\#|[\s;{}()@"._])(<-|←)(?=$|\!\}|[\s;{}()@"._])
           - include: "#illegal_name_parts"
 
   name_token:
@@ -437,6 +439,7 @@ repository:
     captures:
       "0":
         patterns:
+          - include: "#agda_names_syntactic_sugar"
           - include: "#qualify_punctuation"
           - include: "#name_token"
 
@@ -570,9 +573,20 @@ repository:
       - name: constant.numeric.float.agda
         match: (?<=^|\{\!|\{-\#|[\s;{}()@".])(-?[0-9]+\.[0-9]+([eE][+-]?[0-9]+)?|-?[0-9]+[eE][+-]?[0-9]+)(?=$|\!\}|[\s;{}()@".])
 
-  agda_builtin_sorts:
-    name: support.type.sort.agda
-    match: (?<=^|\{\!|\{-\#|[\s;{}()@".])(Level|LevelUniv|(SSet|Set|Prop)ω?([0-9]*|[₀-₉]*))(?=$|\!\}|[\s;{}()@".])
+  agda_builtin:
+    patterns:
+      - name: support.type.sort.agda
+        match: (?<=^|\{\!|\{-\#|[\s;{}()@".])((SSet|Set|Prop)ω([0-9]*|[₀-₉]*))(?=$|\!\}|[\s;{}()@".])
+      - name: support.class.sort.agda
+        match: (?<=^|\{\!|\{-\#|[\s;{}()@".])((SSet|Set|Prop)([0-9]*|[₀-₉]*))(?=$|\!\}|[\s;{}()@".])
+      - name: support.type.level.agda
+        match:  (?<=^|\{\!|\{-\#|[\s;{}()@".])LevelUniv(?=$|\!\}|[\s;{}()@".])
+      - name: support.class.interval.agda
+        match:  (?<=^|\{\!|\{-\#|[\s;{}()@".])Level(?=$|\!\}|[\s;{}()@".])
+      - name: support.type.interval.agda
+        match:  (?<=^|\{\!|\{-\#|[\s;{}()@".])IUniv(?=$|\!\}|[\s;{}()@".])
+      # - name: support.class.interval.agda
+      #   match:  (?<=^|\{\!|\{-\#|[\s;{}()@".])I(?=$|\!\}|[\s;{}()@".])
 
   agda_simple_blocks:
     patterns:
@@ -693,7 +707,30 @@ repository:
   agda_constants:
     patterns:
       - include: "#agda_literals"
-      - include: "#agda_builtin_sorts"
+      - include: "#agda_builtin"
+
+  # Names with special meaning for certain notations
+  # https://agda.readthedocs.io/en/latest/language/syntactic-sugar.html
+  agda_names_syntactic_sugar:
+    patterns:
+      - match: (?<=^|\{\!|\{-\#|[\s;{}()@"])(_?)(>>=?)(_?)(?=$|\!\}|[\s;{}()@"])
+        captures:
+          1:
+            name: variable.language.wildcard.agda
+          2:
+            name: support.function.monad.agda
+          3:
+            name: variable.language.wildcard.agda
+      - match: (?<=^|\{\!|\{-\#|[\s;{}()@"])(_?)(<*>|<\|>)(_?)(?=$|\!\}|[\s;{}()@"])
+        captures:
+          1:
+            name: variable.language.wildcard.agda
+          2:
+            name: support.function.applicative_functor.agda
+          3:
+            name: variable.language.wildcard.agda
+      - name: support.function.applicative_functor.agda
+        match: (?<=^|\{\!|\{-\#|[\s;{}()@"])pure|empty(?=$|\!\}|[\s;{}()@"])
 
   agda_attributes:
     begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])\@
