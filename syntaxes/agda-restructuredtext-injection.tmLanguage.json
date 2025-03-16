@@ -26,7 +26,7 @@
           "match": "(^|\\G)(\\.\\.).*$",
           "name": "comment.line.rst.agda",
           "captures": {
-            "1": {
+            "2": {
               "name": "punctuation.definition.comment.rst"
             }
           }
