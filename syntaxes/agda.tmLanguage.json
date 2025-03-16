@@ -19,7 +19,7 @@
       "end": "((?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])where(?=$|\\!\\}|[\\s;{}()@\".]))|^(?!\\2\\s)",
       "beginCaptures": {
         "3": {
-          "name": "keyword.control.module.agda"
+          "name": "storage.type.namespace.module.agda"
         }
       },
       "endCaptures": {
@@ -36,7 +36,7 @@
           "end": "(?=[\\s;{}()@\".]where($|[\\s;{}()@\".]))",
           "beginCaptures": {
             "0": {
-              "name": "entity.name.namespace.module.agda",
+              "name": "entity.name.section.module.agda",
               "patterns": [
                 {
                   "include": "#module_label"
@@ -62,7 +62,7 @@
       "end": "((?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])where(?=$|\\!\\}|[\\s;{}()@\".]))|^(?!\\2\\s)",
       "beginCaptures": {
         "3": {
-          "name": "keyword.control.data.agda"
+          "name": "storage.type.class.data.agda"
         }
       },
       "endCaptures": {
@@ -79,10 +79,10 @@
           "end": "(?=[\\s;{}()@\".]where($|[\\s;{}()@\".]))",
           "beginCaptures": {
             "0": {
-              "name": "entity.name.namespace.module.agda",
+              "name": "entity.name.type.data.agda",
               "patterns": [
                 {
-                  "include": "#module_label"
+                  "include": "#qualified_name"
                 }
               ]
             }
@@ -108,7 +108,7 @@
       "end": "((?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])where(?=$|\\!\\}|[\\s;{}()@\".]))|^(?!\\2\\s)",
       "beginCaptures": {
         "3": {
-          "name": "keyword.control.record.agda"
+          "name": "storage.type.class.record.agda"
         }
       },
       "endCaptures": {
@@ -126,10 +126,10 @@
           "end": "(?=[\\s;{}()@\".]where($|[\\s;{}()@\".]))",
           "beginCaptures": {
             "0": {
-              "name": "entity.name.namespace.module.agda",
+              "name": "entity.name.type.record.agda",
               "patterns": [
                 {
-                  "include": "#module_label"
+                  "include": "#qualified_name"
                 }
               ]
             }
@@ -153,7 +153,7 @@
       "begin": "(^|\\G)(\\s*)(import|open(\\s+import)?)(?=$|\\s)",
       "beginCaptures": {
         "3": {
-          "name": "keyword.control.open_import"
+          "name": "keyword.control.import.agda"
         }
       },
       "while": "(^|\\G)\\2(?=\\s)",
@@ -174,7 +174,7 @@
               "name": "punctuation.section.parens.end.agda"
             }
           },
-          "name": "meta.statement.open_import.names.agda",
+          "name": "meta.statement.import.names.agda",
           "patterns": [
             {
               "include": "#agda_comments"
@@ -717,7 +717,7 @@
       "match": "_"
     },
     "qualify_punctuation": {
-      "name": "punctuation.separator.namespace.period.agda",
+      "name": "punctuation.separator.period.agda",
       "match": "\\."
     },
     "dot_pattern": {
@@ -795,14 +795,10 @@
       "match": "((?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\"._])([=|→:?\\\\λ∀'⦇⦈⦃⦄]|->|--|abstract|(co)?inductive|constructor|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with)(?=$|\\!\\}|[\\s;{}()@\"._]))"
     },
     "name_part": {
-      "name": "entity.name.part.agda",
       "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\"._])(?!'|--)[^\\s;{}()@\"._]+(?=$|\\!\\}|[\\s;{}()@\"._])",
       "captures": {
         "0": {
           "patterns": [
-            {
-              "include": "#agda_builtin"
-            },
             {
               "name": "keyword.operator.overloaded.agda",
               "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\"._])(<-|←)(?=$|\\!\\}|[\\s;{}()@\"._])"
@@ -815,13 +811,15 @@
       }
     },
     "name_token": {
-      "name": "entity.name.agda",
       "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])_?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?(?=$|\\!\\}|[\\s;{}()@\".])",
       "captures": {
         "0": {
           "patterns": [
             {
               "include": "#name_part"
+            },
+            {
+              "include": "#agda_builtin"
             },
             {
               "include": "#placeholder"
@@ -831,7 +829,6 @@
       }
     },
     "qualified_name": {
-      "name": "entity.name.qualified.agda",
       "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\"])_?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?(\\._?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?)*(?=$|\\!\\}|[\\s;{}()@\"])",
       "captures": {
         "0": {
@@ -864,9 +861,9 @@
     },
     "module_qualified_name": {
       "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\"])_?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?(\\._?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?)*(?=$|\\!\\}|[\\s;{}()@\"])",
-      "name": "entity.name.namespace.module.qualified.agda",
       "captures": {
         "0": {
+          "name": "entity.name.section.module.agda",
           "patterns": [
             {
               "include": "#qualified_name"
@@ -912,7 +909,6 @@
       }
     },
     "term_name": {
-      "name": "entity.name.function.term.agda",
       "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])(_?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?|_)(?=$|\\!\\}|[\\s;{}()@\".])",
       "captures": {
         "0": {
@@ -1429,7 +1425,7 @@
           "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])(overlap|quote(Term)?|unquote(Decl|Def)?)(?=$|\\!\\}|[\\s;{}()@\".])"
         },
         {
-          "name": "keyword.control.open_import.agda",
+          "name": "keyword.control.import.agda",
           "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])(hiding|public|renaming|using)(?=$|\\!\\}|[\\s;{}()@\".])"
         }
       ]

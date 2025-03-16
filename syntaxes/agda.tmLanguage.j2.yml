@@ -42,7 +42,7 @@ repository:
     begin: (^|\G)(\s*)(module){{ token_boundary_end }}
     end: ({{ token_boundary('where') }})|^(?!\2\s) #TODO: when we make this into a block, this will be a new begin instead of an end
     beginCaptures:
-      "3": { name: keyword.control.module.agda }
+      "3": { name: storage.type.namespace.module.agda }
     endCaptures:
       "0": { name: keyword.control.where.module.agda }
     patterns:
@@ -51,7 +51,7 @@ repository:
         end: (?={{ token_boundary_char }}where($|{{ token_boundary_char }}))
         beginCaptures:
           "0":
-            name: entity.name.namespace.module.agda
+            name: entity.name.section.module.agda
             patterns:
               - include: "#module_label"
         contentName: meta.declaration.parameters.module.agda
@@ -64,7 +64,7 @@ repository:
     begin: (^|\G)(\s*)(data){{ token_boundary_end }}
     end: ({{ token_boundary('where') }})|^(?!\2\s)
     beginCaptures:
-      "3": { name: keyword.control.data.agda }
+      "3": { name: storage.type.class.data.agda }
     endCaptures:
       "1": { name: keyword.control.where.data.agda }
     patterns:
@@ -73,9 +73,9 @@ repository:
         end: (?={{ token_boundary_char }}where($|{{ token_boundary_char }}))
         beginCaptures:
           "0":
-            name: entity.name.namespace.module.agda
+            name: entity.name.type.data.agda
             patterns:
-              - include: "#module_label"
+              - include: "#qualified_name"
         contentName: meta.declaration.parameters.data.agda
         patterns:
           - include: "#parameter_declaration"
@@ -87,7 +87,7 @@ repository:
     begin: (^|\G)(\s*)(record){{ token_boundary_end }}
     end: ({{ token_boundary('where') }})|^(?!\2\s)
     beginCaptures:
-      "3": { name: keyword.control.record.agda }
+      "3": { name: storage.type.class.record.agda }
     endCaptures:
       "1": { name: keyword.control.where.record.agda }
     patterns:
@@ -97,19 +97,19 @@ repository:
         end: (?={{ token_boundary_char }}where($|{{ token_boundary_char }}))
         beginCaptures:
           "0":
-            name: entity.name.namespace.module.agda
+            name: entity.name.type.record.agda
             patterns:
-              - include: "#module_label"
+              - include: "#qualified_name"
         contentName: meta.declaration.parameters.record.agda
         patterns:
           - include: "#parameter_declaration"
           - include: "#type"
-          - include: "#agda_syntax" # TODO: this is a bit of a hack, would rather recognize the colon more deliberately
+          - include: "#agda_syntax" # TODO: this is a bit of a hack, should recognize the colon directly
 
   open_import_statement:
     begin: (^|\G)(\s*)(import|open(\s+import)?)(?=$|\s)
     beginCaptures:
-      "3": { name: keyword.control.open_import }
+      "3": { name: keyword.control.import.agda }
     while: (^|\G)\2(?=\s)
     patterns:
       - include: "#agda_comments"
@@ -119,7 +119,7 @@ repository:
         end: \)
         endCaptures:
           "0": { name: punctuation.section.parens.end.agda }
-        name: meta.statement.open_import.names.agda
+        name: meta.statement.import.names.agda
         patterns:
           - include: "#agda_comments"
           - match: {{ token_boundary('to') }}
@@ -209,7 +209,7 @@ repository:
 {% endfor %}
 
   variable_type_signature:
-    match: (^|\G)(([^:)}⦄]|(?<!^|{{ token_boundary_char }})[:⦄]|[:⦄](?!$|{{ token_boundary_char }}))+){{ token_boundary_char }}(:){{ token_boundary_end }} # TODO: refactor, compare to forall_v...
+    match: (^|\G)(([^:)}⦄]|(?<!^|{{ token_boundary_char }})[:⦄]|[:⦄](?!$|{{ token_boundary_char }}))+){{ token_boundary_char }}(:){{ token_boundary_end }} # TODO: refactor, compare to forall...
     name: meta.declaration.variable_type_signature.agda
     captures:
       "2":
@@ -291,7 +291,7 @@ repository:
 
   lambda_abstraction_start:
     begin: {{ token_boundary('(\\\\|λ)') }}
-    end: {{ token_boundary('((->|→)|(where))') }}|({{ absurd_pattern }})|(?=\{) # TODO: {} thingy
+    end: {{ token_boundary('((->|→)|(where))') }}|({{ absurd_pattern }})|(?=\{) # TODO: λ{} syntax
     beginCaptures:
       "1": { name: keyword.operator.lambda.agda }
     endCaptures:
@@ -319,7 +319,7 @@ repository:
     match: _
 
   qualify_punctuation:
-    name: punctuation.separator.namespace.period.agda
+    name: punctuation.separator.period.agda
     match: \.
 
   dot_pattern:
@@ -365,27 +365,24 @@ repository:
     match: ({{ name_part_boundary('([=|→:?\\\\λ∀\'⦇⦈⦃⦄]|->|--|abstract|(co)?inductive|constructor|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with)') }})
 
   name_part:
-    name: entity.name.part.agda
     match: {{ name_part }}
     captures:
       "0":
         patterns:
-          - include: "#agda_builtin"
           - name: keyword.operator.overloaded.agda
             match: {{name_part_boundary('(<-|←)')}}
           - include: "#illegal_name_parts"
 
   name_token:
-    name: entity.name.agda
     match: {{ name_token }}
     captures:
       "0":
         patterns:
           - include: "#name_part"
+          - include: "#agda_builtin"
           - include: "#placeholder"
 
   qualified_name:
-    name: entity.name.qualified.agda
     match: {{ name_qualified }}
     captures:
       "0":
@@ -404,9 +401,9 @@ repository:
 
   module_qualified_name:
     match: {{ name_qualified }}
-    name: entity.name.namespace.module.qualified.agda
     captures:
       "0":
+        name: entity.name.section.module.agda
         patterns:
           - include: "#qualified_name"
 
@@ -430,7 +427,6 @@ repository:
           - include: "#name_token"
 
   term_name:
-    name: entity.name.function.term.agda
     match: {{ token_boundary('(' + NAME_TOKEN + '|_)') }}
     captures:
       "0":
@@ -634,7 +630,7 @@ repository:
         match: {{ token_boundary('((co)?inductive|(no-)?eta-equality|private|public)') }}
       - name: keyword.control.agda
         match: {{ token_boundary('(overlap|quote(Term)?|unquote(Decl|Def)?)') }}
-      - name: keyword.control.open_import.agda
+      - name: keyword.control.import.agda
         match: {{ token_boundary('(hiding|public|renaming|using)') }}
 
   agda_token:
