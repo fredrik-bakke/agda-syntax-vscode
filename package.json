@@ -42,7 +42,7 @@
       },
       {
         "language": "lagda-md",
-        "scopeName": "text.html.markdown.lagda",
+        "scopeName": "text.html.markdown.agda",
         "path": "./syntaxes/literate-agda-markdown.tmLanguage.json"
       },
       {
