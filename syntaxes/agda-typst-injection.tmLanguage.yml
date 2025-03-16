@@ -1,0 +1,22 @@
+$schema: https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
+comment: This TextMate Grammar file has been generated from a YAML file.
+name: Agda Typst Injection
+scopeName: source.agda.embedded.typst
+fileTypes: []
+injectionSelector: L:source.typst
+patterns:
+  - begin: (^|\G)(\s*)(\`{3,}|~{3,})\s*(?i:(agda)(\s+[^`~]*)?$)
+    end: (^|\G)(\2|\s{0,3})(\3)\s*$
+    name: markup.fenced_code.block.agda
+    beginCaptures:
+      "3": { name: punctuation.definition.typst }
+      "4": { name: fenced_code.block.language.typst }
+      "5": { name: fenced_code.block.language.attributes.typst }
+    endCaptures:
+      "3": { name: punctuation.definition.typst }
+    patterns:
+      - begin: (^|\G)(\s*)(.*)
+        while: (^|\G)(?!\s*([`~]{3,})\s*$)
+        contentName: meta.embedded.block.agda
+        patterns:
+          - include: source.agda

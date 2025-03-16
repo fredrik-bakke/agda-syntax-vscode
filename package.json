@@ -56,6 +56,23 @@
         "embeddedLanguages": {
           "meta.embedded.block.agda": "agda"
         }
+      },
+      {
+        "language": "lagda-typst",
+        "scopeName": "source.typst.agda",
+        "path": "./syntaxes/literate-agda-typst.tmLanguage.json"
+      },
+      {
+        "scopeName": "source.agda.embedded.typst",
+        "path": "./syntaxes/agda-typst-injection.tmLanguage.json",
+        "injectTo": [
+          "text.typst",
+          "source.typst",
+          "source.typst.agda"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.agda": "agda"
+        }
       }
     ]
   },
