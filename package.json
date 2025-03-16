@@ -61,7 +61,6 @@
         "scopeName": "source.agda.embedded.typst",
         "path": "./syntaxes/agda-typst-injection.tmLanguage.json",
         "injectTo": [
-          "text.typst",
           "source.typst",
           "source.typst.agda"
         ],
@@ -73,9 +72,19 @@
         "scopeName": "source.agda.embedded.org",
         "path": "./syntaxes/agda-org-injection.tmLanguage.json",
         "injectTo": [
-          "text.org",
           "source.org",
           "source.org.agda"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.agda": "agda"
+        }
+      },
+      {
+        "scopeName": "source.agda.embedded.forester",
+        "path": "./syntaxes/agda-forester-injection.tmLanguage.json",
+        "injectTo": [
+          "source.forester",
+          "source.forester.agda"
         ],
         "embeddedLanguages": {
           "meta.embedded.block.agda": "agda"
