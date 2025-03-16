@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-  "name": "Literate Agda Markdown",
+  "name": "Literate Agda (markdown)",
   "scopeName": "text.html.markdown.agda",
   "fileTypes": ["lagda.md"],
   "patterns": [
