@@ -383,15 +383,13 @@ repository:
     captures:
       1: { name: keyword.operator.dot_pattern.period.agda }
       2:
-        name: comment.block.dot_pattern.agda
         patterns:
-          - include: "#qualified_name"
+          - include: "#dot_pattern_qualified_name"
 
   dot_pattern_parenthesized:
     begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])(?<!\.)(\.)\s*(\() #! there can be a newline before the opening parenthesis
     end: \)
     name: meta.block.dot_pattern.agda
-    contentName: comment.block.dot_pattern.agda
     beginCaptures:
       1: { name: keyword.operator.dot_pattern.period.agda}
       2: { name: punctuation.definition.dot_pattern.begin.agda }
@@ -408,7 +406,25 @@ repository:
     patterns:
       - include: "#agda_comments"
       - include: "#dot_pattern_internal_parentheses"
+      - include: "#dot_pattern_qualified_name"
       - include: "#agda_syntax"
+
+  dot_pattern_qualify_punctuation:
+    name: keyword.operator.dot_pattern.period.agda
+    match: \.
+
+  dot_pattern_qualified_name:
+    match: _?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?(\._?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?)*
+    captures:
+      0:
+        patterns:
+          - include: "#agda_names_syntactic_sugar"
+          - include: "#dot_pattern_qualify_punctuation"
+          - include: "#dot_pattern_name_token"
+
+  dot_pattern_name_token:
+    name: comment.block.dot_pattern.agda
+    match: _?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?
 
   illegal_name_parts:
     name: invalid.illegal.name.part.keyword.agda
