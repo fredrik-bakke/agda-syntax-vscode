@@ -20,16 +20,13 @@ repository:
       2: { name: keyword.control.equals.module.agda }
     patterns:
       - include: "#agda_comments"
-      - begin: (?<=(^|\G|(^|\G|[\s;{}()@".])module\s)\s*)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?(\._?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?)*|_)(?=$|\!\}|[\s;{}()@".])
-        end: (?<=^|\{\!|\{-\#|[\s;{}()@".])(where)(?=$|\!\}|[\s;{}()@".])|(?<=^|\{\!|\{-\#|[\s;{}()@".])(=)(?=$|\!\}|[\s;{}()@".])
+      - begin: (?<=(^|\G|[\s;{}()@".])module\s+)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?(\._?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?)*|_)(?=$|\!\}|[\s;{}()@".])
+        end: (?=(?<=^|\{\!|\{-\#|[\s;{}()@".])(where)(?=$|\!\}|[\s;{}()@".])|(?<=^|\{\!|\{-\#|[\s;{}()@".])(=)(?=$|\!\}|[\s;{}()@".]))
         beginCaptures:
           0:
             name: entity.name.section.module.agda
             patterns:
               - include: "#module_label"
-        endCaptures:
-          1: { name: keyword.control.where.module.agda }
-          2: { name: keyword.control.equals.module.agda }
         contentName: meta.declaration.parameters.module.agda
         patterns:
           - include: "#parameter_declaration"
@@ -45,7 +42,7 @@ repository:
       1: { name: keyword.control.where.data.agda }
     patterns:
       - include: "#agda_comments"
-      - begin: (?<=(^|\G|(^|\G|[\s;{}()@".])data\s)\s*)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?|_)(?=$|\!\}|[\s;{}()@".])
+      - begin: (?<=(^|\G|[\s;{}()@".])data\s+)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?|_)(?=$|\!\}|[\s;{}()@".])
         end: (?=[\s;{}()@".]where($|[\s;{}()@".]))
         beginCaptures:
           0:
@@ -69,7 +66,7 @@ repository:
     patterns:
       - include: "#agda_comments"
       - comment: Capture name of record
-        begin: (?<=(^|\G|(^|\G|[\s;{}()@".])record\s)\s*)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?|_)(?=$|\!\}|[\s;{}()@".])
+        begin: (?<=(^|\G|[\s;{}()@".])record\s+)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?|_)(?=$|\!\}|[\s;{}()@".])
         end: (?=[\s;{}()@".]where($|[\s;{}()@".]))
         beginCaptures:
           0:

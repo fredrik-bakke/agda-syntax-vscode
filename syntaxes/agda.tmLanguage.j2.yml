@@ -48,16 +48,13 @@ repository:
       2: { name: keyword.control.equals.module.agda }
     patterns:
       - include: "#agda_comments"
-      - begin: (?<=(^|\G|(^|\G|{{ token_boundary_char }})module\s)\s*)({{ NAME_QUALIFIED }}|_){{ token_boundary_end }}
-        end: {{ token_boundary('(where)') }}|{{ token_boundary('(=)') }}
+      - begin: (?<=(^|\G|{{ token_boundary_char }})module\s+)({{ NAME_QUALIFIED }}|_){{ token_boundary_end }}
+        end: (?={{ token_boundary('(where)') }}|{{ token_boundary('(=)') }})
         beginCaptures:
           0:
             name: entity.name.section.module.agda
             patterns:
               - include: "#module_label"
-        endCaptures:
-          1: { name: keyword.control.where.module.agda }
-          2: { name: keyword.control.equals.module.agda }
         contentName: meta.declaration.parameters.module.agda
         patterns:
           - include: "#parameter_declaration"
@@ -73,7 +70,7 @@ repository:
       1: { name: keyword.control.where.data.agda }
     patterns:
       - include: "#agda_comments"
-      - begin: (?<=(^|\G|(^|\G|{{ token_boundary_char }})data\s)\s*)({{ NAME_TOKEN }}|_){{ token_boundary_end }}
+      - begin: (?<=(^|\G|{{ token_boundary_char }})data\s+)({{ NAME_TOKEN }}|_){{ token_boundary_end }}
         end: (?={{ token_boundary_char }}where($|{{ token_boundary_char }}))
         beginCaptures:
           0:
@@ -97,7 +94,7 @@ repository:
     patterns:
       - include: "#agda_comments"
       - comment: Capture name of record
-        begin: (?<=(^|\G|(^|\G|{{ token_boundary_char }})record\s)\s*)({{ NAME_TOKEN }}|_){{ token_boundary_end }}
+        begin: (?<=(^|\G|{{ token_boundary_char }})record\s+)({{ NAME_TOKEN }}|_){{ token_boundary_end }}
         end: (?={{ token_boundary_char }}where($|{{ token_boundary_char }}))
         beginCaptures:
           0:
