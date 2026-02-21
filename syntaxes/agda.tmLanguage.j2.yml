@@ -108,9 +108,13 @@ repository:
           - include: "#agda_syntax" # TODO: this is a bit of a hack, should recognize the colon directly
 
   open_import_statement:
-    begin: (^|\G)(\s*)(import|open(\s+import)?)(?=$|\s)
+    begin: (^|\G)(\s*)(import|open(\s+import)?)(?=$|\s)(\s*)({{ NAME_QUALIFIED }})?
     beginCaptures:
       3: { name: keyword.control.import.agda }
+      6:
+        name: entity.name.namespace.agda
+        patterns:
+          - include: "#qualified_name"
     while: (^|\G)\2(?=\s)
     patterns:
       - include: "#agda_comments"
@@ -126,10 +130,16 @@ repository:
           - match: {{ token_boundary('to') }}
             name: keyword.other.to.agda
           - include: "#term_name"
+      - match: {{ token_boundary('(as)') }}(\s+)({{ NAME_QUALIFIED }}){{ token_boundary_end }}
+        captures:
+          1: { name: keyword.other.as.agda }
+          3:
+            name: entity.name.namespace.agda
+            patterns:
+              - include: "#qualified_name"
       - match: {{ token_boundary('as') }}
         name: keyword.other.as.agda
       - include: "#agda_syntax"
-      - include: "#module_qualified_name"
 
   infix_block:
     begin: (^|\G)(\s*)(infix[lr]?){{ token_boundary_end }}
