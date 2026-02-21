@@ -34,6 +34,9 @@
         "scopeName": "source.agda.embedded.latex",
         "path": "./syntaxes/agda-latex-injection.tmLanguage.json",
         "injectTo": [
+          "source.tex",
+          "source.tex.agda",
+          "text.tex.latex",
           "text.tex.latex.agda"
         ],
         "embeddedLanguages": {
