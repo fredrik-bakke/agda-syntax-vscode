@@ -713,7 +713,7 @@
       }
     },
     "term_type_signature_colon_on_first_line": {
-      "begin": "(^|\\G)(\\s*)(((_?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?|_)\\s+)*)(:)(?=$|\\!\\}|[\\s;{}()@\".])",
+      "begin": "(^|\\G)(\\s*)(((_?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?|_)\\s+)+)(:)(?=$|\\!\\}|[\\s;{}()@\".])",
       "while": "(^|\\G)\\2(?=\\s)",
       "name": "meta.declaration.function.agda",
       "beginCaptures": {
@@ -732,6 +732,24 @@
           ]
         },
         "7": {
+          "name": "keyword.operator.colon.agda"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#parameter_declaration"
+        },
+        {
+          "include": "#type"
+        }
+      ]
+    },
+    "term_type_signature_colon_on_separate_line": {
+      "begin": "(^|\\G)(\\s*)(:)(?=$|\\!\\}|[\\s;{}()@\".])",
+      "while": "(^|\\G)\\2",
+      "name": "meta.declaration.function.agda",
+      "beginCaptures": {
+        "4": {
           "name": "keyword.operator.colon.agda"
         }
       },
@@ -1611,6 +1629,9 @@
         },
         {
           "include": "#term_type_signature_colon_on_first_line"
+        },
+        {
+          "include": "#term_type_signature_colon_on_separate_line"
         }
       ]
     },
