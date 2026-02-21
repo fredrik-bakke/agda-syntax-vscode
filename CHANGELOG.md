@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1] - 2026-02-21
+
+- Fix a series of issues with `module`, `data` and `record` declarations
+- Change highlighting scope for modules and imports
+- Highlight type signatures where `:` is placed on a new line
+- Highlight all `.` in dot-patterns
+
 ## [0.7.0] - 2024-03-16
 
 - Add language support for reStructuredText, Org, Typst, and Forester
