@@ -54,7 +54,7 @@
         }
       },
       {
-        "language": "lagda-md",
+        "language": "lagda-markdown",
         "scopeName": "text.html.markdown.agda",
         "path": "./syntaxes/literate-agda-markdown.tmLanguage.json"
       },
