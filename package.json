@@ -26,17 +26,10 @@
         "path": "./syntaxes/agda.tmLanguage.json"
       },
       {
-        "language": "lagda-tex",
-        "scopeName": "text.tex.latex.agda",
-        "path": "./syntaxes/literate-agda-latex.tmLanguage.json"
-      },
-      {
         "scopeName": "source.agda.embedded.latex",
         "path": "./syntaxes/agda-latex-injection.tmLanguage.json",
         "injectTo": [
-          "source.tex",
           "source.tex.agda",
-          "text.tex.latex",
           "text.tex.latex.agda"
         ],
         "embeddedLanguages": {
@@ -55,11 +48,6 @@
         "embeddedLanguages": {
           "meta.embedded.block.agda": "agda"
         }
-      },
-      {
-        "language": "lagda-markdown",
-        "scopeName": "text.html.markdown.agda",
-        "path": "./syntaxes/literate-agda-markdown.tmLanguage.json"
       },
       {
         "scopeName": "source.agda.embedded.markdown",

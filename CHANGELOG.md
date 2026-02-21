@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.7.2] - 2026-02-21
+
+- Remove conflicting language configurations for markdown and latex.
+
 ## [0.7.1] - 2026-02-21
 
 - Fix a series of issues with `module`, `data` and `record` declarations
