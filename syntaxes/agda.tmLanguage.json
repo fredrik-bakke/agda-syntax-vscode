@@ -16,15 +16,18 @@
     "module_declaration": {
       "contentName": "meta.declaration.module.agda",
       "begin": "(^|\\G)(\\s*)(module)(?=$|\\!\\}|[\\s;{}()@\".])",
-      "end": "((?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])where(?=$|\\!\\}|[\\s;{}()@\".]))|^(?!\\2\\s)",
+      "end": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])(where)(?=$|\\!\\}|[\\s;{}()@\".])|(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])(=)(?=$|\\!\\}|[\\s;{}()@\".])|^(?!\\2\\s)",
       "beginCaptures": {
         "3": {
           "name": "storage.type.namespace.module.agda"
         }
       },
       "endCaptures": {
-        "0": {
+        "1": {
           "name": "keyword.control.where.module.agda"
+        },
+        "2": {
+          "name": "keyword.control.equals.module.agda"
         }
       },
       "patterns": [
@@ -33,7 +36,7 @@
         },
         {
           "begin": "(?<=(^|\\G|(^|\\G|[\\s;{}()@\".])module\\s)\\s*)(_?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?(\\._?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?)*|_)(?=$|\\!\\}|[\\s;{}()@\".])",
-          "end": "(?=[\\s;{}()@\".]where($|[\\s;{}()@\".]))",
+          "end": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])(where)(?=$|\\!\\}|[\\s;{}()@\".])|(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])(=)(?=$|\\!\\}|[\\s;{}()@\".])",
           "beginCaptures": {
             "0": {
               "name": "entity.name.section.module.agda",
@@ -42,6 +45,14 @@
                   "include": "#module_label"
                 }
               ]
+            }
+          },
+          "endCaptures": {
+            "1": {
+              "name": "keyword.control.where.module.agda"
+            },
+            "2": {
+              "name": "keyword.control.equals.module.agda"
             }
           },
           "contentName": "meta.declaration.parameters.module.agda",
@@ -268,20 +279,20 @@
     "instance_parameter_declaration": {
       "patterns": [
         {
-          "include": "#instance_parameter_declaration_double_brace"
+          "include": "#instance_double_brace_parameter_declaration"
         },
         {
-          "include": "#instance_parameter_declaration_unicode"
+          "include": "#instance_unicode_parameter_declaration"
         }
       ]
     },
     "instance_forall_parameter_declaration": {
       "patterns": [
         {
-          "include": "#forall_instance_parameter_declaration_double_brace"
+          "include": "#instance_double_brace_forall_parameter_declaration"
         },
         {
-          "include": "#forall_instance_parameter_declaration_unicode"
+          "include": "#instance_unicode_forall_parameter_declaration"
         }
       ]
     },

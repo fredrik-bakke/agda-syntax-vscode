@@ -40,20 +40,24 @@ repository:
   module_declaration:
     contentName: meta.declaration.module.agda
     begin: (^|\G)(\s*)(module){{ token_boundary_end }}
-    end: ({{ token_boundary('where') }})|^(?!\2\s) #TODO: when we make this into a block, this will be a new begin instead of an end
+    end: {{ token_boundary('(where)') }}|{{ token_boundary('(=)') }}|^(?!\2\s) #TODO: when we make this into a block, this will be a new begin instead of an end
     beginCaptures:
       3: { name: storage.type.namespace.module.agda }
     endCaptures:
-      0: { name: keyword.control.where.module.agda }
+      1: { name: keyword.control.where.module.agda }
+      2: { name: keyword.control.equals.module.agda }
     patterns:
       - include: "#agda_comments"
       - begin: (?<=(^|\G|(^|\G|{{ token_boundary_char }})module\s)\s*)({{ NAME_QUALIFIED }}|_){{ token_boundary_end }}
-        end: (?={{ token_boundary_char }}where($|{{ token_boundary_char }}))
+        end: {{ token_boundary('(where)') }}|{{ token_boundary('(=)') }}
         beginCaptures:
           0:
             name: entity.name.section.module.agda
             patterns:
               - include: "#module_label"
+        endCaptures:
+          1: { name: keyword.control.where.module.agda }
+          2: { name: keyword.control.equals.module.agda }
         contentName: meta.declaration.parameters.module.agda
         patterns:
           - include: "#parameter_declaration"
@@ -164,13 +168,13 @@ repository:
 
   instance_parameter_declaration:
     patterns:
-      - include: "#instance_parameter_declaration_double_brace"
-      - include: "#instance_parameter_declaration_unicode"
+      - include: "#instance_double_brace_parameter_declaration"
+      - include: "#instance_unicode_parameter_declaration"
 
   instance_forall_parameter_declaration:
     patterns:
-      - include: "#forall_instance_parameter_declaration_double_brace"
-      - include: "#forall_instance_parameter_declaration_unicode"
+      - include: "#instance_double_brace_forall_parameter_declaration"
+      - include: "#instance_unicode_forall_parameter_declaration"
 
 {% for param_decl in [
   {"id": "explicit", "begin": "\\(", "end": "\\)"},
