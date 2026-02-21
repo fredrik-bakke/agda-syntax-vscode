@@ -19,7 +19,7 @@
       "end": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])(where)(?=$|\\!\\}|[\\s;{}()@\".])|(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])(=)(?=$|\\!\\}|[\\s;{}()@\".])|^(?!\\2\\s)",
       "beginCaptures": {
         "3": {
-          "name": "storage.type.namespace.module.agda"
+          "name": "keyword.control.module.agda"
         }
       },
       "endCaptures": {
@@ -27,7 +27,7 @@
           "name": "keyword.control.where.module.agda"
         },
         "2": {
-          "name": "keyword.control.equals.module.agda"
+          "name": "keyword.operator.assignment.agda"
         }
       },
       "patterns": [
@@ -39,7 +39,7 @@
           "end": "(?=(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])(where)(?=$|\\!\\}|[\\s;{}()@\".])|(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])(=)(?=$|\\!\\}|[\\s;{}()@\".]))",
           "beginCaptures": {
             "0": {
-              "name": "entity.name.section.module.agda",
+              "name": "entity.name.namespace.agda",
               "patterns": [
                 {
                   "include": "#module_label"
@@ -866,7 +866,7 @@
       "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\"])_?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?(\\._?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?)*(?=$|\\!\\}|[\\s;{}()@\"])",
       "captures": {
         "0": {
-          "name": "entity.name.section.module.agda",
+          "name": "entity.name.namespace.agda",
           "patterns": [
             {
               "include": "#qualified_name"
@@ -1088,7 +1088,7 @@
           "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])((SSet|Set|Prop)ω([0-9]*|[₀-₉]*))(?=$|\\!\\}|[\\s;{}()@\".])"
         },
         {
-          "name": "support.class.sort.agda",
+          "name": "support.type.sort.agda",
           "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])((SSet|Set|Prop)([0-9]*|[₀-₉]*))(?=$|\\!\\}|[\\s;{}()@\".])"
         },
         {
@@ -1096,7 +1096,7 @@
           "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])LevelUniv(?=$|\\!\\}|[\\s;{}()@\".])"
         },
         {
-          "name": "support.class.interval.agda",
+          "name": "support.type.interval.agda",
           "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])Level(?=$|\\!\\}|[\\s;{}()@\".])"
         },
         {
