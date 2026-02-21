@@ -20,10 +20,21 @@ repository:
       2: { name: keyword.operator.assignment.agda }
     patterns:
       - include: "#agda_comments"
-      - begin: (?<=(^|\G|[\s;{}()@".])module\s+)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?(\._?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?)*|_)(?=$|\!\}|[\s;{}()@".])
+      - begin: \G(\s*)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?(\._?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?)*|_)(?=$|\!\}|[\s;{}()@".])
         end: (?=(?<=^|\{\!|\{-\#|[\s;{}()@".])(where)(?=$|\!\}|[\s;{}()@".])|(?<=^|\{\!|\{-\#|[\s;{}()@".])(=)(?=$|\!\}|[\s;{}()@".]))
         beginCaptures:
-          0:
+          2:
+            name: entity.name.namespace.agda
+            patterns:
+              - include: "#module_label"
+        contentName: meta.declaration.parameters.module.agda
+        patterns:
+          - include: "#parameter_declaration"
+          - include: "#agda_syntax"
+      - begin: ^(\s+)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?(\._?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?)*|_)(?=$|\!\}|[\s;{}()@".])
+        end: (?=(?<=^|\{\!|\{-\#|[\s;{}()@".])(where)(?=$|\!\}|[\s;{}()@".])|(?<=^|\{\!|\{-\#|[\s;{}()@".])(=)(?=$|\!\}|[\s;{}()@".]))
+        beginCaptures:
+          2:
             name: entity.name.namespace.agda
             patterns:
               - include: "#module_label"
@@ -42,10 +53,22 @@ repository:
       1: { name: keyword.control.where.data.agda }
     patterns:
       - include: "#agda_comments"
-      - begin: (?<=(^|\G|[\s;{}()@".])data\s+)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?|_)(?=$|\!\}|[\s;{}()@".])
+      - begin: \G(\s*)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?|_)(?=$|\!\}|[\s;{}()@".])
         end: (?=[\s;{}()@".]where($|[\s;{}()@".]))
         beginCaptures:
-          0:
+          2:
+            name: entity.name.type.data.agda
+            patterns:
+              - include: "#qualified_name"
+        contentName: meta.declaration.parameters.data.agda
+        patterns:
+          - include: "#parameter_declaration"
+          - include: "#type" # This one only matches after the colon, as all arguments before the colon will have been matched by #parameter_declaration
+          - include: "#agda_syntax" # TODO: this is a bit of a hack, would rather recognize the colon more deliberately
+      - begin: ^(\s+)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?|_)(?=$|\!\}|[\s;{}()@".])
+        end: (?=[\s;{}()@".]where($|[\s;{}()@".]))
+        beginCaptures:
+          2:
             name: entity.name.type.data.agda
             patterns:
               - include: "#qualified_name"
@@ -66,10 +89,22 @@ repository:
     patterns:
       - include: "#agda_comments"
       - comment: Capture name of record
-        begin: (?<=(^|\G|[\s;{}()@".])record\s+)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?|_)(?=$|\!\}|[\s;{}()@".])
+        begin: \G(\s*)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?|_)(?=$|\!\}|[\s;{}()@".])
         end: (?=[\s;{}()@".]where($|[\s;{}()@".]))
         beginCaptures:
-          0:
+          2:
+            name: entity.name.type.record.agda
+            patterns:
+              - include: "#qualified_name"
+        contentName: meta.declaration.parameters.record.agda
+        patterns:
+          - include: "#parameter_declaration"
+          - include: "#type"
+          - include: "#agda_syntax" # TODO: this is a bit of a hack, should recognize the colon directly
+      - begin: ^(\s+)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?|_)(?=$|\!\}|[\s;{}()@".])
+        end: (?=[\s;{}()@".]where($|[\s;{}()@".]))
+        beginCaptures:
+          2:
             name: entity.name.type.record.agda
             patterns:
               - include: "#qualified_name"
