@@ -74,8 +74,28 @@ repository:
           - include: "#agda_syntax"
 
   data_declaration:
-    contentName: meta.declaration.data.agda
-    begin: {{ statement_boundary_start }}(\s*)(data){{ token_boundary_end }}
+    name: meta.declaration.data.agda
+    contentName: meta.declaration.parameters.data.agda
+    begin: {{ statement_boundary_start }}(\s*)(data)\s+({{ NAME_TOKEN }}|_){{ token_boundary_end }}
+    end: ({{ token_boundary('where') }})|{{ statement_boundary_end }}|^(?=\2\S)
+    beginCaptures:
+      3: { name: storage.type.class.data.agda }
+      4:
+        name: entity.name.type.data.agda
+        patterns:
+          - include: "#qualified_name"
+    endCaptures:
+      1: { name: keyword.control.where.data.agda }
+    patterns:
+      - include: "#agda_comments"
+      - include: "#parameter_declaration"
+      - include: "#type"
+      - include: "#agda_syntax"
+
+  data_declaration_name_on_separate_line:
+    name: meta.declaration.data.agda
+    contentName: meta.declaration.parameters.data.agda
+    begin: {{ statement_boundary_start }}(\s*)(data)\s*$
     end: ({{ token_boundary('where') }})|{{ statement_boundary_end }}|^(?=\2\S)
     beginCaptures:
       3: { name: storage.type.class.data.agda }
@@ -83,34 +103,39 @@ repository:
       1: { name: keyword.control.where.data.agda }
     patterns:
       - include: "#agda_comments"
-      - begin: \G(\s*)({{ NAME_TOKEN }}|_){{ token_boundary_end }}
-        end: (?={{ token_boundary_char }}where($|{{ token_boundary_char }}))
-        beginCaptures:
+      - match: ^(\s+)({{ NAME_TOKEN }}|_){{ token_boundary_end }}
+        captures:
           2:
             name: entity.name.type.data.agda
             patterns:
               - include: "#qualified_name"
-        contentName: meta.declaration.parameters.data.agda
-        patterns:
-          - include: "#parameter_declaration"
-          - include: "#type" # This one only matches after the colon, as all arguments before the colon will have been matched by #parameter_declaration
-          - include: "#agda_syntax" # TODO: this is a bit of a hack, would rather recognize the colon more deliberately
-      - begin: ^(\s+)({{ NAME_TOKEN }}|_){{ token_boundary_end }}
-        end: (?={{ token_boundary_char }}where($|{{ token_boundary_char }}))
-        beginCaptures:
-          2:
-            name: entity.name.type.data.agda
-            patterns:
-              - include: "#qualified_name"
-        contentName: meta.declaration.parameters.data.agda
-        patterns:
-          - include: "#parameter_declaration"
-          - include: "#type" # This one only matches after the colon, as all arguments before the colon will have been matched by #parameter_declaration
-          - include: "#agda_syntax" # TODO: this is a bit of a hack, would rather recognize the colon more deliberately
+      - include: "#parameter_declaration"
+      - include: "#type"
+      - include: "#agda_syntax"
 
   record_declaration:
-    contentName: meta.declaration.record.agda
-    begin: {{ statement_boundary_start }}(\s*)(record){{ token_boundary_end }}(?!\s*\{)
+    name: meta.declaration.record.agda
+    contentName: meta.declaration.parameters.record.agda
+    begin: {{ statement_boundary_start }}(\s*)(record){{ token_boundary_end }}(?!\s*\{)\s+({{ NAME_TOKEN }}|_){{ token_boundary_end }}
+    end: ({{ token_boundary('where') }})|{{ statement_boundary_end }}|^(?=\2\S)
+    beginCaptures:
+      3: { name: storage.type.class.record.agda }
+      4:
+        name: entity.name.type.record.agda
+        patterns:
+          - include: "#qualified_name"
+    endCaptures:
+      1: { name: keyword.control.where.record.agda }
+    patterns:
+      - include: "#agda_comments"
+      - include: "#parameter_declaration"
+      - include: "#type"
+      - include: "#agda_syntax"
+
+  record_declaration_name_on_separate_line:
+    name: meta.declaration.record.agda
+    contentName: meta.declaration.parameters.record.agda
+    begin: {{ statement_boundary_start }}(\s*)(record)\s*$
     end: ({{ token_boundary('where') }})|{{ statement_boundary_end }}|^(?=\2\S)
     beginCaptures:
       3: { name: storage.type.class.record.agda }
@@ -118,31 +143,15 @@ repository:
       1: { name: keyword.control.where.record.agda }
     patterns:
       - include: "#agda_comments"
-      - comment: Capture name of record
-        begin: \G(\s*)({{ NAME_TOKEN }}|_){{ token_boundary_end }}
-        end: (?={{ token_boundary_char }}where($|{{ token_boundary_char }}))
-        beginCaptures:
+      - match: ^(\s+)({{ NAME_TOKEN }}|_){{ token_boundary_end }}
+        captures:
           2:
             name: entity.name.type.record.agda
             patterns:
               - include: "#qualified_name"
-        contentName: meta.declaration.parameters.record.agda
-        patterns:
-          - include: "#parameter_declaration"
-          - include: "#type"
-          - include: "#agda_syntax" # TODO: this is a bit of a hack, should recognize the colon directly
-      - begin: ^(\s+)({{ NAME_TOKEN }}|_){{ token_boundary_end }}
-        end: (?={{ token_boundary_char }}where($|{{ token_boundary_char }}))
-        beginCaptures:
-          2:
-            name: entity.name.type.record.agda
-            patterns:
-              - include: "#qualified_name"
-        contentName: meta.declaration.parameters.record.agda
-        patterns:
-          - include: "#parameter_declaration"
-          - include: "#type"
-          - include: "#agda_syntax" # TODO: this is a bit of a hack, should recognize the colon directly
+      - include: "#parameter_declaration"
+      - include: "#type"
+      - include: "#agda_syntax"
 
   open_import_statement:
     begin: {{ statement_boundary_start }}(\s*)(import|open(\s+import)?)(?=$|\s)(\s*)({{ NAME_QUALIFIED }})?
@@ -636,7 +645,9 @@ repository:
     patterns:
       - include: "#module_declaration"
       - include: "#data_declaration"
+      - include: "#data_declaration_name_on_separate_line"
       - include: "#record_declaration"
+      - include: "#record_declaration_name_on_separate_line"
 
   agda_layout_blocks:
     patterns:

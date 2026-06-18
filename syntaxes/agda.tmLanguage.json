@@ -83,8 +83,47 @@
       ]
     },
     "data_declaration": {
-      "contentName": "meta.declaration.data.agda",
-      "begin": "(^|\\G|(?<=;))(\\s*)(data)(?=$|\\!\\}|[\\s;{}()@\".])",
+      "name": "meta.declaration.data.agda",
+      "contentName": "meta.declaration.parameters.data.agda",
+      "begin": "(^|\\G|(?<=;))(\\s*)(data)\\s+(_?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?|_)(?=$|\\!\\}|[\\s;{}()@\".])",
+      "end": "((?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])where(?=$|\\!\\}|[\\s;{}()@\".]))|(?=;)|^(?=\\2\\S)",
+      "beginCaptures": {
+        "3": {
+          "name": "storage.type.class.data.agda"
+        },
+        "4": {
+          "name": "entity.name.type.data.agda",
+          "patterns": [
+            {
+              "include": "#qualified_name"
+            }
+          ]
+        }
+      },
+      "endCaptures": {
+        "1": {
+          "name": "keyword.control.where.data.agda"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#agda_comments"
+        },
+        {
+          "include": "#parameter_declaration"
+        },
+        {
+          "include": "#type"
+        },
+        {
+          "include": "#agda_syntax"
+        }
+      ]
+    },
+    "data_declaration_name_on_separate_line": {
+      "name": "meta.declaration.data.agda",
+      "contentName": "meta.declaration.parameters.data.agda",
+      "begin": "(^|\\G|(?<=;))(\\s*)(data)\\s*$",
       "end": "((?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])where(?=$|\\!\\}|[\\s;{}()@\".]))|(?=;)|^(?=\\2\\S)",
       "beginCaptures": {
         "3": {
@@ -101,9 +140,8 @@
           "include": "#agda_comments"
         },
         {
-          "begin": "\\G(\\s*)(_?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?|_)(?=$|\\!\\}|[\\s;{}()@\".])",
-          "end": "(?=[\\s;{}()@\".]where($|[\\s;{}()@\".]))",
-          "beginCaptures": {
+          "match": "^(\\s+)(_?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?|_)(?=$|\\!\\}|[\\s;{}()@\".])",
+          "captures": {
             "2": {
               "name": "entity.name.type.data.agda",
               "patterns": [
@@ -112,51 +150,61 @@
                 }
               ]
             }
-          },
-          "contentName": "meta.declaration.parameters.data.agda",
-          "patterns": [
-            {
-              "include": "#parameter_declaration"
-            },
-            {
-              "include": "#type"
-            },
-            {
-              "include": "#agda_syntax"
-            }
-          ]
+          }
         },
         {
-          "begin": "^(\\s+)(_?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?|_)(?=$|\\!\\}|[\\s;{}()@\".])",
-          "end": "(?=[\\s;{}()@\".]where($|[\\s;{}()@\".]))",
-          "beginCaptures": {
-            "2": {
-              "name": "entity.name.type.data.agda",
-              "patterns": [
-                {
-                  "include": "#qualified_name"
-                }
-              ]
-            }
-          },
-          "contentName": "meta.declaration.parameters.data.agda",
-          "patterns": [
-            {
-              "include": "#parameter_declaration"
-            },
-            {
-              "include": "#type"
-            },
-            {
-              "include": "#agda_syntax"
-            }
-          ]
+          "include": "#parameter_declaration"
+        },
+        {
+          "include": "#type"
+        },
+        {
+          "include": "#agda_syntax"
         }
       ]
     },
     "record_declaration": {
-      "contentName": "meta.declaration.record.agda",
-      "begin": "(^|\\G|(?<=;))(\\s*)(record)(?=$|\\!\\}|[\\s;{}()@\".])(?!\\s*\\{)",
+      "name": "meta.declaration.record.agda",
+      "contentName": "meta.declaration.parameters.record.agda",
+      "begin": "(^|\\G|(?<=;))(\\s*)(record)(?=$|\\!\\}|[\\s;{}()@\".])(?!\\s*\\{)\\s+(_?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?|_)(?=$|\\!\\}|[\\s;{}()@\".])",
+      "end": "((?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])where(?=$|\\!\\}|[\\s;{}()@\".]))|(?=;)|^(?=\\2\\S)",
+      "beginCaptures": {
+        "3": {
+          "name": "storage.type.class.record.agda"
+        },
+        "4": {
+          "name": "entity.name.type.record.agda",
+          "patterns": [
+            {
+              "include": "#qualified_name"
+            }
+          ]
+        }
+      },
+      "endCaptures": {
+        "1": {
+          "name": "keyword.control.where.record.agda"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#agda_comments"
+        },
+        {
+          "include": "#parameter_declaration"
+        },
+        {
+          "include": "#type"
+        },
+        {
+          "include": "#agda_syntax"
+        }
+      ]
+    },
+    "record_declaration_name_on_separate_line": {
+      "name": "meta.declaration.record.agda",
+      "contentName": "meta.declaration.parameters.record.agda",
+      "begin": "(^|\\G|(?<=;))(\\s*)(record)\\s*$",
       "end": "((?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])where(?=$|\\!\\}|[\\s;{}()@\".]))|(?=;)|^(?=\\2\\S)",
       "beginCaptures": {
         "3": {
@@ -173,10 +221,8 @@
           "include": "#agda_comments"
         },
         {
-          "comment": "Capture name of record",
-          "begin": "\\G(\\s*)(_?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?|_)(?=$|\\!\\}|[\\s;{}()@\".])",
-          "end": "(?=[\\s;{}()@\".]where($|[\\s;{}()@\".]))",
-          "beginCaptures": {
+          "match": "^(\\s+)(_?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?|_)(?=$|\\!\\}|[\\s;{}()@\".])",
+          "captures": {
             "2": {
               "name": "entity.name.type.record.agda",
               "patterns": [
@@ -185,45 +231,16 @@
                 }
               ]
             }
-          },
-          "contentName": "meta.declaration.parameters.record.agda",
-          "patterns": [
-            {
-              "include": "#parameter_declaration"
-            },
-            {
-              "include": "#type"
-            },
-            {
-              "include": "#agda_syntax"
-            }
-          ]
+          }
         },
         {
-          "begin": "^(\\s+)(_?(?!'|--)[^\\s;{}()@\"._]+(_(?!'|--)[^\\s;{}()@\"._]+)*_?|_)(?=$|\\!\\}|[\\s;{}()@\".])",
-          "end": "(?=[\\s;{}()@\".]where($|[\\s;{}()@\".]))",
-          "beginCaptures": {
-            "2": {
-              "name": "entity.name.type.record.agda",
-              "patterns": [
-                {
-                  "include": "#qualified_name"
-                }
-              ]
-            }
-          },
-          "contentName": "meta.declaration.parameters.record.agda",
-          "patterns": [
-            {
-              "include": "#parameter_declaration"
-            },
-            {
-              "include": "#type"
-            },
-            {
-              "include": "#agda_syntax"
-            }
-          ]
+          "include": "#parameter_declaration"
+        },
+        {
+          "include": "#type"
+        },
+        {
+          "include": "#agda_syntax"
         }
       ]
     },
@@ -1448,7 +1465,13 @@
           "include": "#data_declaration"
         },
         {
+          "include": "#data_declaration_name_on_separate_line"
+        },
+        {
           "include": "#record_declaration"
+        },
+        {
+          "include": "#record_declaration_name_on_separate_line"
         }
       ]
     },

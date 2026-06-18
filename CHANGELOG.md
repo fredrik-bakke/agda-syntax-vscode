@@ -5,7 +5,8 @@
 - Improve support for semicolons
 - Support module names in `using`, `hiding`, and `renaming` directives
 - Support general expressions in `open` statements
-- Add `primitive` blocks
+- Support `primitive` blocks
+- Support separate signatures and definitions for `data` and `record`
 
 ## [0.7.2] - 2026-02-21
 
