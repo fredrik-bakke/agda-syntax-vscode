@@ -11,8 +11,8 @@ patterns:
 repository:
   module_declaration:
     contentName: meta.declaration.module.agda
-    begin: (^|\G)(\s*)(module)(?=$|\!\}|[\s;{}()@".])
-    end: (?<=^|\{\!|\{-\#|[\s;{}()@".])(where)(?=$|\!\}|[\s;{}()@".])|(?<=^|\{\!|\{-\#|[\s;{}()@".])(=)(?=$|\!\}|[\s;{}()@".])|^(?!\2\s) #TODO: when we make this into a block, this will be a new begin instead of an end
+    begin: (^|\G|(?<=;))(\s*)(module)(?=$|\!\}|[\s;{}()@".])
+    end: (?<=^|\{\!|\{-\#|[\s;{}()@".])(where)(?=$|\!\}|[\s;{}()@".])|(?<=^|\{\!|\{-\#|[\s;{}()@".])(=)(?=$|\!\}|[\s;{}()@".])|(?=;)|^(?!\2\s) #TODO: when we make this into a block, this will be a new begin instead of an end
     beginCaptures:
       3: { name: keyword.control.module.agda }
     endCaptures:
@@ -45,8 +45,8 @@ repository:
 
   data_declaration:
     contentName: meta.declaration.data.agda
-    begin: (^|\G)(\s*)(data)(?=$|\!\}|[\s;{}()@".])
-    end: ((?<=^|\{\!|\{-\#|[\s;{}()@".])where(?=$|\!\}|[\s;{}()@".]))|^(?=\2\S)
+    begin: (^|\G|(?<=;))(\s*)(data)(?=$|\!\}|[\s;{}()@".])
+    end: ((?<=^|\{\!|\{-\#|[\s;{}()@".])where(?=$|\!\}|[\s;{}()@".]))|(?=;)|^(?=\2\S)
     beginCaptures:
       3: { name: storage.type.class.data.agda }
     endCaptures:
@@ -80,8 +80,8 @@ repository:
 
   record_declaration:
     contentName: meta.declaration.record.agda
-    begin: (^|\G)(\s*)(record)(?=$|\!\}|[\s;{}()@".])(?!\s*\{)
-    end: ((?<=^|\{\!|\{-\#|[\s;{}()@".])where(?=$|\!\}|[\s;{}()@".]))|^(?=\2\S)
+    begin: (^|\G|(?<=;))(\s*)(record)(?=$|\!\}|[\s;{}()@".])(?!\s*\{)
+    end: ((?<=^|\{\!|\{-\#|[\s;{}()@".])where(?=$|\!\}|[\s;{}()@".]))|(?=;)|^(?=\2\S)
     beginCaptures:
       3: { name: storage.type.class.record.agda }
     endCaptures:
@@ -115,7 +115,7 @@ repository:
           - include: "#agda_syntax" # TODO: this is a bit of a hack, should recognize the colon directly
 
   open_import_statement:
-    begin: (^|\G)(\s*)(import|open(\s+import)?)(?=$|\s)(\s*)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?(\._?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?)*)?
+    begin: (^|\G|(?<=;))(\s*)(import|open(\s+import)?)(?=$|\s)(\s*)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?(\._?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?)*)?
     beginCaptures:
       3: { name: keyword.control.import.agda }
       6:
@@ -149,7 +149,7 @@ repository:
       - include: "#agda_syntax"
 
   infix_block:
-    begin: (^|\G)(\s*)(infix[lr]?)(?=$|\!\}|[\s;{}()@".])
+    begin: (^|\G|(?<=;))(\s*)(infix[lr]?)(?=$|\!\}|[\s;{}()@".])
     while: (^|\G)\2(?=\s)
     beginCaptures:
       3: { name: keyword.control.infix.agda }
@@ -161,7 +161,7 @@ repository:
       - include: "#term_name"
 
   constructor_block:
-    begin: (^|\G)(\s*)(constructor)(?=$|\!\}|[\s;{}()@".])
+    begin: (^|\G|(?<=;))(\s*)(constructor)(?=$|\!\}|[\s;{}()@".])
     while: (^|\G)\2(?=\s)
     beginCaptures:
       3: { name: keyword.control.constructor.agda }
@@ -357,7 +357,7 @@ repository:
             match: (?<=^|\{\!|\{-\#|[\s;{}()@".])((?!\.)[\s;{}()@".])+(?=$|\!\}|[\s;{}()@".])
 
   term_type_signature_colon_on_first_line:
-    begin: (^|\G)(\s*)(((_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?|_)\s+)+)(:)(?=$|\!\}|[\s;{}()@".])
+    begin: (^|\G|(?<=;))(\s*)(((_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?|_)\s+)+)(:)(?=$|\!\}|[\s;{}()@".])
     while: (^|\G)\2(?=\s)
     name: meta.declaration.function.agda
     beginCaptures:
@@ -374,7 +374,7 @@ repository:
       - include: "#type"
 
   term_type_signature_colon_on_separate_line:
-    begin: (^|\G)(\s*)(:)(?=$|\!\}|[\s;{}()@".])
+    begin: (^|\G|(?<=;))(\s*)(:)(?=$|\!\}|[\s;{}()@".])
     while: (^|\G)\2
     name: meta.declaration.function.agda
     beginCaptures:
@@ -385,7 +385,7 @@ repository:
       - include: "#type"
 
   term_definition_equals_on_first_line:
-    match: (^|\G)(\s*)(\S.*)\s+(=)(?=$|\!\}|[\s;{}()@".])
+    match: (^|\G|(?<=;))(\s*)(\S.*)\s+(=)(?=$|\!\}|[\s;{}()@".])
     name: meta.declaration.function.agda
     captures:
       3:
@@ -484,7 +484,7 @@ repository:
 
   illegal_name_parts:
     name: invalid.illegal.name.part.keyword.agda
-    match: ((?<=^|\{\!|\{-\#|[\s;{}()@"._])([=|→:?\\λ∀'⦇⦈⦃⦄]|->|--|abstract|(co)?inductive|constructor|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with)(?=$|\!\}|[\s;{}()@"._]))
+    match: ((?<=^|\{\!|\{-\#|[\s;{}()@"._])([;=|→:?\\λ∀'⦇⦈⦃⦄]|->|--|abstract|(co)?inductive|constructor|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with)(?=$|\!\}|[\s;{}()@"._]))
 
   name_part:
     match: (?<=^|\{\!|\{-\#|[\s;{}()@"._])(?!'|--)[^\s;{}()@"._]+(?=$|\!\}|[\s;{}()@"._])
@@ -661,7 +661,7 @@ repository:
     patterns:
  # TODO: do, let
       - comment: abstract block #TODO: continue working on this
-        begin: (^|\G)(\s*)(abstract)(?=$|\!\}|[\s;{}()@".])
+        begin: (^|\G|(?<=;))(\s*)(abstract)(?=$|\!\}|[\s;{}()@".])
         while: (^|\G)\2(?=\s)
         name: meta.block.abstract.agda
         beginCaptures:
@@ -670,7 +670,7 @@ repository:
           - include: "#the_usual"
  # TODO: do, let
       - comment: field block #TODO: continue working on this
-        begin: (^|\G)(\s*)(field)(?=$|\!\}|[\s;{}()@".])
+        begin: (^|\G|(?<=;))(\s*)(field)(?=$|\!\}|[\s;{}()@".])
         while: (^|\G)\2(?=\s)
         name: meta.block.field.agda
         beginCaptures:
@@ -679,7 +679,7 @@ repository:
           - include: "#the_usual"
  # TODO: do, let
       - comment: instance block #TODO: continue working on this
-        begin: (^|\G)(\s*)(instance)(?=$|\!\}|[\s;{}()@".])
+        begin: (^|\G|(?<=;))(\s*)(instance)(?=$|\!\}|[\s;{}()@".])
         while: (^|\G)\2(?=\s)
         name: meta.block.instance.agda
         beginCaptures:
@@ -688,7 +688,7 @@ repository:
           - include: "#the_usual"
  # TODO: do, let
       - comment: macro block #TODO: continue working on this
-        begin: (^|\G)(\s*)(macro)(?=$|\!\}|[\s;{}()@".])
+        begin: (^|\G|(?<=;))(\s*)(macro)(?=$|\!\}|[\s;{}()@".])
         while: (^|\G)\2(?=\s)
         name: meta.block.macro.agda
         beginCaptures:
@@ -697,7 +697,7 @@ repository:
           - include: "#the_usual"
  # TODO: do, let
       - comment: mutual block #TODO: continue working on this
-        begin: (^|\G)(\s*)(mutual)(?=$|\!\}|[\s;{}()@".])
+        begin: (^|\G|(?<=;))(\s*)(mutual)(?=$|\!\}|[\s;{}()@".])
         while: (^|\G)\2(?=\s)
         name: meta.block.mutual.agda
         beginCaptures:
@@ -706,7 +706,7 @@ repository:
           - include: "#the_usual"
  # TODO: do, let
       - comment: opaque block #TODO: continue working on this
-        begin: (^|\G)(\s*)(opaque)(?=$|\!\}|[\s;{}()@".])
+        begin: (^|\G|(?<=;))(\s*)(opaque)(?=$|\!\}|[\s;{}()@".])
         while: (^|\G)\2(?=\s)
         name: meta.block.opaque.agda
         beginCaptures:
@@ -715,7 +715,7 @@ repository:
           - include: "#the_usual"
  # TODO: do, let
       - comment: postulate block #TODO: continue working on this
-        begin: (^|\G)(\s*)(postulate)(?=$|\!\}|[\s;{}()@".])
+        begin: (^|\G|(?<=;))(\s*)(postulate)(?=$|\!\}|[\s;{}()@".])
         while: (^|\G)\2(?=\s)
         name: meta.block.postulate.agda
         beginCaptures:
@@ -724,7 +724,7 @@ repository:
           - include: "#the_usual"
  # TODO: do, let
       - comment: private block #TODO: continue working on this
-        begin: (^|\G)(\s*)(private)(?=$|\!\}|[\s;{}()@".])
+        begin: (^|\G|(?<=;))(\s*)(private)(?=$|\!\}|[\s;{}()@".])
         while: (^|\G)\2(?=\s)
         name: meta.block.private.agda
         beginCaptures:
@@ -733,7 +733,7 @@ repository:
           - include: "#the_usual"
  # TODO: do, let
       - comment: variable block #TODO: continue working on this
-        begin: (^|\G)(\s*)(variable)(?=$|\!\}|[\s;{}()@".])
+        begin: (^|\G|(?<=;))(\s*)(variable)(?=$|\!\}|[\s;{}()@".])
         while: (^|\G)\2(?=\s)
         name: meta.block.variable.agda
         beginCaptures:
@@ -742,7 +742,7 @@ repository:
           - include: "#the_usual"
  # TODO: do, let
       - comment: where block #TODO: continue working on this
-        begin: (^|\G)(\s*)(where)(?=$|\!\}|[\s;{}()@".])
+        begin: (^|\G|(?<=;))(\s*)(where)(?=$|\!\}|[\s;{}()@".])
         while: (^|\G)\2(?=\s)
         name: meta.block.where.agda
         beginCaptures:

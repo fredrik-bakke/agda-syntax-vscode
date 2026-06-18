@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.7.3] - 2026-06-18
+
+- Improve support for semicolons
+
 ## [0.7.2] - 2026-02-21
 
 - Remove conflicting language configurations for markdown and latex.
