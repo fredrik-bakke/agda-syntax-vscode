@@ -730,6 +730,15 @@ repository:
         patterns:
           - include: "#the_usual"
  # TODO: do, let
+      - comment: primitive block #TODO: continue working on this
+        begin: (^|\G|(?<=;))(\s*)(primitive)(?=$|\!\}|[\s;{}()@".])
+        while: (^|\G)\2(?=\s)
+        name: meta.block.primitive.agda
+        beginCaptures:
+          3: { name: keyword.control.primitive.agda }
+        patterns:
+          - include: "#the_usual"
+ # TODO: do, let
       - comment: private block #TODO: continue working on this
         begin: (^|\G|(?<=;))(\s*)(private)(?=$|\!\}|[\s;{}()@".])
         while: (^|\G)\2(?=\s)

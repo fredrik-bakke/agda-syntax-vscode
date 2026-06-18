@@ -1374,6 +1374,22 @@
           ]
         },
         {
+          "comment": "primitive block",
+          "begin": "(^|\\G|(?<=;))(\\s*)(primitive)(?=$|\\!\\}|[\\s;{}()@\".])",
+          "while": "(^|\\G)\\2(?=\\s)",
+          "name": "meta.block.primitive.agda",
+          "beginCaptures": {
+            "3": {
+              "name": "keyword.control.primitive.agda"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#the_usual"
+            }
+          ]
+        },
+        {
           "comment": "private block",
           "begin": "(^|\\G|(?<=;))(\\s*)(private)(?=$|\\!\\}|[\\s;{}()@\".])",
           "while": "(^|\\G)\\2(?=\\s)",
