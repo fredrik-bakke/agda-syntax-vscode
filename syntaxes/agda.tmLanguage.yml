@@ -125,18 +125,7 @@ repository:
     while: (^|\G)\2(?=\s)
     patterns:
       - include: "#agda_comments"
-      - begin: \(
-        beginCaptures:
-          0: { name: punctuation.section.parens.begin.agda }
-        end: \)
-        endCaptures:
-          0: { name: punctuation.section.parens.end.agda }
-        name: meta.statement.import.names.agda
-        patterns:
-          - include: "#agda_comments"
-          - match: (?<=^|\{\!|\{-\#|[\s;{}()@".])to(?=$|\!\}|[\s;{}()@".])
-            name: keyword.other.to.agda
-          - include: "#term_name"
+      - include: "#import_directive"
       - match: (?<=^|\{\!|\{-\#|[\s;{}()@".])(as)(?=$|\!\}|[\s;{}()@".])(\s+)(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?(\._?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?)*)(?=$|\!\}|[\s;{}()@".])
         captures:
           1: { name: keyword.other.as.agda }
@@ -147,6 +136,24 @@ repository:
       - match: (?<=^|\{\!|\{-\#|[\s;{}()@".])as(?=$|\!\}|[\s;{}()@".])
         name: keyword.other.as.agda
       - include: "#agda_syntax"
+      - include: "#agda_token"
+
+  import_directive:
+    begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])(using|hiding|renaming)\s*(\()
+    beginCaptures:
+      1: { name: keyword.control.import.agda }
+      2: { name: punctuation.section.parens.begin.agda }
+    end: \)
+    endCaptures:
+      0: { name: punctuation.section.parens.end.agda }
+    name: meta.statement.import.names.agda
+    patterns:
+      - include: "#agda_comments"
+      - match: (?<=^|\{\!|\{-\#|[\s;{}()@".])module(?=$|\!\}|[\s;{}()@".])
+        name: keyword.control.module.agda
+      - match: (?<=^|\{\!|\{-\#|[\s;{}()@".])to(?=$|\!\}|[\s;{}()@".])
+        name: keyword.other.to.agda
+      - include: "#term_name"
 
   infix_block:
     begin: (^|\G|(?<=;))(\s*)(infix[lr]?)(?=$|\!\}|[\s;{}()@".])

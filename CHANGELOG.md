@@ -3,6 +3,8 @@
 ## [0.7.3] - 2026-06-18
 
 - Improve support for semicolons
+- Support module names in `using`, `hiding`, and `renaming` directives
+- Support general expressions in `open` statements
 
 ## [0.7.2] - 2026-02-21
 

@@ -155,18 +155,7 @@ repository:
     while: (^|\G)\2(?=\s)
     patterns:
       - include: "#agda_comments"
-      - begin: \(
-        beginCaptures:
-          0: { name: punctuation.section.parens.begin.agda }
-        end: \)
-        endCaptures:
-          0: { name: punctuation.section.parens.end.agda }
-        name: meta.statement.import.names.agda
-        patterns:
-          - include: "#agda_comments"
-          - match: {{ token_boundary('to') }}
-            name: keyword.other.to.agda
-          - include: "#term_name"
+      - include: "#import_directive"
       - match: {{ token_boundary('(as)') }}(\s+)({{ NAME_QUALIFIED }}){{ token_boundary_end }}
         captures:
           1: { name: keyword.other.as.agda }
@@ -177,6 +166,24 @@ repository:
       - match: {{ token_boundary('as') }}
         name: keyword.other.as.agda
       - include: "#agda_syntax"
+      - include: "#agda_token"
+
+  import_directive:
+    begin: {{ token_boundary_start }}(using|hiding|renaming)\s*(\()
+    beginCaptures:
+      1: { name: keyword.control.import.agda }
+      2: { name: punctuation.section.parens.begin.agda }
+    end: \)
+    endCaptures:
+      0: { name: punctuation.section.parens.end.agda }
+    name: meta.statement.import.names.agda
+    patterns:
+      - include: "#agda_comments"
+      - match: {{ token_boundary('module') }}
+        name: keyword.control.module.agda
+      - match: {{ token_boundary('to') }}
+        name: keyword.other.to.agda
+      - include: "#term_name"
 
   infix_block:
     begin: {{ statement_boundary_start }}(\s*)(infix[lr]?){{ token_boundary_end }}
