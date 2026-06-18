@@ -7,6 +7,7 @@
 - Support general expressions in `open` statements
 - Support `primitive` blocks
 - Support separate signatures and definitions for `data` and `record`
+- Fix multiline `record` expressions being parsed as declarations
 
 ## [0.7.2] - 2026-02-21
 

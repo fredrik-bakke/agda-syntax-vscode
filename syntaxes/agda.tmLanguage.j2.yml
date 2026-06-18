@@ -136,7 +136,7 @@ repository:
     name: meta.declaration.record.agda
     contentName: meta.declaration.parameters.record.agda
     begin: {{ statement_boundary_start }}(\s*)(record)\s*$
-    end: ({{ token_boundary('where') }})|{{ statement_boundary_end }}|^(?=\2\S)
+    end: ({{ token_boundary('where') }})|{{ statement_boundary_end }}|^(?=\s*\{)|^(?=\2\S)
     beginCaptures:
       3: { name: storage.type.class.record.agda }
     endCaptures:
