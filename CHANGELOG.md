@@ -15,7 +15,7 @@
 
 ## [0.7.2] - 2026-02-21
 
-- Remove conflicting language configurations for markdown and latex.
+- Remove conflicting language configurations for markdown and latex
 
 ## [0.7.1] - 2026-02-21
 
