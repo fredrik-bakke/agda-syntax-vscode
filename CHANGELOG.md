@@ -2,7 +2,7 @@
 
 ## [0.7.4] - 2026-06-18
 
-- Remove retired bades from readme
+- Remove retired badges from readme
 
 ## [0.7.3] - 2026-06-18
 
