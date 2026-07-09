@@ -420,7 +420,7 @@ repository:
       - include: "#type"
 
   variable_type_signature:
-    match: (^|\G)(?!\s*(?:\(|\{|⦃))(([^:)}⦄]|(?<!^|[\s;{}()@".])[:⦄]|[:⦄](?!$|[\s;{}()@".]))+)[\s;{}()@".](:)(?=$|\!\}|[\s;{}()@".]) # TODO: refactor, compare to forall...
+    match: (^|\G)(?![^\n:)}⦄]*=)(?!\s*(?:\(|\{|⦃))(([^:)}⦄]|(?<!^|[\s;{}()@".])[:⦄]|[:⦄](?!$|[\s;{}()@".]))+)[\s;{}()@".](:)(?=$|\!\}|[\s;{}()@".]) # TODO: refactor, compare to forall...
     name: meta.declaration.variable_type_signature.agda
     captures:
       2:
@@ -444,7 +444,7 @@ repository:
   #     4: { name: keyword.operator.colon.agda }
 
   forall_variable_type_signature:
-    match: (^|\G)(([^:)}⦄]|(?<!^|[\s;{}()@".])[:⦄]|[:⦄](?!$|[\s;{}()@".]))+)((:)(?=$|\!\}|[\s;{}()@".])|(?=$|[)}⦄]))
+    match: (^|\G)(?![^\n:)}⦄]*=)(([^:)}⦄]|(?<!^|[\s;{}()@".])[:⦄]|[:⦄](?!$|[\s;{}()@".]))+)((:)(?=$|\!\}|[\s;{}()@".])|(?=$|[)}⦄]))
     name: meta.declaration.variable_type_signature.agda
     captures:
       2:
