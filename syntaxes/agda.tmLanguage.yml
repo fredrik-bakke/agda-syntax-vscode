@@ -436,6 +436,7 @@ repository:
         patterns:
           - include: "#agda_syntax"
           - include: "#variable_label"
+          - match: \s+
           - name: invalid.name.variable.forall.agda
             match: (?<=^|\{\!|\{-\#|[\s;{}()@".])((?!\.)[\s;{}()@".])+(?=$|\!\}|[\s;{}()@".])
       4: { name: keyword.operator.colon.agda }
