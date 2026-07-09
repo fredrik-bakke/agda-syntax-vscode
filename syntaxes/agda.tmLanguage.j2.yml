@@ -35,6 +35,7 @@ keyEquivalent: ^~A
 {% set name_token = token_boundary(NAME_TOKEN) %}
 {% set NAME_QUALIFIED = NAME_TOKEN + '(\.' + NAME_TOKEN + ')*' %}
 {% set name_qualified = name_qualified_boundary(NAME_QUALIFIED) %}
+{% set BINDER_LABELS = '(?:' + NAME_TOKEN + '|_)(?:\s+(?:' + NAME_TOKEN + '|_))*' %}
 
 {% set absurd_pattern = '\(\s*\)' %}
 
@@ -326,7 +327,7 @@ repository:
       - include: "#instance_unicode_forall_parameter_declaration"
 
 {% for param_decl in [
-  {"id": "explicit", "begin": "\\(", "end": "\\)"},
+  {"id": "explicit", "begin": "\\((?=\\s*" + BINDER_LABELS + "\\s*:)", "end": "\\)"},
   {"id": "implicit", "begin": "\\{(?!-)", "end": "(?<!-)\\}"},
   {"id": "instance_double_brace", "begin": "\\{\\{(?!-)", "end": "(?<!-)\\}\\}"},
   {"id": "instance_unicode", "begin": token_boundary_start + "⦃" + token_boundary_end, "end": token_boundary_start + "⦄" + token_boundary_end}
