@@ -381,8 +381,6 @@ repository:
         patterns:
           - include: "#agda_comments"
           - include: "#term_name"
-          - name: invalid.name.term.agda # TODO: other patterns take precedence, so this one never matches
-            match: (?<=^|\{\!|\{-\#|[\s;{}()@".])((?!\.)[\s;{}()@".])+(?=$|\!\}|[\s;{}()@".])
       7:
         name: keyword.operator.colon.agda
     patterns:
