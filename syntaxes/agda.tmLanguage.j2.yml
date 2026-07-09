@@ -124,7 +124,7 @@ repository:
   record_declaration:
     name: meta.declaration.record.agda
     contentName: meta.declaration.parameters.record.agda
-    begin: {{ statement_boundary_start }}(\s*)(record){{ token_boundary_end }}(?!\s*\{)\s+({{ NAME_TOKEN }}|_){{ token_boundary_end }}
+    begin: {{ statement_boundary_start }}(\s*)(record){{ token_boundary_end }}(?!\s*(?:\{|where{{ token_boundary_end }}))\s+({{ NAME_TOKEN }}|_){{ token_boundary_end }}
     end: (?:^\s*)?({{ token_boundary('where') }})|{{ statement_boundary_end }}|^(?=\2\S)
     beginCaptures:
       3: { name: storage.type.class.record.agda }
@@ -151,7 +151,7 @@ repository:
       1: { name: keyword.control.where.record.agda }
     patterns:
       - include: "#agda_comments"
-      - match: ^(\s+)({{ NAME_TOKEN }}|_){{ token_boundary_end }}
+      - match: ^(\s+)(?!\s*(?:where|:){{ token_boundary_end }})({{ NAME_TOKEN }}|_){{ token_boundary_end }}
         captures:
           2:
             name: entity.name.type.record.agda
@@ -219,7 +219,7 @@ repository:
         name: keyword.control.import.agda
       - match: {{ token_boundary('module') }}
         name: invalid.illegal.name.part.keyword.agda
-      - match: \G(?=\s*[^\s{⦃])\s*(?!(?:module|using|hiding|renaming|as|public|in){{ token_boundary_end }})({{ NAME_QUALIFIED }})
+      - match: \G(?=\s*[^\s{⦃])\s*(?!(?:module|record|using|hiding|renaming|as|public|in){{ token_boundary_end }})({{ NAME_QUALIFIED }})
         captures:
           1:
             name: entity.name.namespace.agda
@@ -264,7 +264,7 @@ repository:
         name: invalid.illegal.name.part.keyword.agda
       - match: =
         name: keyword.operator.agda
-      - match: \G(?=\s*[^\s{⦃])\s*(?!(?:import|module|using|hiding|renaming|as|public|in){{ token_boundary_end }})({{ NAME_QUALIFIED }})
+      - match: \G(?=\s*[^\s{⦃])\s*(?!(?:import|module|record|using|hiding|renaming|as|public|in){{ token_boundary_end }})({{ NAME_QUALIFIED }})
         captures:
           1:
             name: entity.name.namespace.agda
@@ -507,6 +507,20 @@ repository:
       - include: "#implicit_parameter_declaration"
       - include: "#agda_expressions"
       - include: "#variable_label"
+
+  record_expression:
+    begin: {{ token_boundary('(record)') }}(\s*)(\{)
+    end: \}
+    name: meta.expression.record.agda
+    beginCaptures:
+      1: { name: keyword.control.record.agda }
+      3: { name: punctuation.section.braces.begin.agda }
+    endCaptures:
+      0: { name: punctuation.section.braces.end.agda }
+    patterns:
+      - include: "#agda_comments"
+      - include: "#agda_syntax"
+      - include: "#agda_token"
 
   discard:
     name: variable.language.discard.agda
@@ -874,6 +888,7 @@ repository:
   agda_expressions:
     patterns:
       - include: "#hole"
+      - include: "#record_expression"
       - include: "#lambda_abstraction_start"
       # TODO: forall
       # TODO: parameter decl
