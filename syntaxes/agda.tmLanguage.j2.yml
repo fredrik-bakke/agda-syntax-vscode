@@ -26,7 +26,10 @@ keyEquivalent: ^~A
 {% macro token_boundary(s) %}{{ token_boundary_start }}{{ s }}{{ token_boundary_end }}{% endmacro %}
 {% macro name_part_boundary(s) %}{{ name_part_boundary_start }}{{ s }}{{ name_part_boundary_end }}{% endmacro %}
 
-{% set NAME_PART = '(?!\'|--)[^' + NAME_PART_BOUNDARY_CHARS + ']+' %}
+{% set NUMERIC_INTEGER = '-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*)' %}
+{% set NUMERIC_FLOAT = '-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)' %}
+{% set NUMERIC_LITERAL = '(?:' + NUMERIC_FLOAT + '|' + NUMERIC_INTEGER + ')' %}
+{% set NAME_PART = '(?!\'|--)(?!' + NUMERIC_LITERAL + '(?=$|' + name_part_boundary_char + '))[^' + NAME_PART_BOUNDARY_CHARS + ']+' %}
 {% set name_part = name_part_boundary(NAME_PART) %}
 {% set NAME_TOKEN = '_?' + NAME_PART + '(_' + NAME_PART + ')*_?' %}
 {% set name_token = token_boundary(NAME_TOKEN) %}
@@ -275,6 +278,9 @@ repository:
         name: keyword.control.module.agda
       - match: {{ token_boundary('to') }}
         name: keyword.other.to.agda
+      - match: {{ token_boundary('infix[lr]?') }}
+        name: keyword.control.infix.agda
+      - include: "#agda_literals"
       - include: "#term_name"
 
   infix_block:
@@ -690,9 +696,9 @@ repository:
           - include: "#escape_character"
           - include: "#escape_control_character"
       - name: constant.numeric.integer.agda
-        match: {{ token_boundary('(-?(0[xX]\h+|0[bB][01]+|[0-9]+(_[0-9]+)*))') }}
+        match: {{ token_boundary('(' + NUMERIC_INTEGER + ')') }}
       - name: constant.numeric.float.agda
-        match: {{ token_boundary('(-?[0-9]+\.[0-9]+([eE][+-]?[0-9]+)?|-?[0-9]+[eE][+-]?[0-9]+)') }}
+        match: {{ token_boundary('(' + NUMERIC_FLOAT + ')') }}
 
   agda_builtin:
     patterns:
