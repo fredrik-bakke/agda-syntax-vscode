@@ -401,6 +401,7 @@ repository:
 
   type:
     patterns:
+      - include: "#parameter_declaration"
       - include: "#agda_syntax"
       - include: "#type_token"
 
@@ -418,7 +419,7 @@ repository:
             match: {{ token_boundary('((?!\.)' + token_boundary_char + ')+') }}
 
   term_type_signature_colon_on_first_line:
-    begin: {{ statement_boundary_start }}(\s*)((({{ NAME_TOKEN }}|_)\s+)+)(:){{ token_boundary_end }}
+    begin: {{ statement_boundary_start }}(\s*)((({{ NAME_TOKEN }}|_)\s+)+?)(:){{ token_boundary_end }}
     while: (^|\G)\2(?=\s)
     name: meta.declaration.function.agda
     beginCaptures:
