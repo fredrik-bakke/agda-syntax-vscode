@@ -566,7 +566,11 @@ repository:
 
   illegal_name_parts:
     name: invalid.illegal.name.part.keyword.agda
-    match: ({{ name_part_boundary('([;=|→:?\\\\λ∀\'⦇⦈⦃⦄]|->|--|abstract|(co)?inductive|constructor|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with)') }})
+    match: ({{ name_part_boundary('([;=|→:?\\\\λ∀\'⦇⦈⦃⦄]|->|--|abstract|(co)?inductive|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with)') }})
+
+  illegal_unqualified_name_parts:
+    name: invalid.illegal.name.part.keyword.agda
+    match: (?<!\.){{ name_part_boundary('constructor') }}
 
   name_part:
     match: {{ name_part }}
@@ -575,6 +579,7 @@ repository:
         patterns:
           - name: keyword.operator.overloaded.agda
             match: {{name_part_boundary('(<-|←)')}}
+          - include: "#illegal_unqualified_name_parts"
           - include: "#illegal_name_parts"
 
   name_token:

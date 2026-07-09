@@ -604,7 +604,11 @@ repository:
 
   illegal_name_parts:
     name: invalid.illegal.name.part.keyword.agda
-    match: ((?<=^|\{\!|\{-\#|[\s;{}()@"._])([;=|→:?\\λ∀'⦇⦈⦃⦄]|->|--|abstract|(co)?inductive|constructor|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with)(?=$|\!\}|[\s;{}()@"._]))
+    match: ((?<=^|\{\!|\{-\#|[\s;{}()@"._])([;=|→:?\\λ∀'⦇⦈⦃⦄]|->|--|abstract|(co)?inductive|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with)(?=$|\!\}|[\s;{}()@"._]))
+
+  illegal_unqualified_name_parts:
+    name: invalid.illegal.name.part.keyword.agda
+    match: (?<!\.)(?<=^|\{\!|\{-\#|[\s;{}()@"._])constructor(?=$|\!\}|[\s;{}()@"._])
 
   name_part:
     match: (?<=^|\{\!|\{-\#|[\s;{}()@"._])(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(?=$|\!\}|[\s;{}()@"._])
@@ -613,6 +617,7 @@ repository:
         patterns:
           - name: keyword.operator.overloaded.agda
             match: (?<=^|\{\!|\{-\#|[\s;{}()@"._])(<-|←)(?=$|\!\}|[\s;{}()@"._])
+          - include: "#illegal_unqualified_name_parts"
           - include: "#illegal_name_parts"
 
   name_token:
