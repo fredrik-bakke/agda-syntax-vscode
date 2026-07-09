@@ -169,10 +169,13 @@ repository:
         name: entity.name.namespace.agda
         patterns:
           - include: "#qualified_name"
-    while: (^|\G)\2(?=\s)
+    while: (^|\G)\2(?=\s)(?!\s*open{{ token_boundary_end }})
     patterns:
       - include: "#agda_comments"
       - include: "#import_directive"
+      - include: "#open_module_statement"
+      - include: "#open_import_statement"
+      - include: "#open_statement"
       - match: {{ token_boundary('(as)') }}(\s+)({{ NAME_QUALIFIED }}){{ token_boundary_end }}
         captures:
           1: { name: keyword.other.as.agda }
@@ -193,10 +196,13 @@ repository:
         name: entity.name.namespace.agda
         patterns:
           - include: "#qualified_name"
-    while: (^|\G)\2(?=\s)
+    while: (^|\G)\2(?=\s)(?!\s*open{{ token_boundary_end }})
     patterns:
       - include: "#agda_comments"
       - include: "#import_directive"
+      - include: "#open_module_statement"
+      - include: "#open_import_statement"
+      - include: "#open_statement"
       - match: {{ token_boundary('(as)') }}(\s+)({{ NAME_QUALIFIED }}){{ token_boundary_end }}
         captures:
           1: { name: keyword.other.as.agda }
@@ -210,7 +216,7 @@ repository:
         name: keyword.control.import.agda
       - match: {{ token_boundary('module') }}
         name: invalid.illegal.name.part.keyword.agda
-      - match: (?!(?:module|using|hiding|renaming|as|public){{ token_boundary_end }})({{ NAME_QUALIFIED }})
+      - match: \G\s*(?!(?:module|using|hiding|renaming|as|public|in){{ token_boundary_end }})({{ NAME_QUALIFIED }})
         captures:
           1:
             name: entity.name.namespace.agda
@@ -227,9 +233,12 @@ repository:
         name: entity.name.namespace.agda
         patterns:
           - include: "#qualified_name"
-    while: (^|\G)\2(?=\s)
+    while: (^|\G)\2(?=\s)(?!\s*open{{ token_boundary_end }})
     patterns:
       - include: "#agda_comments"
+      - include: "#open_module_statement"
+      - include: "#open_import_statement"
+      - include: "#open_statement"
       - match: {{ token_boundary('(import)') }}(\s+)({{ NAME_QUALIFIED }})
         captures:
           1: { name: keyword.control.import.agda }
@@ -251,7 +260,7 @@ repository:
         name: invalid.illegal.name.part.keyword.agda
       - match: =
         name: keyword.operator.agda
-      - match: (?!(?:import|module|using|hiding|renaming|as|public){{ token_boundary_end }})({{ NAME_QUALIFIED }})
+      - match: \G\s*(?!(?:import|module|using|hiding|renaming|as|public|in){{ token_boundary_end }})({{ NAME_QUALIFIED }})
         captures:
           1:
             name: entity.name.namespace.agda
@@ -268,51 +277,6 @@ repository:
         name: keyword.other.as.agda
       - include: "#agda_syntax"
       - include: "#agda_token"
-
-  where_open_import_statement:
-    begin: {{ statement_boundary_start }}(\s*)(where){{ token_boundary_end }}(\s+)(open\s+import)(?=$|\s)(\s*)({{ NAME_QUALIFIED }})?
-    beginCaptures:
-      3: { name: keyword.control.where.agda }
-      5: { name: keyword.control.import.agda }
-      7:
-        name: entity.name.namespace.agda
-        patterns:
-          - include: "#qualified_name"
-    while: (^|\G)\2(?=\s)
-    patterns:
-      - include: "#agda_comments"
-      - include: "#import_directive"
-      - match: {{ token_boundary('(as)') }}(\s+)({{ NAME_QUALIFIED }}){{ token_boundary_end }}
-        captures:
-          1: { name: keyword.other.as.agda }
-          3:
-            name: entity.name.namespace.agda
-            patterns:
-              - include: "#qualified_name"
-      - match: {{ token_boundary('as') }}
-        name: keyword.other.as.agda
-      - match: {{ token_boundary('public') }}
-        name: keyword.control.import.agda
-      - match: {{ token_boundary('module') }}
-        name: invalid.illegal.name.part.keyword.agda
-      - match: (?!(?:module|using|hiding|renaming|as|public){{ token_boundary_end }})({{ NAME_QUALIFIED }})
-        captures:
-          1:
-            name: entity.name.namespace.agda
-            patterns:
-              - include: "#qualified_name"
-      - include: "#agda_syntax"
-      - include: "#agda_token"
-
-  where_open_statement:
-    match: {{ statement_boundary_start }}(\s*)(where){{ token_boundary_end }}(\s+)(open)(?=$|\s)(?!\s+import{{ token_boundary_end }})(\s*)({{ NAME_QUALIFIED }})?
-    captures:
-      3: { name: keyword.control.where.agda }
-      5: { name: keyword.control.import.agda }
-      7:
-        name: entity.name.namespace.agda
-        patterns:
-          - include: "#qualified_name"
 
   import_directive:
     begin: {{ token_boundary_start }}(using|hiding|renaming)(?:\s*(\())?
@@ -469,7 +433,7 @@ repository:
             match: {{ token_boundary('((?!\.)' + token_boundary_char + ')+') }}
 
   term_type_signature_colon_on_first_line:
-    begin: {{ statement_boundary_start }}(\s*)((({{ NAME_TOKEN }}|_)\s+)+?)(:){{ token_boundary_end }}
+    begin: {{ statement_boundary_start }}(\s*)(?![^\n:]*=)(?!\s*(?:let{{ token_boundary_end }}|[\\λ∀]|->|→))((({{ NAME_TOKEN }}|_)\s+)+?)(:){{ token_boundary_end }}
     while: (^|\G)(?:\2(?=\s)|(?={{ STRING_CONTINUATION_START }}))
     name: meta.declaration.function.agda
     beginCaptures:
@@ -480,8 +444,6 @@ repository:
       7:
         name: keyword.operator.colon.agda
     patterns:
-      - include: "#where_open_import_statement"
-      - include: "#where_open_statement"
       - include: "#open_module_statement"
       - include: "#open_import_statement"
       - include: "#open_statement"
@@ -497,8 +459,6 @@ repository:
       4:
         name: keyword.operator.colon.agda
     patterns:
-      - include: "#where_open_import_statement"
-      - include: "#where_open_statement"
       - include: "#open_module_statement"
       - include: "#open_import_statement"
       - include: "#open_statement"
@@ -913,8 +873,6 @@ repository:
 
   agda_statements:
     patterns:
-      - include: "#where_open_import_statement"
-      - include: "#where_open_statement"
       - include: "#open_module_statement"
       - include: "#open_import_statement"
       - include: "#open_statement"
@@ -926,8 +884,8 @@ repository:
   the_usual:
     patterns:
       - include: "#agda_preprocessing_syntax"
-      - include: "#agda_layout_blocks"
       - include: "#agda_statements"
+      - include: "#agda_layout_blocks"
       - include: "#agda_syntax"
       - include: "#agda_token"
 
