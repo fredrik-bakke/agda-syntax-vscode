@@ -47,7 +47,7 @@ repository:
     name: meta.declaration.data.agda
     contentName: meta.declaration.parameters.data.agda
     begin: (^|\G|(?<=;))(\s*)(data)\s+(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?|_)(?=$|\!\}|[\s;{}()@".])
-    end: ((?<=^|\{\!|\{-\#|[\s;{}()@".])where(?=$|\!\}|[\s;{}()@".]))|(?=;)|^(?=\2\S)
+    end: (?:^\s*)?((?<=^|\{\!|\{-\#|[\s;{}()@".])where(?=$|\!\}|[\s;{}()@".]))|(?=;)|^(?=\2\S)
     beginCaptures:
       3: { name: storage.type.class.data.agda }
       4:
@@ -66,7 +66,7 @@ repository:
     name: meta.declaration.data.agda
     contentName: meta.declaration.parameters.data.agda
     begin: (^|\G|(?<=;))(\s*)(data)\s*$
-    end: ((?<=^|\{\!|\{-\#|[\s;{}()@".])where(?=$|\!\}|[\s;{}()@".]))|(?=;)|^(?=\2\S)
+    end: (?:^\s*)?((?<=^|\{\!|\{-\#|[\s;{}()@".])where(?=$|\!\}|[\s;{}()@".]))|(?=;)|^(?=\2\S)
     beginCaptures:
       3: { name: storage.type.class.data.agda }
     endCaptures:
@@ -87,7 +87,7 @@ repository:
     name: meta.declaration.record.agda
     contentName: meta.declaration.parameters.record.agda
     begin: (^|\G|(?<=;))(\s*)(record)(?=$|\!\}|[\s;{}()@".])(?!\s*\{)\s+(_?(?!'|--)[^\s;{}()@"._]+(_(?!'|--)[^\s;{}()@"._]+)*_?|_)(?=$|\!\}|[\s;{}()@".])
-    end: ((?<=^|\{\!|\{-\#|[\s;{}()@".])where(?=$|\!\}|[\s;{}()@".]))|(?=;)|^(?=\2\S)
+    end: (?:^\s*)?((?<=^|\{\!|\{-\#|[\s;{}()@".])where(?=$|\!\}|[\s;{}()@".]))|(?=;)|^(?=\2\S)
     beginCaptures:
       3: { name: storage.type.class.record.agda }
       4:
@@ -106,7 +106,7 @@ repository:
     name: meta.declaration.record.agda
     contentName: meta.declaration.parameters.record.agda
     begin: (^|\G|(?<=;))(\s*)(record)\s*$
-    end: ((?<=^|\{\!|\{-\#|[\s;{}()@".])where(?=$|\!\}|[\s;{}()@".]))|(?=;)|^(?=\s*\{)|^(?=\2\S)
+    end: (?:^\s*)?((?<=^|\{\!|\{-\#|[\s;{}()@".])where(?=$|\!\}|[\s;{}()@".]))|(?=;)|^(?=\s*\{)|^(?=\2\S)
     beginCaptures:
       3: { name: storage.type.class.record.agda }
     endCaptures:
@@ -177,10 +177,10 @@ repository:
       - include: "#term_name"
 
   constructor_block:
-    begin: (^|\G|(?<=;))(\s*)(constructor)(?=$|\!\}|[\s;{}()@".])
-    while: (^|\G)\2(?=\s)
+    begin: ^(\s*)(constructor)(?=$|\!\}|[\s;{}()@".])
+    while: (^|\G)\1(?=\s)
     beginCaptures:
-      3: { name: keyword.control.constructor.agda }
+      2: { name: keyword.control.constructor.agda }
     name: meta.statement.constructor.agda
     patterns:
       - include: "#agda_comments"

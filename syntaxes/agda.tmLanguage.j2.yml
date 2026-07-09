@@ -77,7 +77,7 @@ repository:
     name: meta.declaration.data.agda
     contentName: meta.declaration.parameters.data.agda
     begin: {{ statement_boundary_start }}(\s*)(data)\s+({{ NAME_TOKEN }}|_){{ token_boundary_end }}
-    end: ({{ token_boundary('where') }})|{{ statement_boundary_end }}|^(?=\2\S)
+    end: (?:^\s*)?({{ token_boundary('where') }})|{{ statement_boundary_end }}|^(?=\2\S)
     beginCaptures:
       3: { name: storage.type.class.data.agda }
       4:
@@ -96,7 +96,7 @@ repository:
     name: meta.declaration.data.agda
     contentName: meta.declaration.parameters.data.agda
     begin: {{ statement_boundary_start }}(\s*)(data)\s*$
-    end: ({{ token_boundary('where') }})|{{ statement_boundary_end }}|^(?=\2\S)
+    end: (?:^\s*)?({{ token_boundary('where') }})|{{ statement_boundary_end }}|^(?=\2\S)
     beginCaptures:
       3: { name: storage.type.class.data.agda }
     endCaptures:
@@ -117,7 +117,7 @@ repository:
     name: meta.declaration.record.agda
     contentName: meta.declaration.parameters.record.agda
     begin: {{ statement_boundary_start }}(\s*)(record){{ token_boundary_end }}(?!\s*\{)\s+({{ NAME_TOKEN }}|_){{ token_boundary_end }}
-    end: ({{ token_boundary('where') }})|{{ statement_boundary_end }}|^(?=\2\S)
+    end: (?:^\s*)?({{ token_boundary('where') }})|{{ statement_boundary_end }}|^(?=\2\S)
     beginCaptures:
       3: { name: storage.type.class.record.agda }
       4:
@@ -136,7 +136,7 @@ repository:
     name: meta.declaration.record.agda
     contentName: meta.declaration.parameters.record.agda
     begin: {{ statement_boundary_start }}(\s*)(record)\s*$
-    end: ({{ token_boundary('where') }})|{{ statement_boundary_end }}|^(?=\s*\{)|^(?=\2\S)
+    end: (?:^\s*)?({{ token_boundary('where') }})|{{ statement_boundary_end }}|^(?=\s*\{)|^(?=\2\S)
     beginCaptures:
       3: { name: storage.type.class.record.agda }
     endCaptures:
@@ -207,10 +207,10 @@ repository:
       - include: "#term_name"
 
   constructor_block:
-    begin: {{ statement_boundary_start }}(\s*)(constructor){{ token_boundary_end }}
-    while: (^|\G)\2(?=\s)
+    begin: ^(\s*)(constructor){{ token_boundary_end }}
+    while: (^|\G)\1(?=\s)
     beginCaptures:
-      3: { name: keyword.control.constructor.agda }
+      2: { name: keyword.control.constructor.agda }
     name: meta.statement.constructor.agda
     patterns:
       - include: "#agda_comments"
