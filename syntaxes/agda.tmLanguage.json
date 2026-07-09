@@ -1037,7 +1037,7 @@
     },
     "term_type_signature_colon_on_first_line": {
       "begin": "(^|\\G|(?<=;))(\\s*)(((_?(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+)*_?|_)\\s+)+?)(:)(?=$|\\!\\}|[\\s;{}()@\".])",
-      "while": "(^|\\G)\\2(?=\\s)",
+      "while": "(^|\\G)(?:\\2(?=\\s)|(?=\\\\(?:\\s*\\\\|[0-9]+|0[xX]\\h+|a|b|t|n|v|f|\\\\|'|\"|NUL|SOH|STX|ETX|EOT|ENQ|ACK|BEL|BS|HT|LF|VT|FF|CR|SO|SI|DLE|DC1|DC2|DC3|DC4|NAK|SYN|ETB|CAN|EM|SUB|ESC|FS|GS|RS|US|SP|DEL|\\^[A-Z@\\[\\]\\\\^_])))",
       "name": "meta.declaration.function.agda",
       "beginCaptures": {
         "3": {
@@ -1080,7 +1080,7 @@
     },
     "term_type_signature_colon_on_separate_line": {
       "begin": "(^|\\G|(?<=;))(\\s*)(:)(?=$|\\!\\}|[\\s;{}()@\".])",
-      "while": "(^|\\G)\\2",
+      "while": "(^|\\G)(?:\\2|(?=\\\\(?:\\s*\\\\|[0-9]+|0[xX]\\h+|a|b|t|n|v|f|\\\\|'|\"|NUL|SOH|STX|ETX|EOT|ENQ|ACK|BEL|BS|HT|LF|VT|FF|CR|SO|SI|DLE|DC1|DC2|DC3|DC4|NAK|SYN|ETB|CAN|EM|SUB|ESC|FS|GS|RS|US|SP|DEL|\\^[A-Z@\\[\\]\\\\^_])))",
       "name": "meta.declaration.function.agda",
       "beginCaptures": {
         "4": {
@@ -1511,7 +1511,18 @@
     },
     "escape_control_character": {
       "name": "constant.character.escape.control.agda",
-      "match": "\\^[A-Z@\\[\\]\\\\\\^_]"
+      "match": "\\^[A-Z@\\[\\]\\\\^_]"
+    },
+    "string_gap_line": {
+      "match": "^(\\s*)(\\\\)(\\s*)(\\\\)",
+      "captures": {
+        "2": {
+          "name": "constant.character.escape.string-gap.agda"
+        },
+        "4": {
+          "name": "constant.character.escape.string-gap.agda"
+        }
+      }
     },
     "agda_literals": {
       "patterns": [
@@ -1530,6 +1541,9 @@
             }
           },
           "patterns": [
+            {
+              "include": "#string_gap_line"
+            },
             {
               "include": "#escape_character"
             },

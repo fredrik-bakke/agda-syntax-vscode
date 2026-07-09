@@ -29,6 +29,9 @@ keyEquivalent: ^~A
 {% set NUMERIC_INTEGER = '-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*)' %}
 {% set NUMERIC_FLOAT = '-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)' %}
 {% set NUMERIC_LITERAL = '(?:' + NUMERIC_FLOAT + '|' + NUMERIC_INTEGER + ')' %}
+{% set ESCAPE_CODE = '[0-9]+|0[xX]\h+|a|b|t|n|v|f|\\\\|\'|"|NUL|SOH|STX|ETX|EOT|ENQ|ACK|BEL|BS|HT|LF|VT|FF|CR|SO|SI|DLE|DC1|DC2|DC3|DC4|NAK|SYN|ETB|CAN|EM|SUB|ESC|FS|GS|RS|US|SP|DEL' %}
+{% set ESCAPE_CONTROL_CODE = '\^[A-Z@\[\]\\\^_]' %}
+{% set STRING_CONTINUATION_START = '\\\\(?:\s*\\\\|' + ESCAPE_CODE + '|' + ESCAPE_CONTROL_CODE + ')' %}
 {% set NAME_PART = '(?!\'|--)(?!' + NUMERIC_LITERAL + '(?=$|' + name_part_boundary_char + '))[^' + NAME_PART_BOUNDARY_CHARS + ']+' %}
 {% set name_part = name_part_boundary(NAME_PART) %}
 {% set NAME_TOKEN = '_?' + NAME_PART + '(_' + NAME_PART + ')*_?' %}
@@ -467,7 +470,7 @@ repository:
 
   term_type_signature_colon_on_first_line:
     begin: {{ statement_boundary_start }}(\s*)((({{ NAME_TOKEN }}|_)\s+)+?)(:){{ token_boundary_end }}
-    while: (^|\G)\2(?=\s)
+    while: (^|\G)(?:\2(?=\s)|(?={{ STRING_CONTINUATION_START }}))
     name: meta.declaration.function.agda
     beginCaptures:
       3:
@@ -488,7 +491,7 @@ repository:
 
   term_type_signature_colon_on_separate_line:
     begin: {{ statement_boundary_start }}(\s*)(:){{ token_boundary_end }}
-    while: (^|\G)\2
+    while: (^|\G)(?:\2|(?={{ STRING_CONTINUATION_START }}))
     name: meta.declaration.function.agda
     beginCaptures:
       4:
@@ -728,11 +731,17 @@ repository:
 
   escape_character:
     name: constant.character.escape.agda
-    match: \\([0-9]+|0[xX]\h+|a|b|t|n|v|f|\\|'|"|NUL|SOH|STX|ETX|EOT|ENQ|ACK|BEL|BS|HT|LF|VT|FF|CR|SO|SI|DLE|DC1|DC2|DC3|DC4|NAK|SYN|ETB|CAN|EM|SUB|ESC|FS|GS|RS|US|SP|DEL)
+    match: \\({{ ESCAPE_CODE }})
 
   escape_control_character:
     name: constant.character.escape.control.agda
-    match: \^[A-Z@\[\]\\\^_]
+    match: {{ ESCAPE_CONTROL_CODE }}
+
+  string_gap_line:
+    match: ^(\s*)(\\)(\s*)(\\)
+    captures:
+      2: { name: constant.character.escape.string-gap.agda }
+      4: { name: constant.character.escape.string-gap.agda }
 
   agda_literals:
     patterns:
@@ -744,6 +753,7 @@ repository:
         endCaptures:
           0: { name: punctuation.definition.string.end.agda }
         patterns:
+          - include: "#string_gap_line"
           - include: "#escape_character"
           - include: "#escape_control_character"
       - name: constant.character.quoted.single.agda
