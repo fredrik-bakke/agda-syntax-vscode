@@ -363,13 +363,14 @@ repository:
 {% endfor %}
 
   variable_type_signature:
-    match: (^|\G)(([^:)}⦄]|(?<!^|{{ token_boundary_char }})[:⦄]|[:⦄](?!$|{{ token_boundary_char }}))+){{ token_boundary_char }}(:){{ token_boundary_end }} # TODO: refactor, compare to forall...
+    match: (^|\G)(?!\s*(?:\(|\{|⦃))(([^:)}⦄]|(?<!^|{{ token_boundary_char }})[:⦄]|[:⦄](?!$|{{ token_boundary_char }}))+){{ token_boundary_char }}(:){{ token_boundary_end }} # TODO: refactor, compare to forall...
     name: meta.declaration.variable_type_signature.agda
     captures:
       2:
         patterns:
           - include: "#agda_syntax"
           - include: "#variable_label"
+          - match: \s+
           - name: invalid.name.variable.agda
             match: {{ token_boundary('((?!\.)' + token_boundary_char + ')+') }}
       4: { name: keyword.operator.colon.agda }
