@@ -381,7 +381,7 @@ repository:
 {% endfor %}
 
   variable_type_signature:
-    match: (^|\G)(?![^\n:)}⦄]*=)(?!\s*(?:\(|\{|⦃))(([^:)}⦄]|(?<!^|{{ token_boundary_char }})[:⦄]|[:⦄](?!$|{{ token_boundary_char }}))+){{ token_boundary_char }}(:){{ token_boundary_end }} # TODO: refactor, compare to forall...
+    match: (^|\G)(?![^\n:)}⦄]*=)(?![^\n:)}⦄]*(?:->|→))(?!\s*(?:\(|\{|⦃))(([^:)}⦄]|(?<!^|{{ token_boundary_char }})[:⦄]|[:⦄](?!$|{{ token_boundary_char }}))+){{ token_boundary_char }}(:){{ token_boundary_end }} # TODO: refactor, compare to forall...
     name: meta.declaration.variable_type_signature.agda
     captures:
       2:
@@ -405,7 +405,7 @@ repository:
   #     4: { name: keyword.operator.colon.agda }
 
   forall_variable_type_signature:
-    match: (^|\G)(?![^\n:)}⦄]*=)(([^:)}⦄]|(?<!^|{{ token_boundary_char }})[:⦄]|[:⦄](?!$|{{ token_boundary_char }}))+)((:){{ token_boundary_end }}|(?=$|[)}⦄]))
+    match: (^|\G)(?![^\n:)}⦄]*=)(?![^\n:)}⦄]*(?:->|→))(([^:)}⦄]|(?<!^|{{ token_boundary_char }})[:⦄]|[:⦄](?!$|{{ token_boundary_char }}))+)((:){{ token_boundary_end }}|(?=$|[)}⦄]))
     name: meta.declaration.variable_type_signature.agda
     captures:
       2:
