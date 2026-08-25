@@ -32,7 +32,7 @@ keyEquivalent: ^~A
 {% set ESCAPE_CODE = '[0-9]+|0[xX]\h+|a|b|t|n|v|f|\\\\|\'|"|NUL|SOH|STX|ETX|EOT|ENQ|ACK|BEL|BS|HT|LF|VT|FF|CR|SO|SI|DLE|DC1|DC2|DC3|DC4|NAK|SYN|ETB|CAN|EM|SUB|ESC|FS|GS|RS|US|SP|DEL' %}
 {% set ESCAPE_CONTROL_CODE = '\^[A-Z@\[\]\\\^_]' %}
 {% set STRING_CONTINUATION_START = '\\\\(?:\s*\\\\|' + ESCAPE_CODE + '|' + ESCAPE_CONTROL_CODE + ')' %}
-{% set DECLARATION_START_KEYWORD = '(?:open|abstract|constructor|data|field|infix[lr]?|instance|macro|mutual|opaque|postulate|primitive|private|record|variable|where)' %}
+{% set DECLARATION_START_KEYWORD = '(?:open|abstract|constructor|data|field|infix[lr]?|instance|macro|module|mutual|opaque|postulate|primitive|private|record|variable|where)' %}
 {% set NAME_PART = '(?!\'|--)(?!' + NUMERIC_LITERAL + '(?=$|' + name_part_boundary_char + '))[^' + NAME_PART_BOUNDARY_CHARS + ']+' %}
 {% set name_part = name_part_boundary(NAME_PART) %}
 {% set NAME_TOKEN = '_?' + NAME_PART + '(_' + NAME_PART + ')*_?' %}
@@ -219,7 +219,7 @@ repository:
         name: keyword.control.import.agda
       - match: {{ token_boundary('module') }}
         name: invalid.illegal.name.part.keyword.agda
-      - match: \G(?=\s*[^\s{⦃])\s*(?!(?:module|record|using|hiding|renaming|as|public|in){{ token_boundary_end }})({{ NAME_QUALIFIED }})
+      - match: (?:^|\G)(?<!\S)(?=\s*[^\s{⦃])\s*(?!(?:module|record|using|hiding|renaming|as|public|in){{ token_boundary_end }})({{ NAME_QUALIFIED }})
         captures:
           1:
             name: entity.name.namespace.agda
@@ -264,7 +264,7 @@ repository:
         name: invalid.illegal.name.part.keyword.agda
       - match: =
         name: keyword.operator.agda
-      - match: \G(?=\s*[^\s{⦃])\s*(?!(?:import|module|record|using|hiding|renaming|as|public|in){{ token_boundary_end }})({{ NAME_QUALIFIED }})
+      - match: (?:^|\G)(?<!\S)(?=\s*[^\s{⦃])\s*(?!(?:import|module|record|using|hiding|renaming|as|public|in){{ token_boundary_end }})({{ NAME_QUALIFIED }})
         captures:
           1:
             name: entity.name.namespace.agda

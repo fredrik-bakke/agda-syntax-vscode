@@ -132,7 +132,7 @@ repository:
         name: entity.name.namespace.agda
         patterns:
           - include: "#qualified_name"
-    while: (^|\G)\2(?=\s)(?!\s*(?:open|abstract|constructor|data|field|infix[lr]?|instance|macro|mutual|opaque|postulate|primitive|private|record|variable|where)(?=$|\!\}|[\s;{}()@".]))
+    while: (^|\G)\2(?=\s)(?!\s*(?:open|abstract|constructor|data|field|infix[lr]?|instance|macro|module|mutual|opaque|postulate|primitive|private|record|variable|where)(?=$|\!\}|[\s;{}()@".]))
     patterns:
       - include: "#agda_comments"
       - include: "#parameter_declaration"
@@ -160,7 +160,7 @@ repository:
         name: entity.name.namespace.agda
         patterns:
           - include: "#qualified_name"
-    while: (^|\G)\2(?=\s)(?!\s*(?:open|abstract|constructor|data|field|infix[lr]?|instance|macro|mutual|opaque|postulate|primitive|private|record|variable|where)(?=$|\!\}|[\s;{}()@".]))
+    while: (^|\G)\2(?=\s)(?!\s*(?:open|abstract|constructor|data|field|infix[lr]?|instance|macro|module|mutual|opaque|postulate|primitive|private|record|variable|where)(?=$|\!\}|[\s;{}()@".]))
     patterns:
       - include: "#agda_comments"
       - include: "#parameter_declaration"
@@ -181,7 +181,7 @@ repository:
         name: keyword.control.import.agda
       - match: (?<=^|\{\!|\{-\#|[\s;{}()@".])module(?=$|\!\}|[\s;{}()@".])
         name: invalid.illegal.name.part.keyword.agda
-      - match: \G(?=\s*[^\s{⦃])\s*(?!(?:module|record|using|hiding|renaming|as|public|in)(?=$|\!\}|[\s;{}()@".]))(_?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?(\._?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?)*)
+      - match: (?:^|\G)(?<!\S)(?=\s*[^\s{⦃])\s*(?!(?:module|record|using|hiding|renaming|as|public|in)(?=$|\!\}|[\s;{}()@".]))(_?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?(\._?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?)*)
         captures:
           1:
             name: entity.name.namespace.agda
@@ -198,7 +198,7 @@ repository:
         name: entity.name.namespace.agda
         patterns:
           - include: "#qualified_name"
-    while: (^|\G)\2(?=\s)(?!\s*(?:open|abstract|constructor|data|field|infix[lr]?|instance|macro|mutual|opaque|postulate|primitive|private|record|variable|where)(?=$|\!\}|[\s;{}()@".]))
+    while: (^|\G)\2(?=\s)(?!\s*(?:open|abstract|constructor|data|field|infix[lr]?|instance|macro|module|mutual|opaque|postulate|primitive|private|record|variable|where)(?=$|\!\}|[\s;{}()@".]))
     patterns:
       - include: "#agda_comments"
       - include: "#parameter_declaration"
@@ -226,7 +226,7 @@ repository:
         name: invalid.illegal.name.part.keyword.agda
       - match: =
         name: keyword.operator.agda
-      - match: \G(?=\s*[^\s{⦃])\s*(?!(?:import|module|record|using|hiding|renaming|as|public|in)(?=$|\!\}|[\s;{}()@".]))(_?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?(\._?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?)*)
+      - match: (?:^|\G)(?<!\S)(?=\s*[^\s{⦃])\s*(?!(?:import|module|record|using|hiding|renaming|as|public|in)(?=$|\!\}|[\s;{}()@".]))(_?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?(\._?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?)*)
         captures:
           1:
             name: entity.name.namespace.agda
