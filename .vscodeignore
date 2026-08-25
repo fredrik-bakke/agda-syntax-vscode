@@ -7,11 +7,13 @@ vsc-extension-quickstart.md
 node_modules/**
 .gitattributes
 **/.DS_Store
+scripts/**
 
 convert_yml_to_json.sh
 process_jinja_templates.py
 requirements.txt
 TODO
+.TODO
 
 syntaxes/*.yml
 syntaxes/*.yaml

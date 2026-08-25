@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.7.5] - 2026-08-25
+
+- Support `open module`
+- Support more multiline `open` declarations
+- Support fixity statements in `import` declarations
+- Support string gaps
+- Support `constructor` as a qualified name
+- Fix a regression for `data` and `record` declarations with a newline after the
+  keyword
+- Fix some overzealous invalidity flagging
+- Fix a couple of issues with instance arguments in type signatures
+- Support typed lambda abstractions
+- Improve highlighting of parameters and `let` statements in type signatures and declaration telescopes
+
 ## [0.7.4] - 2026-06-18
 
 - Remove retired badges from readme
