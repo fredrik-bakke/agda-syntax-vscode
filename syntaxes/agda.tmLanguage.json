@@ -610,6 +610,9 @@
           "include": "#implicit_forall_parameter_declaration"
         },
         {
+          "include": "#typed_parameter_declaration"
+        },
+        {
           "include": "#explicit_parameter_declaration"
         },
         {
@@ -1101,6 +1104,9 @@
           "include": "#agda_comments"
         },
         {
+          "include": "#typed_parameter_declaration"
+        },
+        {
           "include": "#explicit_parameter_declaration"
         },
         {
@@ -1114,6 +1120,76 @@
         },
         {
           "include": "#variable_label"
+        }
+      ]
+    },
+    "typed_parameter_declaration": {
+      "begin": "(\\()(\\s*(?:(?!->|→|[\\\\λ])[^():{}\\n]|\\([^():{}\\n]*\\))*\\s*)(:)(?=$|\\!\\}|[\\s;{}()@\".])",
+      "end": "\\)",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.section.parens.explicit.begin.agda"
+        },
+        "2": {
+          "name": "meta.declaration.parameters.explicit.pattern.agda",
+          "patterns": [
+            {
+              "include": "#variable_label"
+            },
+            {
+              "include": "#agda_syntax"
+            }
+          ]
+        },
+        "3": {
+          "name": "keyword.operator.colon.agda"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.parens.explicit.end.agda"
+        }
+      },
+      "name": "meta.declaration.parameters.explicit.agda",
+      "patterns": [
+        {
+          "include": "#agda_comments"
+        },
+        {
+          "include": "#typed_parameter_declaration"
+        },
+        {
+          "include": "#typed_parameter_parenthesized_expression"
+        },
+        {
+          "include": "#parameter_declaration"
+        },
+        {
+          "include": "#agda_syntax"
+        },
+        {
+          "include": "#type"
+        }
+      ]
+    },
+    "typed_parameter_parenthesized_expression": {
+      "begin": "\\(",
+      "end": "\\)",
+      "patterns": [
+        {
+          "include": "#agda_comments"
+        },
+        {
+          "include": "#typed_parameter_parenthesized_expression"
+        },
+        {
+          "include": "#parameter_declaration"
+        },
+        {
+          "include": "#agda_syntax"
+        },
+        {
+          "include": "#type"
         }
       ]
     },
