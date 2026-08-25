@@ -13,6 +13,29 @@
     }
   ],
   "repository": {
+    "data_record_parameter": {
+      "patterns": [
+        {
+          "include": "#visible_untyped_parameter_before_colon"
+        },
+        {
+          "include": "#binder_declaration"
+        }
+      ]
+    },
+    "visible_untyped_parameter_before_colon": {
+      "match": "(^|\\G)(\\s*)(?![({⦃])((?:(?:\\.|@(?:irr|irrelevant|shirr|shape-irrelevant|relevant|0|erased|ω|♭|\\+\\+|\\+|-|mixed|unused))\\s*)*(?!(?:constructor|(?:abstract|(co)?inductive|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with))(?=$|\\!\\}|[\\s;{}()@\".]))(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+)*_?|_)(?:\\s+(?!(?:constructor|(?:abstract|(co)?inductive|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with))(?=$|\\!\\}|[\\s;{}()@\".]))(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+)*_?|_))*)(?=\\s*:)",
+      "captures": {
+        "3": {
+          "name": "meta.declaration.parameters.explicit.pattern.agda",
+          "patterns": [
+            {
+              "include": "#variable_label"
+            }
+          ]
+        }
+      }
+    },
     "declaration_telescope": {
       "patterns": [
         {
@@ -20,6 +43,9 @@
         },
         {
           "include": "#binder_declaration"
+        },
+        {
+          "include": "#telescope_local_declaration"
         },
         {
           "include": "#typed_parameter_parenthesized_expression"
@@ -32,6 +58,136 @@
         },
         {
           "include": "#visible_untyped_parameter_declaration"
+        }
+      ]
+    },
+    "local_module_declaration": {
+      "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])(?:(open)(\\s+))?(module)(?=$|\\!\\}|[\\s;{}()@\".])(\\s+)(_?(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+)*_?(\\._?(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+)*_?)*)(\\s*)(=)",
+      "captures": {
+        "1": {
+          "name": "keyword.control.import.agda"
+        },
+        "3": {
+          "name": "keyword.control.module.agda"
+        },
+        "5": {
+          "name": "entity.name.namespace.agda",
+          "patterns": [
+            {
+              "include": "#qualified_name"
+            }
+          ]
+        },
+        "7": {
+          "name": "keyword.operator.assignment.agda"
+        }
+      }
+    },
+    "local_open_declaration": {
+      "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])(open)(?=$|\\!\\}|[\\s;{}()@\".])(\\s+)(_?(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+)*_?(\\._?(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+)*_?)*)",
+      "captures": {
+        "1": {
+          "name": "keyword.control.import.agda"
+        },
+        "3": {
+          "name": "entity.name.namespace.agda",
+          "patterns": [
+            {
+              "include": "#qualified_name"
+            }
+          ]
+        }
+      }
+    },
+    "telescope_local_declaration": {
+      "begin": "(\\()(?=\\s*(?:let|open)(?=$|\\!\\}|[\\s;{}()@\".]))",
+      "end": "\\)",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.section.parens.begin.agda"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.parens.end.agda"
+        }
+      },
+      "patterns": [
+        {
+          "match": "\\G(\\s*)(let)(?=$|\\!\\}|[\\s;{}()@\".])",
+          "captures": {
+            "2": {
+              "name": "keyword.control.agda"
+            }
+          }
+        },
+        {
+          "include": "#local_module_declaration"
+        },
+        {
+          "include": "#local_open_declaration"
+        },
+        {
+          "include": "#telescope_term"
+        }
+      ]
+    },
+    "telescope_term_parenthesized_expression": {
+      "begin": "\\(",
+      "end": "\\)",
+      "patterns": [
+        {
+          "include": "#telescope_term"
+        }
+      ]
+    },
+    "telescope_term": {
+      "patterns": [
+        {
+          "include": "#agda_comments"
+        },
+        {
+          "include": "#import_directive"
+        },
+        {
+          "include": "#telescope_local_declaration"
+        },
+        {
+          "include": "#telescope_term_parenthesized_expression"
+        },
+        {
+          "include": "#agda_syntax"
+        },
+        {
+          "include": "#agda_token"
+        }
+      ]
+    },
+    "type_let_expression": {
+      "begin": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])(let)(?=$|\\!\\}|[\\s;{}()@\".])",
+      "end": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])(in)(?=$|\\!\\}|[\\s;{}()@\".])",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.agda"
+        }
+      },
+      "endCaptures": {
+        "1": {
+          "name": "keyword.control.agda"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#local_module_declaration"
+        },
+        {
+          "include": "#local_open_declaration"
+        },
+        {
+          "include": "#type_let_expression"
+        },
+        {
+          "include": "#telescope_term"
         }
       ]
     },
@@ -148,7 +304,7 @@
           "include": "#agda_comments"
         },
         {
-          "include": "#parameter_declaration"
+          "include": "#data_record_parameter"
         },
         {
           "include": "#type"
@@ -191,7 +347,7 @@
           }
         },
         {
-          "include": "#parameter_declaration"
+          "include": "#data_record_parameter"
         },
         {
           "include": "#type"
@@ -229,7 +385,7 @@
           "include": "#agda_comments"
         },
         {
-          "include": "#parameter_declaration"
+          "include": "#data_record_parameter"
         },
         {
           "include": "#type"
@@ -272,7 +428,7 @@
           }
         },
         {
-          "include": "#parameter_declaration"
+          "include": "#data_record_parameter"
         },
         {
           "include": "#type"
@@ -859,6 +1015,9 @@
     "type": {
       "patterns": [
         {
+          "include": "#type_let_expression"
+        },
+        {
           "include": "#parameter_declaration"
         },
         {
@@ -897,19 +1056,29 @@
         }
       }
     },
-    "instance_argument_type_signature": {
-      "begin": "(^|\\G|(?<=;))(\\s*)(?=(?:⦃|\\{\\{))",
+    "hidden_argument_type_signature": {
+      "begin": "(^|\\G|(?<=;))(\\s*)(?=(?:\\{\\{\\s*(?:(?:\\.|@(?:irr|irrelevant|shirr|shape-irrelevant|relevant|0|erased|ω|♭|\\+\\+|\\+|-|mixed|unused))\\s*)*(?!(?:constructor|(?:abstract|(co)?inductive|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with))(?=$|\\!\\}|[\\s;{}()@\".]))(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+)*_?|_)(?:\\s+(?!(?:constructor|(?:abstract|(co)?inductive|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with))(?=$|\\!\\}|[\\s;{}()@\".]))(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+)*_?|_))*\\s*\\}\\}|\\{\\s*(?:(?:\\.|@(?:irr|irrelevant|shirr|shape-irrelevant|relevant|0|erased|ω|♭|\\+\\+|\\+|-|mixed|unused))\\s*)*(?!(?:constructor|(?:abstract|(co)?inductive|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with))(?=$|\\!\\}|[\\s;{}()@\".]))(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+)*_?|_)(?:\\s+(?!(?:constructor|(?:abstract|(co)?inductive|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with))(?=$|\\!\\}|[\\s;{}()@\".]))(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+)*_?|_))*\\s*\\}|⦃\\s*(?:(?:\\.|@(?:irr|irrelevant|shirr|shape-irrelevant|relevant|0|erased|ω|♭|\\+\\+|\\+|-|mixed|unused))\\s*)*(?!(?:constructor|(?:abstract|(co)?inductive|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with))(?=$|\\!\\}|[\\s;{}()@\".]))(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+)*_?|_)(?:\\s+(?!(?:constructor|(?:abstract|(co)?inductive|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with))(?=$|\\!\\}|[\\s;{}()@\".]))(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+)*_?|_))*\\s*⦄)\\s*:)",
       "while": "(^|\\G)\\2(?=\\s)",
       "name": "meta.declaration.function.agda",
       "patterns": [
         {
-          "include": "#instance_double_brace_untyped_parameter_declaration"
-        },
-        {
-          "include": "#instance_unicode_untyped_parameter_declaration"
-        },
-        {
-          "include": "#parameter_declaration"
+          "match": "(?:\\{\\{\\s*(?:(?:\\.|@(?:irr|irrelevant|shirr|shape-irrelevant|relevant|0|erased|ω|♭|\\+\\+|\\+|-|mixed|unused))\\s*)*(?!(?:constructor|(?:abstract|(co)?inductive|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with))(?=$|\\!\\}|[\\s;{}()@\".]))(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+)*_?|_)(?:\\s+(?!(?:constructor|(?:abstract|(co)?inductive|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with))(?=$|\\!\\}|[\\s;{}()@\".]))(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+)*_?|_))*\\s*\\}\\}|\\{\\s*(?:(?:\\.|@(?:irr|irrelevant|shirr|shape-irrelevant|relevant|0|erased|ω|♭|\\+\\+|\\+|-|mixed|unused))\\s*)*(?!(?:constructor|(?:abstract|(co)?inductive|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with))(?=$|\\!\\}|[\\s;{}()@\".]))(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+)*_?|_)(?:\\s+(?!(?:constructor|(?:abstract|(co)?inductive|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with))(?=$|\\!\\}|[\\s;{}()@\".]))(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+)*_?|_))*\\s*\\}|⦃\\s*(?:(?:\\.|@(?:irr|irrelevant|shirr|shape-irrelevant|relevant|0|erased|ω|♭|\\+\\+|\\+|-|mixed|unused))\\s*)*(?!(?:constructor|(?:abstract|(co)?inductive|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with))(?=$|\\!\\}|[\\s;{}()@\".]))(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+)*_?|_)(?:\\s+(?!(?:constructor|(?:abstract|(co)?inductive|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with))(?=$|\\!\\}|[\\s;{}()@\".]))(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\\s;{}()@\"._]))[^\\s;{}()@\"._]+)*_?|_))*\\s*⦄)(?=\\s*:)",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "name": "punctuation.section.parens.agda",
+                  "match": "\\{\\{|\\}\\}|[{}⦃⦄]"
+                },
+                {
+                  "include": "#agda_modality"
+                },
+                {
+                  "include": "#term_name"
+                }
+              ]
+            }
+          }
         },
         {
           "match": "(?<=^|\\{\\!|\\{-\\#|[\\s;{}()@\".])(:)(?=$|\\!\\}|[\\s;{}()@\".])",
@@ -2044,7 +2213,7 @@
           "include": "#open_statement"
         },
         {
-          "include": "#instance_argument_type_signature"
+          "include": "#hidden_argument_type_signature"
         },
         {
           "include": "#term_type_signature_colon_on_first_line"
