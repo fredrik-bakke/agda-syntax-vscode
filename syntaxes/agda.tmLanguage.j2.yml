@@ -40,6 +40,10 @@ keyEquivalent: ^~A
 {% set NAME_QUALIFIED = NAME_TOKEN + '(\.' + NAME_TOKEN + ')*' %}
 {% set name_qualified = name_qualified_boundary(NAME_QUALIFIED) %}
 {% set BINDER_LABELS = '(?:' + NAME_TOKEN + '|_)(?:\s+(?:' + NAME_TOKEN + '|_))*' %}
+{% set BINDER_CHAR = '[^():{}⦃⦄\\n]' %}
+{% set BINDER_GROUP = '(?:\(' + BINDER_CHAR + '*\)|\{' + BINDER_CHAR + '*\}|⦃' + BINDER_CHAR + '*⦄)' %}
+{% set BINDER_NESTED_GROUP = '\((?:' + BINDER_CHAR + '|' + BINDER_GROUP + ')*\)' %}
+{% set TYPED_PARAMETER_PATTERN = '\s*(?:(?!\s+(?:->|→)|[\\\\λ])(?:' + BINDER_CHAR + '|' + BINDER_NESTED_GROUP + '|' + BINDER_GROUP + '))*\s*' %}
 
 {% set absurd_pattern = '\(\s*\)' %}
 
@@ -325,31 +329,25 @@ repository:
       - include: "#agda_literals"
       - include: "#term_name"
 
+  binder_declaration:
+    patterns:
+      - include: "#implicit_untyped_parameter_declaration"
+      - include: "#instance_double_brace_untyped_parameter_declaration"
+      - include: "#instance_unicode_untyped_parameter_declaration"
+      - include: "#parameter_declaration"
+
   parameter_declaration:
     patterns:
-      - include: "#explicit_forall_parameter_declaration"
-      - include: "#instance_forall_parameter_declaration"
-      - include: "#implicit_forall_parameter_declaration"
+      - include: "#forall_abstraction_start"
       - include: "#typed_parameter_declaration"
-      - include: "#explicit_parameter_declaration"
-      - include: "#instance_parameter_declaration"
       - include: "#implicit_parameter_declaration"
-
-  instance_parameter_declaration:
-    patterns:
       - include: "#instance_double_brace_parameter_declaration"
       - include: "#instance_unicode_parameter_declaration"
 
-  instance_forall_parameter_declaration:
-    patterns:
-      - include: "#instance_double_brace_forall_parameter_declaration"
-      - include: "#instance_unicode_forall_parameter_declaration"
-
 {% for param_decl in [
-  {"id": "explicit", "begin": "\\((?=\\s*" + BINDER_LABELS + "\\s*:)", "end": "\\)"},
-  {"id": "implicit", "begin": "\\{(?!-)", "end": "(?<!-)\\}"},
-  {"id": "instance_double_brace", "begin": "\\{\\{(?!-)", "end": "(?<!-)\\}\\}"},
-  {"id": "instance_unicode", "begin": token_boundary_start + "⦃" + token_boundary_end, "end": token_boundary_start + "⦄" + token_boundary_end}
+  {"id": "implicit", "begin": "\\{(?!-)(?![^:\\n{}]*\\s(?:->|→))", "end": "(?<!-)\\}", "stop": "}", "inner": "[∀⦃⦄{()]"},
+  {"id": "instance_double_brace", "begin": "\\{\\{(?!-)(?![^:\\n{}]*\\s(?:->|→))", "end": "(?<!-)\\}\\}", "stop": "}", "inner": "[∀⦃⦄{()]"},
+  {"id": "instance_unicode", "begin": token_boundary_start + "⦃" + token_boundary_end, "end": token_boundary_start + "⦄" + token_boundary_end, "stop": "⦄", "inner": "[∀⦃{}()]"}
 ] %}
   {{ param_decl.id }}_parameter_declaration:
     begin: {{ param_decl.begin }}
@@ -360,29 +358,27 @@ repository:
       0: { name: punctuation.section.parens.{{ param_decl.id }}.end.agda }
     name: meta.declaration.parameters.{{ param_decl.id }}.agda
     patterns:
+      - include: "#variable_type_signature"
       - include: "#agda_syntax" # TODO: refine
       - include: "#parameter_declaration"
-      - include: "#variable_type_signature"
       - include: "#type"
 
-  {{ param_decl.id }}_forall_parameter_declaration:
-    begin: {{ token_boundary_start }}(forall|∀)\s*({{ param_decl.begin }})
+  {{ param_decl.id }}_untyped_parameter_declaration:
+    begin: {{ param_decl.begin }}(?![^{{ param_decl.stop }}\n]*[=:])(?![^:{{ param_decl.stop }}\n]*\s(?:->|→))(?![^{{ param_decl.stop }}\n]*{{ param_decl.inner }})(?=\s*{{ BINDER_LABELS }}\s*{{ param_decl.end }})
     end: {{ param_decl.end }}
+    name: meta.declaration.parameters.{{ param_decl.id }}.agda
     beginCaptures:
-      1: { name: keyword.operator.forall.{{ param_decl.id }}.agda }
-      2: { name: punctuation.section.parens.{{ param_decl.id }}.begin.agda }
+      0: { name: punctuation.section.parens.{{ param_decl.id }}.begin.agda }
     endCaptures:
       0: { name: punctuation.section.parens.{{ param_decl.id }}.end.agda }
-    name: meta.declaration.parameters.{{ param_decl.id }}.agda
+    contentName: meta.declaration.parameters.{{ param_decl.id }}.pattern.agda
     patterns:
-      - include: "#agda_syntax" # TODO: refine
-      - include: "#parameter_declaration"
-      - include: "#forall_variable_type_signature"
-      - include: "#type"
+      - include: "#variable_label"
+      - include: "#agda_syntax"
 {% endfor %}
 
   variable_type_signature:
-    match: (^|\G)(?![^\n:)}⦄]*=)(?![^\n:)}⦄]*(?:->|→))(?!\s*(?:\(|\{|⦃))(([^:)}⦄]|(?<!^|{{ token_boundary_char }})[:⦄]|[:⦄](?!$|{{ token_boundary_char }}))+){{ token_boundary_char }}(:){{ token_boundary_end }} # TODO: refactor, compare to forall...
+    match: (^|\G)(?![^\n:)}⦄]*=)(?![^\n:)}⦄]*\s(?:->|→))(?!\s*(?:\(|\{|⦃))(([^:)}⦄]|(?<!^|{{ token_boundary_char }})[:⦄]|[:⦄](?!$|{{ token_boundary_char }}))+){{ token_boundary_char }}(:){{ token_boundary_end }}
     name: meta.declaration.variable_type_signature.agda
     captures:
       2:
@@ -391,30 +387,6 @@ repository:
           - include: "#variable_label"
           - match: \s+
           - name: invalid.name.variable.agda
-            match: {{ token_boundary('((?!\.)' + token_boundary_char + ')+') }}
-      4: { name: keyword.operator.colon.agda }
-  # variable_type_signature:
-  #   match: (^|\G)(((?!{{ token_boundary(':') }}).)+){{ token_boundary('(:)') }}
-  #   name: meta.declaration.variable_type_signature.agda
-  #   captures:
-  #     2:
-  #       patterns:
-  #         - include: "#agda_expression"
-  #         - include: "#variable_label"
-  #         - name: invalid.name.variable.agda
-  #           match: {{ token_boundary('((?!\.)' + token_boundary_char + ')+') }}
-  #     4: { name: keyword.operator.colon.agda }
-
-  forall_variable_type_signature:
-    match: (^|\G)(?![^\n:)}⦄]*=)(?![^\n:)}⦄]*(?:->|→))(([^:)}⦄]|(?<!^|{{ token_boundary_char }})[:⦄]|[:⦄](?!$|{{ token_boundary_char }}))+)((:){{ token_boundary_end }}|(?=$|[)}⦄]))
-    name: meta.declaration.variable_type_signature.agda
-    captures:
-      2:
-        patterns:
-          - include: "#agda_syntax"
-          - include: "#variable_label"
-          - match: \s+
-          - name: invalid.name.variable.forall.agda
             match: {{ token_boundary('((?!\.)' + token_boundary_char + ')+') }}
       4: { name: keyword.operator.colon.agda }
 
@@ -442,6 +414,8 @@ repository:
     while: (^|\G)\2(?=\s)
     name: meta.declaration.function.agda
     patterns:
+      - include: "#instance_double_brace_untyped_parameter_declaration"
+      - include: "#instance_unicode_untyped_parameter_declaration"
       - include: "#parameter_declaration"
       - match: {{ token_boundary('(:)') }}
         name: keyword.operator.colon.agda
@@ -494,7 +468,7 @@ repository:
 
   lambda_abstraction_start:
     begin: {{ token_boundary('(\\\\|λ)') }}
-    end: {{ token_boundary('((->|→)|(where))') }}|({{ absurd_pattern }})|(?=\{) # TODO: λ{} syntax
+    end: {{ token_boundary('((->|→)|(where))') }}|({{ absurd_pattern }})|(?=\s*\{(?!\{)(?!\s*{{ BINDER_LABELS }}\s*(?<!-)\})(?!{{ TYPED_PARAMETER_PATTERN }}:{{ token_boundary_end }}))
     beginCaptures:
       1: { name: keyword.operator.lambda.agda }
     endCaptures:
@@ -503,15 +477,27 @@ repository:
       4: { name: keyword.operator.lambda.absurd.agda }
     patterns:
       - include: "#agda_comments"
-      - include: "#typed_parameter_declaration"
-      - include: "#explicit_parameter_declaration"
-      - include: "#instance_parameter_declaration"
-      - include: "#implicit_parameter_declaration"
+      - include: "#binder_declaration"
+      - include: "#agda_expressions"
+      - include: "#variable_label"
+
+  forall_abstraction_start:
+    begin: {{ token_boundary('(forall|∀)') }}
+    end: {{ token_boundary('((->|→))') }}
+    beginCaptures:
+      1: { name: keyword.operator.forall.agda }
+    endCaptures:
+      1: { name: keyword.operator.forall.mapsto.agda }
+    name: meta.declaration.parameters.forall.agda
+    patterns:
+      - include: "#agda_comments"
+      - include: "#binder_declaration"
+      - include: "#typed_parameter_parenthesized_expression"
       - include: "#agda_expressions"
       - include: "#variable_label"
 
   typed_parameter_declaration:
-    begin: (\()(\s*(?:(?!->|→|[\\λ])[^():{}\n]|\([^():{}\n]*\))*\s*)(:){{ token_boundary_end }}
+    begin: (\()(?![^:\n)}⦄]*=)({{ TYPED_PARAMETER_PATTERN }})(:){{ token_boundary_end }}
     end: \)
     beginCaptures:
       1: { name: punctuation.section.parens.explicit.begin.agda }
@@ -923,9 +909,8 @@ repository:
     patterns:
       - include: "#hole"
       - include: "#record_expression"
+      - include: "#forall_abstraction_start"
       - include: "#lambda_abstraction_start"
-      # TODO: forall
-      # TODO: parameter decl
       - include: "#agda_constants"
       - include: "#wildcard"
       - include: "#agda_expression_keywords"

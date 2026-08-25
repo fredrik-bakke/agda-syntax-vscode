@@ -287,56 +287,23 @@ repository:
       - include: "#agda_literals"
       - include: "#term_name"
 
+  binder_declaration:
+    patterns:
+      - include: "#implicit_untyped_parameter_declaration"
+      - include: "#instance_double_brace_untyped_parameter_declaration"
+      - include: "#instance_unicode_untyped_parameter_declaration"
+      - include: "#parameter_declaration"
+
   parameter_declaration:
     patterns:
-      - include: "#explicit_forall_parameter_declaration"
-      - include: "#instance_forall_parameter_declaration"
-      - include: "#implicit_forall_parameter_declaration"
+      - include: "#forall_abstraction_start"
       - include: "#typed_parameter_declaration"
-      - include: "#explicit_parameter_declaration"
-      - include: "#instance_parameter_declaration"
       - include: "#implicit_parameter_declaration"
-
-  instance_parameter_declaration:
-    patterns:
       - include: "#instance_double_brace_parameter_declaration"
       - include: "#instance_unicode_parameter_declaration"
 
-  instance_forall_parameter_declaration:
-    patterns:
-      - include: "#instance_double_brace_forall_parameter_declaration"
-      - include: "#instance_unicode_forall_parameter_declaration"
-
-  explicit_parameter_declaration:
-    begin: \((?=\s*(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?|_)(?:\s+(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?|_))*\s*:)
-    end: \)
-    beginCaptures:
-      0: { name: punctuation.section.parens.explicit.begin.agda }
-    endCaptures:
-      0: { name: punctuation.section.parens.explicit.end.agda }
-    name: meta.declaration.parameters.explicit.agda
-    patterns:
-      - include: "#agda_syntax" # TODO: refine
-      - include: "#parameter_declaration"
-      - include: "#variable_type_signature"
-      - include: "#type"
-
-  explicit_forall_parameter_declaration:
-    begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])(forall|∀)\s*(\((?=\s*(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?|_)(?:\s+(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?|_))*\s*:))
-    end: \)
-    beginCaptures:
-      1: { name: keyword.operator.forall.explicit.agda }
-      2: { name: punctuation.section.parens.explicit.begin.agda }
-    endCaptures:
-      0: { name: punctuation.section.parens.explicit.end.agda }
-    name: meta.declaration.parameters.explicit.agda
-    patterns:
-      - include: "#agda_syntax" # TODO: refine
-      - include: "#parameter_declaration"
-      - include: "#forall_variable_type_signature"
-      - include: "#type"
   implicit_parameter_declaration:
-    begin: \{(?!-)
+    begin: \{(?!-)(?![^:\n{}]*\s(?:->|→))
     end: (?<!-)\}
     beginCaptures:
       0: { name: punctuation.section.parens.implicit.begin.agda }
@@ -344,27 +311,25 @@ repository:
       0: { name: punctuation.section.parens.implicit.end.agda }
     name: meta.declaration.parameters.implicit.agda
     patterns:
+      - include: "#variable_type_signature"
       - include: "#agda_syntax" # TODO: refine
       - include: "#parameter_declaration"
-      - include: "#variable_type_signature"
       - include: "#type"
 
-  implicit_forall_parameter_declaration:
-    begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])(forall|∀)\s*(\{(?!-))
+  implicit_untyped_parameter_declaration:
+    begin: \{(?!-)(?![^:\n{}]*\s(?:->|→))(?![^}\n]*[=:])(?![^:}\n]*\s(?:->|→))(?![^}\n]*[∀⦃⦄{()])(?=\s*(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?|_)(?:\s+(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?|_))*\s*(?<!-)\})
     end: (?<!-)\}
+    name: meta.declaration.parameters.implicit.agda
     beginCaptures:
-      1: { name: keyword.operator.forall.implicit.agda }
-      2: { name: punctuation.section.parens.implicit.begin.agda }
+      0: { name: punctuation.section.parens.implicit.begin.agda }
     endCaptures:
       0: { name: punctuation.section.parens.implicit.end.agda }
-    name: meta.declaration.parameters.implicit.agda
+    contentName: meta.declaration.parameters.implicit.pattern.agda
     patterns:
-      - include: "#agda_syntax" # TODO: refine
-      - include: "#parameter_declaration"
-      - include: "#forall_variable_type_signature"
-      - include: "#type"
+      - include: "#variable_label"
+      - include: "#agda_syntax"
   instance_double_brace_parameter_declaration:
-    begin: \{\{(?!-)
+    begin: \{\{(?!-)(?![^:\n{}]*\s(?:->|→))
     end: (?<!-)\}\}
     beginCaptures:
       0: { name: punctuation.section.parens.instance_double_brace.begin.agda }
@@ -372,25 +337,23 @@ repository:
       0: { name: punctuation.section.parens.instance_double_brace.end.agda }
     name: meta.declaration.parameters.instance_double_brace.agda
     patterns:
+      - include: "#variable_type_signature"
       - include: "#agda_syntax" # TODO: refine
       - include: "#parameter_declaration"
-      - include: "#variable_type_signature"
       - include: "#type"
 
-  instance_double_brace_forall_parameter_declaration:
-    begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])(forall|∀)\s*(\{\{(?!-))
+  instance_double_brace_untyped_parameter_declaration:
+    begin: \{\{(?!-)(?![^:\n{}]*\s(?:->|→))(?![^}\n]*[=:])(?![^:}\n]*\s(?:->|→))(?![^}\n]*[∀⦃⦄{()])(?=\s*(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?|_)(?:\s+(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?|_))*\s*(?<!-)\}\})
     end: (?<!-)\}\}
+    name: meta.declaration.parameters.instance_double_brace.agda
     beginCaptures:
-      1: { name: keyword.operator.forall.instance_double_brace.agda }
-      2: { name: punctuation.section.parens.instance_double_brace.begin.agda }
+      0: { name: punctuation.section.parens.instance_double_brace.begin.agda }
     endCaptures:
       0: { name: punctuation.section.parens.instance_double_brace.end.agda }
-    name: meta.declaration.parameters.instance_double_brace.agda
+    contentName: meta.declaration.parameters.instance_double_brace.pattern.agda
     patterns:
-      - include: "#agda_syntax" # TODO: refine
-      - include: "#parameter_declaration"
-      - include: "#forall_variable_type_signature"
-      - include: "#type"
+      - include: "#variable_label"
+      - include: "#agda_syntax"
   instance_unicode_parameter_declaration:
     begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])⦃(?=$|\!\}|[\s;{}()@".])
     end: (?<=^|\{\!|\{-\#|[\s;{}()@".])⦄(?=$|\!\}|[\s;{}()@".])
@@ -400,28 +363,26 @@ repository:
       0: { name: punctuation.section.parens.instance_unicode.end.agda }
     name: meta.declaration.parameters.instance_unicode.agda
     patterns:
+      - include: "#variable_type_signature"
       - include: "#agda_syntax" # TODO: refine
       - include: "#parameter_declaration"
-      - include: "#variable_type_signature"
       - include: "#type"
 
-  instance_unicode_forall_parameter_declaration:
-    begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])(forall|∀)\s*((?<=^|\{\!|\{-\#|[\s;{}()@".])⦃(?=$|\!\}|[\s;{}()@".]))
+  instance_unicode_untyped_parameter_declaration:
+    begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])⦃(?=$|\!\}|[\s;{}()@".])(?![^⦄\n]*[=:])(?![^:⦄\n]*\s(?:->|→))(?![^⦄\n]*[∀⦃{}()])(?=\s*(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?|_)(?:\s+(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?|_))*\s*(?<=^|\{\!|\{-\#|[\s;{}()@".])⦄(?=$|\!\}|[\s;{}()@".]))
     end: (?<=^|\{\!|\{-\#|[\s;{}()@".])⦄(?=$|\!\}|[\s;{}()@".])
+    name: meta.declaration.parameters.instance_unicode.agda
     beginCaptures:
-      1: { name: keyword.operator.forall.instance_unicode.agda }
-      2: { name: punctuation.section.parens.instance_unicode.begin.agda }
+      0: { name: punctuation.section.parens.instance_unicode.begin.agda }
     endCaptures:
       0: { name: punctuation.section.parens.instance_unicode.end.agda }
-    name: meta.declaration.parameters.instance_unicode.agda
+    contentName: meta.declaration.parameters.instance_unicode.pattern.agda
     patterns:
-      - include: "#agda_syntax" # TODO: refine
-      - include: "#parameter_declaration"
-      - include: "#forall_variable_type_signature"
-      - include: "#type"
+      - include: "#variable_label"
+      - include: "#agda_syntax"
 
   variable_type_signature:
-    match: (^|\G)(?![^\n:)}⦄]*=)(?![^\n:)}⦄]*(?:->|→))(?!\s*(?:\(|\{|⦃))(([^:)}⦄]|(?<!^|[\s;{}()@".])[:⦄]|[:⦄](?!$|[\s;{}()@".]))+)[\s;{}()@".](:)(?=$|\!\}|[\s;{}()@".]) # TODO: refactor, compare to forall...
+    match: (^|\G)(?![^\n:)}⦄]*=)(?![^\n:)}⦄]*\s(?:->|→))(?!\s*(?:\(|\{|⦃))(([^:)}⦄]|(?<!^|[\s;{}()@".])[:⦄]|[:⦄](?!$|[\s;{}()@".]))+)[\s;{}()@".](:)(?=$|\!\}|[\s;{}()@".])
     name: meta.declaration.variable_type_signature.agda
     captures:
       2:
@@ -430,30 +391,6 @@ repository:
           - include: "#variable_label"
           - match: \s+
           - name: invalid.name.variable.agda
-            match: (?<=^|\{\!|\{-\#|[\s;{}()@".])((?!\.)[\s;{}()@".])+(?=$|\!\}|[\s;{}()@".])
-      4: { name: keyword.operator.colon.agda }
-  # variable_type_signature:
-  #   match: (^|\G)(((?!(?<=^|\{\!|\{-\#|[\s;{}()@".]):(?=$|\!\}|[\s;{}()@".])).)+)(?<=^|\{\!|\{-\#|[\s;{}()@".])(:)(?=$|\!\}|[\s;{}()@".])
-  #   name: meta.declaration.variable_type_signature.agda
-  #   captures:
-  #     2:
-  #       patterns:
-  #         - include: "#agda_expression"
-  #         - include: "#variable_label"
-  #         - name: invalid.name.variable.agda
-  #           match: (?<=^|\{\!|\{-\#|[\s;{}()@".])((?!\.)[\s;{}()@".])+(?=$|\!\}|[\s;{}()@".])
-  #     4: { name: keyword.operator.colon.agda }
-
-  forall_variable_type_signature:
-    match: (^|\G)(?![^\n:)}⦄]*=)(?![^\n:)}⦄]*(?:->|→))(([^:)}⦄]|(?<!^|[\s;{}()@".])[:⦄]|[:⦄](?!$|[\s;{}()@".]))+)((:)(?=$|\!\}|[\s;{}()@".])|(?=$|[)}⦄]))
-    name: meta.declaration.variable_type_signature.agda
-    captures:
-      2:
-        patterns:
-          - include: "#agda_syntax"
-          - include: "#variable_label"
-          - match: \s+
-          - name: invalid.name.variable.forall.agda
             match: (?<=^|\{\!|\{-\#|[\s;{}()@".])((?!\.)[\s;{}()@".])+(?=$|\!\}|[\s;{}()@".])
       4: { name: keyword.operator.colon.agda }
 
@@ -481,6 +418,8 @@ repository:
     while: (^|\G)\2(?=\s)
     name: meta.declaration.function.agda
     patterns:
+      - include: "#instance_double_brace_untyped_parameter_declaration"
+      - include: "#instance_unicode_untyped_parameter_declaration"
       - include: "#parameter_declaration"
       - match: (?<=^|\{\!|\{-\#|[\s;{}()@".])(:)(?=$|\!\}|[\s;{}()@".])
         name: keyword.operator.colon.agda
@@ -531,7 +470,7 @@ repository:
 
   lambda_abstraction_start:
     begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])(\\|λ)(?=$|\!\}|[\s;{}()@".])
-    end: (?<=^|\{\!|\{-\#|[\s;{}()@".])((->|→)|(where))(?=$|\!\}|[\s;{}()@".])|(\(\s*\))|(?=\{) # TODO: λ{} syntax
+    end: (?<=^|\{\!|\{-\#|[\s;{}()@".])((->|→)|(where))(?=$|\!\}|[\s;{}()@".])|(\(\s*\))|(?=\s*\{(?!\{)(?!\s*(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?|_)(?:\s+(?:_?(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+(_(?!'|--)(?!(?:-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)|-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*))(?=$|[\s;{}()@"._]))[^\s;{}()@"._]+)*_?|_))*\s*(?<!-)\})(?!\s*(?:(?!\s+(?:->|→)|[\\λ])(?:[^():{}⦃⦄\n]|\((?:[^():{}⦃⦄\n]|(?:\([^():{}⦃⦄\n]*\)|\{[^():{}⦃⦄\n]*\}|⦃[^():{}⦃⦄\n]*⦄))*\)|(?:\([^():{}⦃⦄\n]*\)|\{[^():{}⦃⦄\n]*\}|⦃[^():{}⦃⦄\n]*⦄)))*\s*:(?=$|\!\}|[\s;{}()@".])))
     beginCaptures:
       1: { name: keyword.operator.lambda.agda }
     endCaptures:
@@ -540,15 +479,27 @@ repository:
       4: { name: keyword.operator.lambda.absurd.agda }
     patterns:
       - include: "#agda_comments"
-      - include: "#typed_parameter_declaration"
-      - include: "#explicit_parameter_declaration"
-      - include: "#instance_parameter_declaration"
-      - include: "#implicit_parameter_declaration"
+      - include: "#binder_declaration"
+      - include: "#agda_expressions"
+      - include: "#variable_label"
+
+  forall_abstraction_start:
+    begin: (?<=^|\{\!|\{-\#|[\s;{}()@".])(forall|∀)(?=$|\!\}|[\s;{}()@".])
+    end: (?<=^|\{\!|\{-\#|[\s;{}()@".])((->|→))(?=$|\!\}|[\s;{}()@".])
+    beginCaptures:
+      1: { name: keyword.operator.forall.agda }
+    endCaptures:
+      1: { name: keyword.operator.forall.mapsto.agda }
+    name: meta.declaration.parameters.forall.agda
+    patterns:
+      - include: "#agda_comments"
+      - include: "#binder_declaration"
+      - include: "#typed_parameter_parenthesized_expression"
       - include: "#agda_expressions"
       - include: "#variable_label"
 
   typed_parameter_declaration:
-    begin: (\()(\s*(?:(?!->|→|[\\λ])[^():{}\n]|\([^():{}\n]*\))*\s*)(:)(?=$|\!\}|[\s;{}()@".])
+    begin: (\()(?![^:\n)}⦄]*=)(\s*(?:(?!\s+(?:->|→)|[\\λ])(?:[^():{}⦃⦄\n]|\((?:[^():{}⦃⦄\n]|(?:\([^():{}⦃⦄\n]*\)|\{[^():{}⦃⦄\n]*\}|⦃[^():{}⦃⦄\n]*⦄))*\)|(?:\([^():{}⦃⦄\n]*\)|\{[^():{}⦃⦄\n]*\}|⦃[^():{}⦃⦄\n]*⦄)))*\s*)(:)(?=$|\!\}|[\s;{}()@".])
     end: \)
     beginCaptures:
       1: { name: punctuation.section.parens.explicit.begin.agda }
@@ -1049,9 +1000,8 @@ repository:
     patterns:
       - include: "#hole"
       - include: "#record_expression"
+      - include: "#forall_abstraction_start"
       - include: "#lambda_abstraction_start"
-      # TODO: forall
-      # TODO: parameter decl
       - include: "#agda_constants"
       - include: "#wildcard"
       - include: "#agda_expression_keywords"
