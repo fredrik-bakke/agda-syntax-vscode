@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.7.6]
+
+- Fix some parameter highlighting corner cases
+
 ## [0.7.5] - 2026-08-25
 
 - Support `open module`
