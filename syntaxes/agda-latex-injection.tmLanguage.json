@@ -7,29 +7,12 @@
   "injectionSelector": "L:text.tex.latex.agda",
   "patterns": [
     {
-      "begin": "((\\\\)begin)({)(code)(})",
-      "end": "((\\\\)end)({)(code)(})",
+      "begin": "^(?:[^%\\\\]|\\\\.)*((\\\\)begin)({)(code)(}).*$",
+      "while": "^(?![ \\t]*\\\\end\\{code\\})",
       "name": "meta.function.environment.general.latex",
       "beginCaptures": {
         "1": {
           "name": "support.function.begin.latex"
-        },
-        "2": {
-          "name": "punctuation.definition.function.latex"
-        },
-        "3": {
-          "name": "punctuation.definition.arguments.begin.latex"
-        },
-        "4": {
-          "name": "variable.parameter.function.latex"
-        },
-        "5": {
-          "name": "punctuation.definition.arguments.end.latex"
-        }
-      },
-      "endCaptures": {
-        "1": {
-          "name": "support.function.end.latex"
         },
         "2": {
           "name": "punctuation.definition.function.latex"

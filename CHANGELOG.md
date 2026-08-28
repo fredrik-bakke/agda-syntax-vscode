@@ -1,8 +1,14 @@
 # Changelog
 
-## [0.7.6]
+## [0.7.6] - 2026-08-28
 
-- Fix some parameter highlighting corner cases
+- Highlight pragma directives and contents
+- Support qualified `M.do` notation and idiom brackets `M.⦇ ... ⦈`
+- Highlight untyped parameters in declaration telescopes
+- Highlight type signatures in let bindings in module telescopes
+- Support `let` and `open` binders in lambda and type telescopes
+- Refine injection patterns in LaTeX and reStructuredText files
+- Fix a series of highlighting corner cases
 
 ## [0.7.5] - 2026-08-25
 

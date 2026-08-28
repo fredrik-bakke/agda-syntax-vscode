@@ -7,11 +7,11 @@ injectionSelector: "L:source.rst, L:source.restructuredtext"
 
 patterns:
   - name: meta.embedded.block.agda
-    begin: (^|\G)(?!\.\.).*(::)\s*$
+    begin: (^|\G)(?!\s*\.\.(?:\s|$)).*(::)\s*$
     beginCaptures:
       2:
         name: punctuation.section.embedded.begin.agda
-    end: (?=(^|\G)(?!\.\.)\S)
+    end: (?=(^|\G)\S)
     endCaptures:
       0:
         name: punctuation.section.embedded.end.agda

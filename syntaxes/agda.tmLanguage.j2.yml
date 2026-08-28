@@ -25,10 +25,13 @@ keyEquivalent: ^~A
 {% macro name_part_boundary(s) %}{{ name_part_boundary_start }}{{ s }}{{ name_part_boundary_end }}{% endmacro %}
 
 {% set statement_boundary_start = '(^|\G|(?<=;))' %}
+{% set declaration_boundary_start = '(^|\G|(?<=;)|(?<=^let\s+|' + token_boundary_char + 'let\s+))' %}
+{% set where_boundary = '(?<=^where|' + token_boundary_char + 'where)(?=$|' + token_boundary_char + ')' %}
 {% set statement_boundary_end = '(?=;)' %}
 {% set DECLARATION_SEPARATOR = token_boundary('[:=]') %}
+{% set NON_DECLARATION_COLON_CHAR = '(?:(?!' + token_boundary(':') + ')[^\\n])' %}
 {% set ARROW_TOKEN = token_boundary('(?:->|→)') %}
-{% set LAMBDA_TOKEN = token_boundary('(?:\\\\|λ)') %}
+{% set LAMBDA_TOKEN = token_boundary_start + '(?:\\\\(?=[\\p{L}_]|$|\\!\\}|' + token_boundary_char + ')|λ' + token_boundary_end + ')' %}
 {% set FORALL_TOKEN = token_boundary('(?:forall|∀)') %}
 {% set INSTANCE_ARGUMENT_START = token_boundary('⦃') %}
 {% set INSTANCE_ARGUMENT_END = token_boundary('⦄') %}
@@ -41,20 +44,30 @@ keyEquivalent: ^~A
 {% set ESCAPE_CODE = '[0-9]+|0[xX]\h+|a|b|t|n|v|f|\\\\|\'|"|NUL|SOH|STX|ETX|EOT|ENQ|ACK|BEL|BS|HT|LF|VT|FF|CR|SO|SI|DLE|DC1|DC2|DC3|DC4|NAK|SYN|ETB|CAN|EM|SUB|ESC|FS|GS|RS|US|SP|DEL' %}
 {% set ESCAPE_CONTROL_CODE = '\^[A-Z@\[\]\\\^_]' %}
 {% set STRING_CONTINUATION_START = '\\\\(?:\s*\\\\|' + ESCAPE_CODE + '|' + ESCAPE_CONTROL_CODE + ')' %}
+{% set PRAGMA_KEYWORD = '(?:BUILTIN|CATCHALL|COMPILE|DISPLAY|ETA(?:_EQUALITY)?|FOREIGN|IMPOSSIBLE|INCOHERENT|INJECTIVE(?:_FOR_INFERENCE)?|INLINE|LINE|MEASURE|NOINLINE|NON_(?:COVERING|TERMINATING)|NOT_PROJECTION_LIKE|NO_(?:POSITIVITY|TERMINATION|UNIVERSE)_CHECK|OPTIONS|OVERLAP(?:PABLE|PING|S)|POLARITY|REWRITE|STATIC|TERMINATING|WARNING_ON_(?:IMPORT|USAGE))' %}
 {% set DECLARATION_START_KEYWORD = '(?:open|abstract|constructor|data|field|infix[lr]?|instance|macro|module|mutual|opaque|postulate|primitive|private|record|variable|where)' %}
-{% set RESERVED_NAME_PART = '(?:abstract|(co)?inductive|data|do|(no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(Term)?|record|renaming|rewrite|syntax|tactic|unquote(Decl|Def)?|unfolding|using|variable|where|with)' %}
+{% set RESERVED_NAME_PART = '(?:abstract|(?:co)?inductive|data|do|(?:no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(?:Term)?|record|renaming|rewrite|syntax|tactic|unquote(?:Decl|Def)?|unfolding|using|variable|where|with)' %}
 {% set NAME_PART = '(?!\'|--)(?!' + NUMERIC_LITERAL + '(?=$|' + name_part_boundary_char + '))[^' + NAME_PART_BOUNDARY_CHARS + ']+' %}
 {% set name_part = name_part_boundary(NAME_PART) %}
 {% set NAME_TOKEN = '_?' + NAME_PART + '(_' + NAME_PART + ')*_?' %}
 {% set name_token = token_boundary(NAME_TOKEN) %}
 {% set NAME_QUALIFIED = NAME_TOKEN + '(\.' + NAME_TOKEN + ')*' %}
 {% set name_qualified = name_qualified_boundary(NAME_QUALIFIED) %}
+{% set NAME_TOKEN_NC = '_?' + NAME_PART + '(?:_' + NAME_PART + ')*_?' %}
+{% set NAME_QUALIFIED_NC = NAME_TOKEN_NC + '(?:\.' + NAME_TOKEN_NC + ')*' %}
 {% set IMPORTED_MODULE_CONTINUATION = 'module\s+' + NAME_QUALIFIED + '\s*(?=[);]|to' + token_boundary_end + ')' %}
 {% set AGDA_MODALITY = '(?:irr|irrelevant|shirr|shape-irrelevant|relevant|0|erased|ω|♭|\+\+|\+|-|mixed|unused)' %}
-{% set BINDER_LABEL = '(?!' + DECLARATION_SEPARATOR + ')(?!(?:constructor|' + RESERVED_NAME_PART + ')' + token_boundary_end + ')(?:' + NAME_TOKEN + '|_)' %}
+{% set DECLARATION_ATTRIBUTES = '(?:@(?:' + AGDA_MODALITY + '|' + NAME_QUALIFIED_NC + ')\s+)*' %}
+{% set TERM_SIGNATURE_FORBIDDEN_START = '(?:' + DECLARATION_SEPARATOR + '|' + RESERVED_NAME_PART + token_boundary_end + '|' + token_boundary('(?:[\\λ∀]|->|→)') + ')' %}
+{% set TERM_SIGNATURE_NAME = '(?:\.{1,2}\s*)?(?!\s*' + TERM_SIGNATURE_FORBIDDEN_START + ')' + NAME_TOKEN_NC %}
+{% set TERM_SIGNATURE_NAME_LIST = TERM_SIGNATURE_NAME + '(?:\s+' + TERM_SIGNATURE_NAME + ')*' %}
+{% set TERM_SIGNATURE_HIDDEN_NAMES = '(?:\.{1,2}\s*)?(?:\{\{\s*' + TERM_SIGNATURE_NAME_LIST + '\s*\}\}|\{\s*' + TERM_SIGNATURE_NAME_LIST + '\s*\}|' + INSTANCE_ARGUMENT_START + '\s*' + TERM_SIGNATURE_NAME_LIST + '\s*' + INSTANCE_ARGUMENT_END + ')' %}
+{% set TERM_SIGNATURE_ARGUMENT = '(?:' + TERM_SIGNATURE_HIDDEN_NAMES + '|' + TERM_SIGNATURE_NAME + '|_)' %}
+{% set TERM_SIGNATURE_NAMES = '(?:' + TERM_SIGNATURE_ARGUMENT + '\s*)+?' %}
+{% set TERM_SIGNATURE_START = DECLARATION_ATTRIBUTES + '(?!\s*' + TERM_SIGNATURE_FORBIDDEN_START + ')' + TERM_SIGNATURE_NAMES + token_boundary(':') %}
+{% set BINDER_LABEL = '(?!' + DECLARATION_SEPARATOR + '|' + ARROW_TOKEN + '|' + LAMBDA_TOKEN + '|' + FORALL_TOKEN + '|' + INSTANCE_ARGUMENT_START + '|' + INSTANCE_ARGUMENT_END + ')(?!(?:constructor|' + RESERVED_NAME_PART + ')' + token_boundary_end + ')(?:' + NAME_TOKEN + '|_)' %}
 {% set BINDER_LABELS = '(?:(?:\.|@' + AGDA_MODALITY + ')\s*)*' + BINDER_LABEL + '(?:\s+' + BINDER_LABEL + ')*' %}
-{% set HIDDEN_SIGNATURE_NAME = '(?:\{\{\s*' + BINDER_LABELS + '\s*\}\}|\{\s*' + BINDER_LABELS + '\s*\}|' + INSTANCE_ARGUMENT_START + '\s*' + BINDER_LABELS + '\s*' + INSTANCE_ARGUMENT_END + ')' %}
-{% set BINDER_CHAR = '[^():{}\\n]' %}
+{% set BINDER_CHAR = '(?:(?!' + token_boundary(':') + ')[^(){}⦃⦄\\n])' %}
 {% set BINDER_GROUP = '(?:\(' + BINDER_CHAR + '*\)|\{' + BINDER_CHAR + '*\}|' + INSTANCE_ARGUMENT_START + BINDER_CHAR + '*' + INSTANCE_ARGUMENT_END + ')' %}
 {% set BINDER_NESTED_GROUP = '\((?:' + BINDER_CHAR + '|' + BINDER_GROUP + ')*\)' %}
 {% set TYPED_PARAMETER_PATTERN = '\s*(?:(?!\s+' + ARROW_TOKEN + '|' + LAMBDA_TOKEN + ')(?:' + BINDER_CHAR + '|' + BINDER_NESTED_GROUP + '|' + BINDER_GROUP + '))*\s*' %}
@@ -66,7 +79,7 @@ patterns:
 
 repository:
   data_record_telescope:
-    begin: \G
+    begin: \G(?=\s*\S)
     end: (?={{ token_boundary('(?::|where)') }})
     patterns:
       - include: "#declaration_telescope"
@@ -76,26 +89,28 @@ repository:
       - include: "#agda_comments"
       - include: "#multiline_parameter_declaration"
       - include: "#binder_declaration"
-      - include: "#telescope_local_declaration"
       - include: "#typed_parameter_parenthesized_expression"
-      - include: "#agda_modality"
       - include: "#agda_attributes"
       - include: "#visible_untyped_parameter_declaration"
       - include: "#agda_syntax"
+      - include: "#type_token"
 
   local_module_declaration:
-    match: {{ token_boundary('(?:(open)(\s+))?(module)') }}(\s+)({{ NAME_QUALIFIED }})(\s*){{ token_boundary('(=)') }}
+    match: {{ token_boundary('(?:(open)(\s+))?(module)') }}(\s+)({{ DECLARATION_ATTRIBUTES }})({{ NAME_QUALIFIED_NC }})(\s*){{ token_boundary('(=)') }}
     captures:
       1: { name: keyword.control.import.agda }
       3: { name: keyword.control.module.agda }
-      5:
+      5: &declaration_attributes_capture
+        patterns:
+          - include: "#agda_attributes"
+      6:
         name: entity.name.namespace.agda
         patterns:
           - include: "#qualified_name"
-      7: { name: keyword.operator.assignment.agda }
+      8: { name: keyword.operator.assignment.agda }
 
   local_open_declaration:
-    match: {{ token_boundary('(open)') }}(\s+)({{ NAME_QUALIFIED }})
+    match: {{ token_boundary('(open)') }}(\s+)(?!(?:import|module){{ token_boundary_end }})({{ NAME_QUALIFIED }})
     captures:
       1: { name: keyword.control.import.agda }
       3:
@@ -109,6 +124,7 @@ repository:
     beginCaptures: { 1: { name: punctuation.section.parens.begin.agda } }
     endCaptures: { 0: { name: punctuation.section.parens.end.agda } }
     patterns:
+      - include: "#term_type_signature_colon_on_first_line"
       - match: \G(\s*)(let){{ token_boundary_end }}
         captures: { 2: { name: keyword.control.agda } }
       - include: "#telescope_term"
@@ -128,19 +144,19 @@ repository:
       - include: "#type_let_expression"
       - include: "#telescope_local_declaration"
       - include: "#telescope_term_parenthesized_expression"
-      - include: "#agda_syntax"
-      - include: "#agda_token"
+      - include: "#agda_layout_blocks"
+      - include: "#agda_code"
 
   type_let_expression:
     begin: {{ token_boundary('(let)') }}
-    end: {{ token_boundary('(in)') }}
+    end: {{ token_boundary('(in)') }}|(?=\))
     beginCaptures: { 1: { name: keyword.control.agda } }
     endCaptures: { 1: { name: keyword.control.agda } }
     patterns:
       - include: "#telescope_term"
 
   visible_untyped_parameter_declaration:
-    match: (\s*){{ token_boundary_start }}(?!{{ PARAMETER_START }})(?!(?:{{ DECLARATION_START_KEYWORD }}|module){{ token_boundary_end }})({{ BINDER_LABELS }})(?=\s*(?:{{ PARAMETER_START }}|{{ token_boundary('(?::|where|=)') }}))
+    match: (?<!\s)(?<!->)(?<!→)(\s*){{ token_boundary_start }}(?!{{ PARAMETER_START }})(?!(?:{{ DECLARATION_START_KEYWORD }}|module){{ token_boundary_end }})({{ BINDER_LABELS }})(?=\s*(?:{{ PARAMETER_START }}|{{ token_boundary('(?::|where|=)') }}))
     captures:
       2:
         name: meta.declaration.parameters.explicit.pattern.agda
@@ -150,7 +166,7 @@ repository:
 
   module_declaration:
     contentName: meta.declaration.module.agda
-    begin: {{ statement_boundary_start }}(\s*)(module){{ token_boundary_end }}
+    begin: (?:{{ declaration_boundary_start }}|(?<=\S)(?=\s+module{{ token_boundary_end }}))(\s*)(module){{ token_boundary_end }}(?!\s+{{ NAME_QUALIFIED }}\s*(?=[);]|to{{ token_boundary_end }}))
     end: {{ token_boundary('(where)') }}|{{ token_boundary('(=)') }}|{{ statement_boundary_end }}|^(?!\2\s) #TODO: when we make this into a block, this will be a new begin instead of an end
     beginCaptures:
       3: { name: keyword.control.module.agda }
@@ -159,10 +175,11 @@ repository:
       2: { name: keyword.operator.assignment.agda }
     patterns:
       - include: "#agda_comments"
-      - begin: (?:\G\s*|^\s+)({{ NAME_QUALIFIED }}|_){{ token_boundary_end }}
+      - begin: (?:\G\s*|^\s+)({{ DECLARATION_ATTRIBUTES }})({{ NAME_QUALIFIED }}|_){{ token_boundary_end }}
         end: (?={{ token_boundary('(where)') }}|{{ token_boundary('(=)') }})
         beginCaptures:
-          1:
+          1: *declaration_attributes_capture
+          2:
             name: entity.name.namespace.agda
             patterns:
               - include: "#module_label"
@@ -173,11 +190,12 @@ repository:
   data_declaration:
     name: meta.declaration.data.agda
     contentName: meta.declaration.parameters.data.agda
-    begin: {{ statement_boundary_start }}(\s*)(data)\s+({{ NAME_TOKEN }}|_){{ token_boundary_end }}
+    begin: {{ declaration_boundary_start }}(\s*)(data){{ token_boundary_end }}(\s+)({{ DECLARATION_ATTRIBUTES }})({{ NAME_TOKEN_NC }}|_){{ token_boundary_end }}
     end: (?:^\s*)?({{ token_boundary('where') }})|{{ statement_boundary_end }}|^(?=\2\S)
     beginCaptures:
       3: { name: storage.type.class.data.agda }
-      4:
+      5: *declaration_attributes_capture
+      6:
         name: entity.name.type.data.agda
         patterns:
           - include: "#qualified_name"
@@ -200,10 +218,11 @@ repository:
       1: { name: keyword.control.where.data.agda }
     patterns:
       - include: "#agda_comments"
-      - begin: ^(\s+)({{ NAME_TOKEN }}|_){{ token_boundary_end }}
+      - begin: ^(\s+)({{ DECLARATION_ATTRIBUTES }})({{ NAME_TOKEN_NC }}|_){{ token_boundary_end }}
         end: (?={{ token_boundary('(?::|where)') }})
         beginCaptures:
-          2:
+          2: *declaration_attributes_capture
+          3:
             name: entity.name.type.data.agda
             patterns:
               - include: "#qualified_name"
@@ -215,11 +234,12 @@ repository:
   record_declaration:
     name: meta.declaration.record.agda
     contentName: meta.declaration.parameters.record.agda
-    begin: {{ statement_boundary_start }}(\s*)(record){{ token_boundary_end }}(?!\s*(?:\{|where{{ token_boundary_end }}))\s+({{ NAME_TOKEN }}|_){{ token_boundary_end }}
+    begin: {{ declaration_boundary_start }}(\s*)(record){{ token_boundary_end }}(?!\s*(?:\{|where{{ token_boundary_end }}))(\s+)({{ DECLARATION_ATTRIBUTES }})({{ NAME_TOKEN_NC }}|_){{ token_boundary_end }}
     end: (?:^\s*)?({{ token_boundary('where') }})|{{ statement_boundary_end }}|^(?=\2\S)
     beginCaptures:
       3: { name: storage.type.class.record.agda }
-      4:
+      5: *declaration_attributes_capture
+      6:
         name: entity.name.type.record.agda
         patterns:
           - include: "#qualified_name"
@@ -242,10 +262,11 @@ repository:
       1: { name: keyword.control.where.record.agda }
     patterns:
       - include: "#agda_comments"
-      - begin: ^(\s+)(?!\s*(?:where|:){{ token_boundary_end }})({{ NAME_TOKEN }}|_){{ token_boundary_end }}
+      - begin: ^(\s+)(?!\s*(?:where|:){{ token_boundary_end }})({{ DECLARATION_ATTRIBUTES }})({{ NAME_TOKEN_NC }}|_){{ token_boundary_end }}
         end: (?={{ token_boundary('(?::|where)') }})
         beginCaptures:
-          2:
+          2: *declaration_attributes_capture
+          3:
             name: entity.name.type.record.agda
             patterns:
               - include: "#qualified_name"
@@ -276,11 +297,12 @@ repository:
         name: keyword.other.as.agda
 
   open_module_statement:
-    begin: {{ statement_boundary_start }}(\s*)(open){{ token_boundary_end }}(\s+)(module){{ token_boundary_end }}(\s+)({{ NAME_QUALIFIED }})
+    begin: {{ statement_boundary_start }}(\s*)(open){{ token_boundary_end }}(\s+)(module){{ token_boundary_end }}(\s+)({{ DECLARATION_ATTRIBUTES }})({{ NAME_QUALIFIED_NC }})
     beginCaptures:
       3: { name: keyword.control.import.agda }
       5: { name: keyword.control.module.agda }
-      7:
+      7: *declaration_attributes_capture
+      8:
         name: entity.name.namespace.agda
         patterns:
           - include: "#qualified_name"
@@ -288,8 +310,7 @@ repository:
     patterns:
       - include: "#open_statement_content"
       - include: "#open_as_clause"
-      - include: "#agda_syntax"
-      - include: "#agda_token"
+      - include: "#agda_code"
 
   open_import_statement:
     begin: {{ statement_boundary_start }}(\s*)(import|open\s+import)(?=$|\s)(\s*)({{ NAME_QUALIFIED }})?
@@ -313,8 +334,7 @@ repository:
             name: entity.name.namespace.agda
             patterns:
               - include: "#qualified_name"
-      - include: "#agda_syntax"
-      - include: "#agda_token"
+      - include: "#agda_code"
 
   open_statement:
     begin: {{ statement_boundary_start }}(\s*)(open)(?=$|\s)(?!\s+import{{ token_boundary_end }})(\s*)({{ NAME_QUALIFIED }})?
@@ -354,8 +374,7 @@ repository:
             patterns:
               - include: "#qualified_name"
       - include: "#open_as_clause"
-      - include: "#agda_syntax"
-      - include: "#agda_token"
+      - include: "#agda_code"
 
   import_directive:
     begin: {{ token_boundary_start }}(using|hiding|renaming)(?:\s*(\())?
@@ -391,7 +410,7 @@ repository:
 
   constructor_block:
     begin: ^(\s*)(constructor){{ token_boundary_end }}
-    while: (^|\G)\1(?=\s)
+    end: (?=;)|^(?!\1(?=\s))
     beginCaptures:
       2: { name: keyword.control.constructor.agda }
     name: meta.statement.constructor.agda
@@ -410,6 +429,7 @@ repository:
   parameter_declaration:
     patterns:
       - include: "#forall_abstraction_start"
+      - include: "#telescope_local_declaration"
       - include: "#typed_parameter_declaration"
       - include: "#implicit_parameter_declaration"
       - include: "#instance_double_brace_parameter_declaration"
@@ -463,6 +483,9 @@ repository:
 
   type:
     patterns:
+      - include: "#open_module_statement"
+      - include: "#open_import_statement"
+      - include: "#open_statement"
       - include: "#type_let_expression"
       - include: "#parameter_declaration"
       - include: "#agda_syntax"
@@ -486,53 +509,44 @@ repository:
           - name: invalid.name.type.token.agda
             match: {{ token_boundary('((?!\.)' + token_boundary_char + ')+') }}
 
-  hidden_argument_type_signature:
-    begin: {{ statement_boundary_start }}(\s*)(?={{ HIDDEN_SIGNATURE_NAME }}\s*{{ token_boundary(':') }})
-    while: (^|\G)\2(?=\s)
-    name: meta.declaration.function.agda
-    patterns:
-      - match: {{ HIDDEN_SIGNATURE_NAME }}(?=\s*{{ token_boundary(':') }})
-        captures:
-          0:
-            patterns:
-              - name: punctuation.section.parens.agda
-                match: \{\{|\}\}|[{}]|{{ INSTANCE_ARGUMENT_START }}|{{ INSTANCE_ARGUMENT_END }}
-              - include: "#agda_modality"
-              - include: "#term_name"
-      - match: {{ token_boundary('(:)') }}
-        name: keyword.operator.colon.agda
-      - include: "#type"
-
-  term_type_signature_content:
-    patterns:
-      - include: "#open_module_statement"
-      - include: "#open_import_statement"
-      - include: "#open_statement"
-      - include: "#type"
-
   term_type_signature_colon_on_first_line:
-    begin: {{ statement_boundary_start }}(\s*)(?![^\n:]*{{ token_boundary('=') }})(?!\s*(?:{{ token_boundary(':') }}|(?:abstract|constructor|data|field|instance|macro|module|mutual|opaque|postulate|primitive|private|record|variable|where|let){{ token_boundary_end }}|{{ token_boundary('(?:[\\λ∀]|->|→)') }}))((({{ NAME_TOKEN }}|_)\s+)+?)(:){{ token_boundary_end }}
-    while: (^|\G)(?:\2(?=\s)|(?={{ STRING_CONTINUATION_START }}))
+    begin: (?:{{ statement_boundary_start }}|{{ where_boundary }})(\s*)(?:(let)\s+)?({{ DECLARATION_ATTRIBUTES }})(?!{{ NON_DECLARATION_COLON_CHAR }}*{{ token_boundary('=') }})(?!\s*{{ TERM_SIGNATURE_FORBIDDEN_START }})({{ TERM_SIGNATURE_NAMES }}){{ token_boundary('(:)') }}
+    end: (?=;)|(?:^|\G(?<!\S))(?:(?=\s*(?:data|record){{ token_boundary_end }})|(?=\s*(?!let{{ token_boundary_end }})(?:{{ TERM_SIGNATURE_NAME }}|_){{ token_boundary_end }}{{ NON_DECLARATION_COLON_CHAR }}*{{ token_boundary('=') }})|(?!(?:\2(?=\s)|(?={{ STRING_CONTINUATION_START }})|(?=\s*{{ TERM_SIGNATURE_START }}))))
     name: meta.declaration.function.agda
     beginCaptures:
       3:
+        name: keyword.control.agda
+      4: *declaration_attributes_capture
+      5: &term_signature_names_capture
         patterns:
           - include: "#agda_comments"
+          - name: keyword.operator.attribute.agda
+            match: \.{1,2}
+          - name: punctuation.section.parens.agda
+            match: \{\{|\}\}|[{}]|{{ INSTANCE_ARGUMENT_START }}|{{ INSTANCE_ARGUMENT_END }}
           - include: "#term_name"
-      7:
+      6: &term_signature_colon_capture
         name: keyword.operator.colon.agda
     patterns:
-      - include: "#term_type_signature_content"
+      - include: "#term_type_signature_header"
+      - include: "#type"
+
+  term_type_signature_header:
+    match: (?:^|\G(?<!\S))(\s*)({{ DECLARATION_ATTRIBUTES }})(?!\s*{{ TERM_SIGNATURE_FORBIDDEN_START }})({{ TERM_SIGNATURE_NAMES }}){{ token_boundary('(:)') }}
+    captures:
+      2: *declaration_attributes_capture
+      3: *term_signature_names_capture
+      4: *term_signature_colon_capture
 
   term_type_signature_colon_on_separate_line:
-    begin: {{ statement_boundary_start }}(\s*)(:){{ token_boundary_end }}
+    begin: (?:{{ statement_boundary_start }}|{{ where_boundary }})(\s*)(:){{ token_boundary_end }}
     while: (^|\G)(?:\2|(?={{ STRING_CONTINUATION_START }}))
     name: meta.declaration.function.agda
     beginCaptures:
       4:
         name: keyword.operator.colon.agda
     patterns:
-      - include: "#term_type_signature_content"
+      - include: "#type"
 
   term_definition_equals_on_first_line:
     match: {{ statement_boundary_start }}(\s*)(\S.*)\s+(=){{ token_boundary_end }}
@@ -546,8 +560,8 @@ repository:
         name: keyword.operator.agda
 
   lambda_abstraction_start:
-    begin: {{ token_boundary('(\\\\|λ)') }}
-    end: {{ token_boundary('((->|→)|(where))') }}|({{ absurd_pattern }})|(?=\s*\{(?!\{)(?!\s*{{ BINDER_LABELS }}\s*(?<!-)\})(?!{{ TYPED_PARAMETER_PATTERN }}{{ token_boundary(':') }}))
+    begin: ({{ LAMBDA_TOKEN }})
+    end: {{ token_boundary('((->|→)|(where))') }}|({{ absurd_pattern }})|(?=\s*\{(?!\{)(?!\s*{{ BINDER_LABELS }}\s*(?<!-)\})(?!{{ TYPED_PARAMETER_PATTERN }}{{ token_boundary(':') }}))|(?=\s*\{\{(?!\s*{{ BINDER_LABELS }}\s*\}\})(?!{{ TYPED_PARAMETER_PATTERN }}{{ token_boundary(':') }}))
     beginCaptures:
       1: { name: keyword.operator.lambda.agda }
     endCaptures:
@@ -611,6 +625,7 @@ repository:
       0: { name: punctuation.section.parens.end.agda }
     name: meta.declaration.parameters.agda
     patterns:
+      - include: "#typed_parameter_parenthesized_expression"
       - include: "#type"
 
   typed_parameter_parenthesized_expression:
@@ -634,8 +649,7 @@ repository:
       0: { name: punctuation.section.braces.end.agda }
     patterns:
       - include: "#agda_comments"
-      - include: "#agda_syntax"
-      - include: "#agda_token"
+      - include: "#agda_code"
 
   discard:
     name: variable.language.discard.agda
@@ -745,7 +759,7 @@ repository:
     patterns:
       - include: "#discard"
       - name: variable.parameter.term.agda
-        match: {{ name_token }}
+        match: (?:\G|{{ token_boundary_start }}){{ NAME_TOKEN }}{{ token_boundary_end }}
         captures:
           0:
             patterns:
@@ -780,16 +794,20 @@ repository:
     patterns:
       - include: "#agda_comments"
       - include: "#hole_parenthesized"
-      - include: "#agda_syntax"
-      - include: "#agda_token"
+      - include: "#agda_code"
 
   pragma:
     name: meta.preprocessor.pragma.block.agda
-    contentName: meta.preprocessor.pragma.block.content.agda
-    begin: "{-#"
-    captures:
-      0: { name: punctuation.definition.pragma.agda }
-    end: "#-}"
+    contentName: meta.preprocessor.pragma.block.content.agda support.other.pragma.agda
+    begin: (\{-#)(?:(\s*)({{ PRAGMA_KEYWORD }}){{ token_boundary_end }})?
+    end: {{ token_boundary('(#-\})') }}
+    beginCaptures:
+      1: { name: punctuation.definition.pragma.agda }
+      3: { name: keyword.control.directive.agda }
+    endCaptures:
+      1: { name: punctuation.definition.pragma.agda }
+    patterns:
+      - include: "#pragma"
 
   block_comment:
     name: comment.block.agda
@@ -901,6 +919,12 @@ repository:
       - include: "#pragma"
       - include: "#agda_comments"
 
+  unquote_data_declaration:
+    match: {{ token_boundary('(unquoteDecl)') }}(\s+){{ token_boundary('(data)') }}
+    captures:
+      1: { name: keyword.control.agda }
+      3: { name: storage.type.class.data.agda }
+
   agda_constants:
     patterns:
       - include: "#agda_literals"
@@ -910,6 +934,10 @@ repository:
   # https://agda.readthedocs.io/en/latest/language/syntactic-sugar.html
   agda_names_syntactic_sugar:
     patterns:
+      - name: keyword.control.agda
+        match: (?<=\.)do{{ name_part_boundary_end }}
+      - name: support.function.applicative_functor.agda
+        match: (?<=\.)⦇(?:⦈)?{{ name_part_boundary_end }}
       - match: {{name_qualified_boundary('(_?)(>>=?)(_?)')}}
         captures:
           1:
@@ -936,21 +964,23 @@ repository:
       2: { name: keyword.control.attribute.agda }
 
   agda_attributes:
-    begin: {{ token_boundary_start }}\@
-    end: {{ NAME_QUALIFIED }}{{ token_boundary_end }}
-    beginCaptures:
-      0: { name: keyword.operator.attribute.agda }
-    captures:
-      0: { name: meta.attribute.agda }
-    endCaptures:
-      0: { name: keyword.control.attribute.agda }
     patterns:
-      - include: "#agda_comments"
+      - include: "#agda_modality"
+      - begin: {{ token_boundary_start }}\@
+        end: {{ NAME_QUALIFIED }}{{ token_boundary_end }}
+        beginCaptures:
+          0: { name: keyword.operator.attribute.agda }
+        captures:
+          0: { name: meta.attribute.agda }
+        endCaptures:
+          0: { name: keyword.control.attribute.agda }
+        patterns:
+          - include: "#agda_comments"
 
   agda_expression_keywords:
     patterns:
     - include: "#agda_attributes"
-    - match: {{token_boundary('(forall|->|[∀→\\\\λ])')}}|({{ absurd_pattern }})
+    - match: ({{ FORALL_TOKEN }}|{{ ARROW_TOKEN }}|{{ LAMBDA_TOKEN }})|({{ absurd_pattern }})
       captures:
         1: { name: keyword.operator.agda }
         2: { name: keyword.operator.absurd.agda }
@@ -958,8 +988,10 @@ repository:
   agda_keywords:
     patterns:
       - include: "#agda_expression_keywords"
+      - name: support.function.applicative_functor.agda
+        match: {{ token_boundary('(?:⦇⦈|[⦇⦈])') }}
       - name: keyword.operator.agda
-        match: {{ token_boundary('([=|:←⦇⦈⦃⦄]|<-|\.\.\.?)') }}|\@
+        match: {{ token_boundary('([=|:←⦃⦄]|<-|\.\.\.?)') }}|\@
       - name: keyword.control.agda
         match: {{ token_boundary('(abstract|constructor|do|field|forall|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|pattern|postulate|primitive|record|rewrite|syntax|tactic|unfolding|variable|where|with)') }}
       - name: storage.modifier.agda
@@ -969,19 +1001,14 @@ repository:
       - name: keyword.control.import.agda
         match: {{ token_boundary('(hiding|public|renaming|using)') }}
 
-  agda_token:
-    patterns:
-      - include: "#agda_constants"
-      - include: "#agda_keywords"
-      - include: "#qualified_name"
-
   agda_expressions:
     patterns:
       - include: "#hole"
       - include: "#record_expression"
+      - include: "#local_module_declaration"
+      - include: "#local_open_declaration"
       - include: "#forall_abstraction_start"
       - include: "#lambda_abstraction_start"
-      - include: "#agda_modality"
       - include: "#agda_constants"
       - include: "#wildcard"
       - include: "#agda_expression_keywords"
@@ -990,9 +1017,15 @@ repository:
   agda_syntax:
     patterns:
       - include: "#agda_preprocessing_syntax"
+      - include: "#unquote_data_declaration"
       - include: "#agda_expressions"
       - include: "#dot_pattern"
       - include: "#agda_keywords"
+
+  agda_code:
+    patterns:
+      - include: "#agda_syntax"
+      - include: "#qualified_name"
 
 
   agda_statements:
@@ -1000,7 +1033,6 @@ repository:
       - include: "#open_module_statement"
       - include: "#open_import_statement"
       - include: "#open_statement"
-      - include: "#hidden_argument_type_signature"
       - include: "#term_type_signature_colon_on_first_line"
       - include: "#term_type_signature_colon_on_separate_line"
       # - include: "#term_definition_equals_on_first_line"
@@ -1011,8 +1043,7 @@ repository:
       - include: "#agda_preprocessing_syntax"
       - include: "#agda_statements"
       - include: "#agda_layout_blocks"
-      - include: "#agda_syntax"
-      - include: "#agda_token"
+      - include: "#agda_code"
 
       - comment: misplaced keywords
         name: invalid.illegal.keyword.agda
