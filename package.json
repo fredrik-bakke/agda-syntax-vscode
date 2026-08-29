@@ -97,12 +97,13 @@
     ]
   },
   "scripts": {
-    "build": "python3 process_jinja_templates.py && bash convert_yml_to_json.sh",
+    "build": "python3 process_jinja_templates.py && python3 convert_yml_to_json.py",
+    "validate": "python3 validate_grammars.py",
     "package:extension": "vsce package",
-    "vscode:prepublish": "npm run build"
+    "vscode:prepublish": "npm run build && npm run validate"
   },
   "devDependencies": {
-    "@vscode/vsce": "^3.9.2",
-    "js-yaml": "^4.1.0"
+    "@carlwr/textmate-validate": "^1.0.1",
+    "@vscode/vsce": "^3.9.2"
   }
 }

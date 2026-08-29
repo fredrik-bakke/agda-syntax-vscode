@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "lts/*"
+          check-latest: true
+          cache: npm
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: npm ci
+      - name: Build, validate, and package grammars
+        run: npm run package:extension
+      - uses: actions/upload-artifact@v4
+        with:
+          name: agda-syntax-vsix
+          path: "*.vsix"
+          if-no-files-found: error
