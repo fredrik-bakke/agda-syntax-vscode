@@ -18,7 +18,7 @@
     {
       "label": "Process Jinja templates",
       "type": "shell",
-      "command": "python",
+      "command": "python3",
       "args": ["./process_jinja_templates.py"],
       "problemMatcher": [],
       "group": {

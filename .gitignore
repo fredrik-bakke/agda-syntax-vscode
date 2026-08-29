@@ -2,3 +2,8 @@ node_modules
 *.vsix
 .DS_Store
 .TODO
+
+# Generated TextMate grammars
+syntaxes/agda.tmLanguage.yml
+syntaxes/agda.tmLanguage.json
+syntaxes/agda-*-injection.tmLanguage.json

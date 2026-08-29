@@ -1,13 +1,14 @@
 .vscode/**
 .vscode-test/**
+.github/**
 .gitignore
 vsc-extension-quickstart.md
 
 .vscodeignore
 node_modules/**
+package-lock.json
 .gitattributes
 **/.DS_Store
-scripts/**
 tmp/**
 
 convert_yml_to_json.sh

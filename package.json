@@ -96,7 +96,13 @@
       }
     ]
   },
+  "scripts": {
+    "build": "python3 process_jinja_templates.py && bash convert_yml_to_json.sh",
+    "package:extension": "vsce package",
+    "vscode:prepublish": "npm run build"
+  },
   "devDependencies": {
+    "@vscode/vsce": "^3.9.2",
     "js-yaml": "^4.1.0"
   }
 }
