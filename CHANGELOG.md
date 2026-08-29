@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.7.7] - 2026-08-29
+
+- Fix some competing patterns
+
 ## [0.7.6] - 2026-08-28
 
 - Highlight pragma directives and contents

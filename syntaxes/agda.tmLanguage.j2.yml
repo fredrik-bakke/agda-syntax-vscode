@@ -36,7 +36,7 @@ keyEquivalent: ^~A
 {% set INSTANCE_ARGUMENT_START = token_boundary('⦃') %}
 {% set INSTANCE_ARGUMENT_END = token_boundary('⦄') %}
 {% set PARAMETER_START = '(?:[({]|' + INSTANCE_ARGUMENT_START + ')' %}
-{% set VARIABLE_SIGNATURE_CHAR = '(?:[^\\n:)}⦄]|(?<!^|' + token_boundary_char + ')[:⦄]|[:⦄](?!$|' + token_boundary_char + '))' %}
+{% set VARIABLE_SIGNATURE_CHAR = '(?:[^\\n:)}⦄]|(?<!^|' + token_boundary_char + ')[:⦄]|(?<=^|' + token_boundary_char + ')[:⦄](?!$|' + token_boundary_char + '))' %}
 
 {% set NUMERIC_INTEGER = '-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*)' %}
 {% set NUMERIC_FLOAT = '-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)' %}
@@ -47,30 +47,31 @@ keyEquivalent: ^~A
 {% set PRAGMA_KEYWORD = '(?:BUILTIN|CATCHALL|COMPILE|DISPLAY|ETA(?:_EQUALITY)?|FOREIGN|IMPOSSIBLE|INCOHERENT|INJECTIVE(?:_FOR_INFERENCE)?|INLINE|LINE|MEASURE|NOINLINE|NON_(?:COVERING|TERMINATING)|NOT_PROJECTION_LIKE|NO_(?:POSITIVITY|TERMINATION|UNIVERSE)_CHECK|OPTIONS|OVERLAP(?:PABLE|PING|S)|POLARITY|REWRITE|STATIC|TERMINATING|WARNING_ON_(?:IMPORT|USAGE))' %}
 {% set DECLARATION_START_KEYWORD = '(?:open|abstract|constructor|data|field|infix[lr]?|instance|macro|module|mutual|opaque|postulate|primitive|private|record|variable|where)' %}
 {% set RESERVED_NAME_PART = '(?:abstract|(?:co)?inductive|data|do|(?:no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(?:Term)?|record|renaming|rewrite|syntax|tactic|unquote(?:Decl|Def)?|unfolding|using|variable|where|with)' %}
-{% set NAME_PART = '(?!\'|--)(?!' + NUMERIC_LITERAL + '(?=$|' + name_part_boundary_char + '))[^' + NAME_PART_BOUNDARY_CHARS + ']+' %}
+{% set NAME_PART = '(?!\'|--)(?!' + NUMERIC_LITERAL + '(?=$|' + name_part_boundary_char + '))[^' + NAME_PART_BOUNDARY_CHARS + ']++' %}
 {% set name_part = name_part_boundary(NAME_PART) %}
-{% set NAME_TOKEN = '_?' + NAME_PART + '(_' + NAME_PART + ')*_?' %}
+{% set NAME_TOKEN = '_?+' + NAME_PART + '(_' + NAME_PART + ')*+_?+' %}
 {% set name_token = token_boundary(NAME_TOKEN) %}
-{% set NAME_QUALIFIED = NAME_TOKEN + '(\.' + NAME_TOKEN + ')*' %}
+{% set NAME_QUALIFIED = NAME_TOKEN + '(\.' + NAME_TOKEN + ')*+' %}
 {% set name_qualified = name_qualified_boundary(NAME_QUALIFIED) %}
-{% set NAME_TOKEN_NC = '_?' + NAME_PART + '(?:_' + NAME_PART + ')*_?' %}
-{% set NAME_QUALIFIED_NC = NAME_TOKEN_NC + '(?:\.' + NAME_TOKEN_NC + ')*' %}
+{% set NAME_TOKEN_NC = '_?+' + NAME_PART + '(?:_' + NAME_PART + ')*+_?+' %}
+{% set NAME_QUALIFIED_NC = NAME_TOKEN_NC + '(?:\.' + NAME_TOKEN_NC + ')*+' %}
 {% set IMPORTED_MODULE_CONTINUATION = 'module\s+' + NAME_QUALIFIED + '\s*(?=[);]|to' + token_boundary_end + ')' %}
 {% set AGDA_MODALITY = '(?:irr|irrelevant|shirr|shape-irrelevant|relevant|0|erased|ω|♭|\+\+|\+|-|mixed|unused)' %}
-{% set DECLARATION_ATTRIBUTES = '(?:@(?:' + AGDA_MODALITY + '|' + NAME_QUALIFIED_NC + ')\s+)*' %}
+{% set DECLARATION_ATTRIBUTES = '(?:@(?:0|' + NAME_QUALIFIED_NC + ')\s++)*+' %}
 {% set TERM_SIGNATURE_FORBIDDEN_START = '(?:' + DECLARATION_SEPARATOR + '|' + RESERVED_NAME_PART + token_boundary_end + '|' + token_boundary('(?:[\\λ∀]|->|→)') + ')' %}
 {% set TERM_SIGNATURE_NAME = '(?:\.{1,2}\s*)?(?!\s*' + TERM_SIGNATURE_FORBIDDEN_START + ')' + NAME_TOKEN_NC %}
-{% set TERM_SIGNATURE_NAME_LIST = TERM_SIGNATURE_NAME + '(?:\s+' + TERM_SIGNATURE_NAME + ')*' %}
+{% set TERM_SIGNATURE_NAME_LIST = TERM_SIGNATURE_NAME + '(?:\s++' + TERM_SIGNATURE_NAME + ')*+' %}
 {% set TERM_SIGNATURE_HIDDEN_NAMES = '(?:\.{1,2}\s*)?(?:\{\{\s*' + TERM_SIGNATURE_NAME_LIST + '\s*\}\}|\{\s*' + TERM_SIGNATURE_NAME_LIST + '\s*\}|' + INSTANCE_ARGUMENT_START + '\s*' + TERM_SIGNATURE_NAME_LIST + '\s*' + INSTANCE_ARGUMENT_END + ')' %}
 {% set TERM_SIGNATURE_ARGUMENT = '(?:' + TERM_SIGNATURE_HIDDEN_NAMES + '|' + TERM_SIGNATURE_NAME + '|_)' %}
-{% set TERM_SIGNATURE_NAMES = '(?:' + TERM_SIGNATURE_ARGUMENT + '\s*)+?' %}
+{% set TERM_SIGNATURE_NAMES = '(?:' + TERM_SIGNATURE_ARGUMENT + '\s*+)++' %}
 {% set TERM_SIGNATURE_START = DECLARATION_ATTRIBUTES + '(?!\s*' + TERM_SIGNATURE_FORBIDDEN_START + ')' + TERM_SIGNATURE_NAMES + token_boundary(':') %}
 {% set BINDER_LABEL = '(?!' + DECLARATION_SEPARATOR + '|' + ARROW_TOKEN + '|' + LAMBDA_TOKEN + '|' + FORALL_TOKEN + '|' + INSTANCE_ARGUMENT_START + '|' + INSTANCE_ARGUMENT_END + ')(?!(?:constructor|' + RESERVED_NAME_PART + ')' + token_boundary_end + ')(?:' + NAME_TOKEN + '|_)' %}
 {% set BINDER_LABELS = '(?:(?:\.|@' + AGDA_MODALITY + ')\s*)*' + BINDER_LABEL + '(?:\s+' + BINDER_LABEL + ')*' %}
 {% set BINDER_CHAR = '(?:(?!' + token_boundary(':') + ')[^(){}⦃⦄\\n])' %}
-{% set BINDER_GROUP = '(?:\(' + BINDER_CHAR + '*\)|\{' + BINDER_CHAR + '*\}|' + INSTANCE_ARGUMENT_START + BINDER_CHAR + '*' + INSTANCE_ARGUMENT_END + ')' %}
-{% set BINDER_NESTED_GROUP = '\((?:' + BINDER_CHAR + '|' + BINDER_GROUP + ')*\)' %}
-{% set TYPED_PARAMETER_PATTERN = '\s*(?:(?!\s+' + ARROW_TOKEN + '|' + LAMBDA_TOKEN + ')(?:' + BINDER_CHAR + '|' + BINDER_NESTED_GROUP + '|' + BINDER_GROUP + '))*\s*' %}
+{% set BINDER_HIDDEN_GROUP = '(?:\{' + BINDER_CHAR + '*+\}|' + INSTANCE_ARGUMENT_START + BINDER_CHAR + '*+' + INSTANCE_ARGUMENT_END + ')' %}
+{% set BINDER_GROUP = '(?:\(' + BINDER_CHAR + '*+\)|' + BINDER_HIDDEN_GROUP + ')' %}
+{% set BINDER_NESTED_GROUP = '\((?:' + BINDER_CHAR + '|' + BINDER_GROUP + ')*+\)' %}
+{% set TYPED_PARAMETER_PATTERN = '\s*(?:(?!\s+' + ARROW_TOKEN + '|' + LAMBDA_TOKEN + ')(?:' + BINDER_CHAR + '|' + BINDER_NESTED_GROUP + '|' + BINDER_HIDDEN_GROUP + '))*+\s*' %}
 
 {% set absurd_pattern = '\(\s*\)' %}
 
