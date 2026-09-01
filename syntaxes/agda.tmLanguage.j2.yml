@@ -154,6 +154,9 @@ repository:
     beginCaptures: { 1: { name: keyword.control.agda } }
     endCaptures: { 1: { name: keyword.control.agda } }
     patterns:
+      - match: (\s*){{ token_boundary('(infix[lr]?)') }}
+        captures:
+          2: { name: keyword.control.infix.agda }
       - include: "#telescope_term"
 
   visible_untyped_parameter_declaration:
@@ -1006,6 +1009,7 @@ repository:
     patterns:
       - include: "#hole"
       - include: "#record_expression"
+      - include: "#type_let_expression"
       - include: "#local_module_declaration"
       - include: "#local_open_declaration"
       - include: "#forall_abstraction_start"
