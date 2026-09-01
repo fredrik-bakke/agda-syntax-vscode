@@ -528,6 +528,7 @@ repository:
             match: \.{1,2}
           - name: punctuation.section.parens.agda
             match: \{\{|\}\}|[{}]|{{ INSTANCE_ARGUMENT_START }}|{{ INSTANCE_ARGUMENT_END }}
+          - include: "#agda_builtin"
           - include: "#term_name"
       6: &term_signature_colon_capture
         name: keyword.operator.colon.agda
