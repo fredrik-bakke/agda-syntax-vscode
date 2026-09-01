@@ -7,3 +7,8 @@ node_modules
 syntaxes/agda.tmLanguage.yml
 syntaxes/agda.tmLanguage.json
 syntaxes/agda-*-injection.tmLanguage.json
+
+# Python Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[codz]
+*$py.class
