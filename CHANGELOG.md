@@ -2,8 +2,7 @@
 
 ## [0.7.8]
 
-- Add non-native `Type` highlighting as a sort
-- Add missing sorts `SizeUniv` and `primLockUniv`
+- Refine sort highlighting, and add non-native `Type`
 
 ## [0.7.7] - 2026-08-29
 
