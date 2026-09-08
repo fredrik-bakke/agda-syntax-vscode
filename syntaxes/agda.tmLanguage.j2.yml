@@ -876,13 +876,17 @@ repository:
   agda_builtin:
     patterns:
       - name: support.type.sort.agda
-        match: {{ token_boundary('((SSet|Set|Prop)(?:ω)?([0-9]*|[₀-₉]*))') }}
-      - name: support.type.level.agda
+        match: {{ token_boundary('((S?Set|Prop)(?:ω)?([0-9]*|[₀-₉]*))') }}
+      - name: support.type.sort.agda
         match:  {{ token_boundary('LevelUniv') }}
-      - name: support.type.interval.agda
+      - name: support.type.sort.agda
         match:  {{ token_boundary('Level') }}
-      - name: support.type.interval.agda
+      - name: support.type.sort.agda
         match:  {{ token_boundary('IUniv') }}
+      - name: support.type.sort.agda
+        match:  {{ token_boundary('SizeUniv') }}
+      - name: support.type.sort.agda
+        match:  {{ token_boundary('primLockUniv') }}
       # - name: support.class.interval.agda
       #   match:  {{ token_boundary('I') }}
 
