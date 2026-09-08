@@ -40,32 +40,31 @@ keyEquivalent: ^~A
 
 {% set NUMERIC_INTEGER = '-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:_[0-9]+)*)' %}
 {% set NUMERIC_FLOAT = '-?(?:[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)' %}
-{% set NUMERIC_LITERAL = '(?:' + NUMERIC_FLOAT + '|' + NUMERIC_INTEGER + ')' %}
+{% set NUMERIC_NAME_PART = '-?(?:0[xX]\h+|0[bB][01]+|[0-9]+(?:[eE][+-]?[0-9]+)?)' %}
 {% set ESCAPE_CODE = '[0-9]+|0[xX]\h+|a|b|t|n|v|f|\\\\|\'|"|NUL|SOH|STX|ETX|EOT|ENQ|ACK|BEL|BS|HT|LF|VT|FF|CR|SO|SI|DLE|DC1|DC2|DC3|DC4|NAK|SYN|ETB|CAN|EM|SUB|ESC|FS|GS|RS|US|SP|DEL' %}
 {% set ESCAPE_CONTROL_CODE = '\^[A-Z@\[\]\\\^_]' %}
 {% set STRING_CONTINUATION_START = '\\\\(?:\s*\\\\|' + ESCAPE_CODE + '|' + ESCAPE_CONTROL_CODE + ')' %}
 {% set PRAGMA_KEYWORD = '(?:BUILTIN|CATCHALL|COMPILE|DISPLAY|ETA(?:_EQUALITY)?|FOREIGN|IMPOSSIBLE|INCOHERENT|INJECTIVE(?:_FOR_INFERENCE)?|INLINE|LINE|MEASURE|NOINLINE|NON_(?:COVERING|TERMINATING)|NOT_PROJECTION_LIKE|NO_(?:POSITIVITY|TERMINATION|UNIVERSE)_CHECK|OPTIONS|OVERLAP(?:PABLE|PING|S)|POLARITY|REWRITE|STATIC|TERMINATING|WARNING_ON_(?:IMPORT|USAGE))' %}
 {% set DECLARATION_START_KEYWORD = '(?:open|abstract|constructor|data|field|infix[lr]?|instance|macro|module|mutual|opaque|postulate|primitive|private|record|variable|where)' %}
 {% set RESERVED_NAME_PART = '(?:abstract|(?:co)?inductive|data|do|(?:no-)?eta-equality|field|forall|hiding|import|in|infix[lr]?|instance|interleaved|let|macro|module|mutual|opaque|open|overlap|pattern|postulate|primitive|private|public|quote(?:Term)?|record|renaming|rewrite|syntax|tactic|unquote(?:Decl|Def)?|unfolding|using|variable|where|with)' %}
-{% set NAME_PART = '(?!\'|--)(?!' + NUMERIC_LITERAL + '(?=$|' + name_part_boundary_char + '))[^' + NAME_PART_BOUNDARY_CHARS + ']++' %}
+{% set NAME_PART = '(?!\'|--|' + NUMERIC_NAME_PART + '(?=$|' + name_part_boundary_char + '))[^' + NAME_PART_BOUNDARY_CHARS + ']++' %}
 {% set name_part = name_part_boundary(NAME_PART) %}
-{% set NAME_TOKEN = '_?+' + NAME_PART + '(_' + NAME_PART + ')*+_?+' %}
+{% set NAME_TOKEN = '_?+(?:' + NAME_PART + '_?+)++' %}
 {% set name_token = token_boundary(NAME_TOKEN) %}
-{% set NAME_QUALIFIED = NAME_TOKEN + '(\.' + NAME_TOKEN + ')*+' %}
+{% set NAME_QUALIFIED = NAME_TOKEN + '(?:\.' + NAME_TOKEN + ')*+' %}
 {% set name_qualified = name_qualified_boundary(NAME_QUALIFIED) %}
-{% set NAME_TOKEN_NC = '_?+' + NAME_PART + '(?:_' + NAME_PART + ')*+_?+' %}
-{% set NAME_QUALIFIED_NC = NAME_TOKEN_NC + '(?:\.' + NAME_TOKEN_NC + ')*+' %}
 {% set IMPORTED_MODULE_CONTINUATION = 'module\s+' + NAME_QUALIFIED + '\s*(?=[);]|to' + token_boundary_end + ')' %}
 {% set AGDA_MODALITY = '(?:irr|irrelevant|shirr|shape-irrelevant|relevant|0|erased|ω|♭|\+\+|\+|-|mixed|unused)' %}
-{% set DECLARATION_ATTRIBUTES = '(?:@(?:0|' + NAME_QUALIFIED_NC + ')\s++)*+' %}
-{% set TERM_SIGNATURE_FORBIDDEN_START = '(?:' + DECLARATION_SEPARATOR + '|' + RESERVED_NAME_PART + token_boundary_end + '|' + token_boundary('(?:[\\λ∀]|->|→)') + ')' %}
-{% set TERM_SIGNATURE_NAME = '(?:\.{1,2}\s*)?(?!\s*' + TERM_SIGNATURE_FORBIDDEN_START + ')' + NAME_TOKEN_NC %}
+{% set DECLARATION_ATTRIBUTES = '(?:@(?:0|' + NAME_QUALIFIED + ')\s++)*+' %}
+{% set TERM_SIGNATURE_FORBIDDEN_START = '(?:' + token_boundary_start + '(?:[:=\\λ∀→]|->)|' + RESERVED_NAME_PART + ')' + token_boundary_end %}
+{% set TERM_SIGNATURE_NAME = '(?:\.{1,2}\s*)?(?!' + TERM_SIGNATURE_FORBIDDEN_START + ')' + NAME_TOKEN %}
 {% set TERM_SIGNATURE_NAME_LIST = TERM_SIGNATURE_NAME + '(?:\s++' + TERM_SIGNATURE_NAME + ')*+' %}
 {% set TERM_SIGNATURE_HIDDEN_NAMES = '(?:\.{1,2}\s*)?(?:\{\{\s*' + TERM_SIGNATURE_NAME_LIST + '\s*\}\}|\{\s*' + TERM_SIGNATURE_NAME_LIST + '\s*\}|' + INSTANCE_ARGUMENT_START + '\s*' + TERM_SIGNATURE_NAME_LIST + '\s*' + INSTANCE_ARGUMENT_END + ')' %}
 {% set TERM_SIGNATURE_ARGUMENT = '(?:' + TERM_SIGNATURE_HIDDEN_NAMES + '|' + TERM_SIGNATURE_NAME + '|_)' %}
 {% set TERM_SIGNATURE_NAMES = '(?:' + TERM_SIGNATURE_ARGUMENT + '\s*+)++' %}
-{% set TERM_SIGNATURE_START = DECLARATION_ATTRIBUTES + '(?!\s*' + TERM_SIGNATURE_FORBIDDEN_START + ')' + TERM_SIGNATURE_NAMES + token_boundary(':') %}
-{% set BINDER_LABEL = '(?!' + DECLARATION_SEPARATOR + '|' + ARROW_TOKEN + '|' + LAMBDA_TOKEN + '|' + FORALL_TOKEN + '|' + INSTANCE_ARGUMENT_START + '|' + INSTANCE_ARGUMENT_END + ')(?!(?:constructor|' + RESERVED_NAME_PART + ')' + token_boundary_end + ')(?:' + NAME_TOKEN + '|_)' %}
+{% set TERM_SIGNATURE_START = DECLARATION_ATTRIBUTES + TERM_SIGNATURE_NAMES + token_boundary(':') %}
+{% set BINDER_FORBIDDEN_START = '(?:' + token_boundary_start + '(?:[:=→∀⦃⦄]|->)|constructor|' + RESERVED_NAME_PART + ')' + token_boundary_end %}
+{% set BINDER_LABEL = '(?!' + BINDER_FORBIDDEN_START + '|' + LAMBDA_TOKEN + ')(?:' + NAME_TOKEN + '|_)' %}
 {% set BINDER_LABELS = '(?:(?:\.|@' + AGDA_MODALITY + ')\s*)*' + BINDER_LABEL + '(?:\s+' + BINDER_LABEL + ')*' %}
 {% set BINDER_CHAR = '(?:(?!' + token_boundary(':') + ')[^(){}⦃⦄\\n])' %}
 {% set BINDER_HIDDEN_GROUP = '(?:\{' + BINDER_CHAR + '*+\}|' + INSTANCE_ARGUMENT_START + BINDER_CHAR + '*+' + INSTANCE_ARGUMENT_END + ')' %}
@@ -99,7 +98,7 @@ repository:
       - include: "#type_token"
 
   local_module_declaration:
-    match: {{ token_boundary('(?:(open)(\s+))?(module)') }}(\s+)({{ DECLARATION_ATTRIBUTES }})({{ NAME_QUALIFIED_NC }})(\s*){{ token_boundary('(=)') }}
+    match: {{ token_boundary_start }}(?:(open)(\s+))?(module)(\s+)({{ DECLARATION_ATTRIBUTES }})({{ NAME_QUALIFIED }})(\s*){{ token_boundary('(=)') }}
     captures:
       1: { name: keyword.control.import.agda }
       3: { name: keyword.control.module.agda }
@@ -113,7 +112,7 @@ repository:
       8: { name: keyword.operator.assignment.agda }
 
   local_open_declaration:
-    match: {{ token_boundary('(open)') }}(\s+)(?!(?:import|module){{ token_boundary_end }})({{ NAME_QUALIFIED }})
+    match: {{ token_boundary_start }}(open)(\s+)(?!(?:import|module){{ token_boundary_end }})({{ NAME_QUALIFIED }})
     captures:
       1: { name: keyword.control.import.agda }
       3:
@@ -196,7 +195,7 @@ repository:
   data_declaration:
     name: meta.declaration.data.agda
     contentName: meta.declaration.parameters.data.agda
-    begin: {{ declaration_boundary_start }}(\s*)(data){{ token_boundary_end }}(\s+)({{ DECLARATION_ATTRIBUTES }})({{ NAME_TOKEN_NC }}|_){{ token_boundary_end }}
+    begin: {{ declaration_boundary_start }}(\s*)(data){{ token_boundary_end }}(\s+)({{ DECLARATION_ATTRIBUTES }})({{ NAME_TOKEN }}|_){{ token_boundary_end }}
     end: (?:^\s*)?({{ token_boundary('where') }})|{{ statement_boundary_end }}|^(?=\2\S)
     beginCaptures:
       3: { name: storage.type.class.data.agda }
@@ -224,7 +223,7 @@ repository:
       1: { name: keyword.control.where.data.agda }
     patterns:
       - include: "#agda_comments"
-      - begin: ^(\s+)({{ DECLARATION_ATTRIBUTES }})({{ NAME_TOKEN_NC }}|_){{ token_boundary_end }}
+      - begin: ^(\s+)({{ DECLARATION_ATTRIBUTES }})({{ NAME_TOKEN }}|_){{ token_boundary_end }}
         end: (?={{ token_boundary('(?::|where)') }})
         beginCaptures:
           2: *declaration_attributes_capture
@@ -240,7 +239,7 @@ repository:
   record_declaration:
     name: meta.declaration.record.agda
     contentName: meta.declaration.parameters.record.agda
-    begin: {{ declaration_boundary_start }}(\s*)(record){{ token_boundary_end }}(?!\s*(?:\{|where{{ token_boundary_end }}))(\s+)({{ DECLARATION_ATTRIBUTES }})({{ NAME_TOKEN_NC }}|_){{ token_boundary_end }}
+    begin: {{ declaration_boundary_start }}(\s*)(record){{ token_boundary_end }}(?!\s*(?:\{|where{{ token_boundary_end }}))(\s+)({{ DECLARATION_ATTRIBUTES }})({{ NAME_TOKEN }}|_){{ token_boundary_end }}
     end: (?:^\s*)?({{ token_boundary('where') }})|{{ statement_boundary_end }}|^(?=\2\S)
     beginCaptures:
       3: { name: storage.type.class.record.agda }
@@ -268,7 +267,7 @@ repository:
       1: { name: keyword.control.where.record.agda }
     patterns:
       - include: "#agda_comments"
-      - begin: ^(\s+)(?!\s*(?:where|:){{ token_boundary_end }})({{ DECLARATION_ATTRIBUTES }})({{ NAME_TOKEN_NC }}|_){{ token_boundary_end }}
+      - begin: ^(\s+)(?!\s*(?:where|:){{ token_boundary_end }})({{ DECLARATION_ATTRIBUTES }})({{ NAME_TOKEN }}|_){{ token_boundary_end }}
         end: (?={{ token_boundary('(?::|where)') }})
         beginCaptures:
           2: *declaration_attributes_capture
@@ -292,7 +291,7 @@ repository:
 
   open_as_clause:
     patterns:
-      - match: {{ token_boundary('(as)') }}(\s+)({{ NAME_QUALIFIED }}){{ token_boundary_end }}
+      - match: {{ token_boundary_start }}(as)(\s+)({{ NAME_QUALIFIED }}){{ token_boundary_end }}
         captures:
           1: { name: keyword.other.as.agda }
           3:
@@ -303,7 +302,7 @@ repository:
         name: keyword.other.as.agda
 
   open_module_statement:
-    begin: {{ statement_boundary_start }}(\s*)(open){{ token_boundary_end }}(\s+)(module){{ token_boundary_end }}(\s+)({{ DECLARATION_ATTRIBUTES }})({{ NAME_QUALIFIED_NC }})
+    begin: {{ statement_boundary_start }}(\s*)(open)(\s+)(module)(\s+)({{ DECLARATION_ATTRIBUTES }})({{ NAME_QUALIFIED }})
     beginCaptures:
       3: { name: keyword.control.import.agda }
       5: { name: keyword.control.module.agda }
@@ -353,7 +352,7 @@ repository:
     while: (^|\G)\2(?=\s)(?:(?=\s*{{ IMPORTED_MODULE_CONTINUATION }})|(?!\s*{{ DECLARATION_START_KEYWORD }}{{ token_boundary_end }}))
     patterns:
       - include: "#open_statement_content"
-      - match: {{ token_boundary('(import)') }}(\s+)({{ NAME_QUALIFIED }})
+      - match: {{ token_boundary_start }}(import)(\s+)({{ NAME_QUALIFIED }})
         captures:
           1: { name: keyword.control.import.agda }
           3:
@@ -362,7 +361,7 @@ repository:
               - include: "#qualified_name"
       - match: {{ token_boundary('import') }}
         name: keyword.control.import.agda
-      - match: {{ token_boundary('(module)') }}(\s+)({{ NAME_QUALIFIED }})(?=\s*{{ token_boundary('=') }})
+      - match: {{ token_boundary_start }}(module)(\s+)({{ NAME_QUALIFIED }})(?=\s*{{ token_boundary('=') }})
         captures:
           1: { name: keyword.control.module.agda }
           3:
@@ -516,7 +515,7 @@ repository:
             match: {{ token_boundary('((?!\.)' + token_boundary_char + ')+') }}
 
   term_type_signature_colon_on_first_line:
-    begin: (?:{{ statement_boundary_start }}|{{ where_boundary }})(\s*)(?:(let)\s+)?({{ DECLARATION_ATTRIBUTES }})(?!{{ NON_DECLARATION_COLON_CHAR }}*{{ token_boundary('=') }})(?!\s*{{ TERM_SIGNATURE_FORBIDDEN_START }})({{ TERM_SIGNATURE_NAMES }}){{ token_boundary('(:)') }}
+    begin: (?:{{ statement_boundary_start }}|{{ where_boundary }})(\s*)(?:(let)\s+)?({{ DECLARATION_ATTRIBUTES }})(?!{{ NON_DECLARATION_COLON_CHAR }}*{{ token_boundary('=') }})({{ TERM_SIGNATURE_NAMES }}){{ token_boundary('(:)') }}
     end: (?=;)|(?:^|\G(?<!\S))(?:(?=\s*(?:data|record){{ token_boundary_end }})|(?=\s*(?!let{{ token_boundary_end }})(?:{{ TERM_SIGNATURE_NAME }}|_){{ token_boundary_end }}{{ NON_DECLARATION_COLON_CHAR }}*{{ token_boundary('=') }})|(?!(?:\2(?=\s)|(?={{ STRING_CONTINUATION_START }})|(?=\s*{{ TERM_SIGNATURE_START }}))))
     name: meta.declaration.function.agda
     beginCaptures:
@@ -539,7 +538,7 @@ repository:
       - include: "#type"
 
   term_type_signature_header:
-    match: (?:^|\G(?<!\S))(\s*)({{ DECLARATION_ATTRIBUTES }})(?!\s*{{ TERM_SIGNATURE_FORBIDDEN_START }})({{ TERM_SIGNATURE_NAMES }}){{ token_boundary('(:)') }}
+    match: (?:^|\G(?<!\S))(\s*)({{ DECLARATION_ATTRIBUTES }})({{ TERM_SIGNATURE_NAMES }}){{ token_boundary('(:)') }}
     captures:
       2: *declaration_attributes_capture
       3: *term_signature_names_capture
@@ -880,30 +879,19 @@ repository:
       - name: support.type.sort.agda
         match: {{ token_boundary('((S?Set|Prop|S?Type)(?:ω)?([0-9]*|[₀-₉]*))') }}
       - name: support.type.sort.agda
-        match:  {{ token_boundary('LevelUniv') }}
-      - name: support.type.sort.agda
-        match:  {{ token_boundary('Level') }}
-      - name: support.type.sort.agda
-        match:  {{ token_boundary('IUniv') }}
-      - name: support.type.sort.agda
-        match:  {{ token_boundary('SizeUniv') }}
-      - name: support.type.sort.agda
-        match:  {{ token_boundary('primLockUniv') }}
+        match: {{ token_boundary('(?:Level(?:Univ)?|(?:I|Size|primLock)Univ)') }}
+        # match: {{ token_boundary('(?:Level(?:Univ)?|IUniv|SizeUniv|primLockUniv)') }}
       # - name: support.class.interval.agda
       #   match:  {{ token_boundary('I') }}
 
   agda_simple_blocks:
+    begin: {{ statement_boundary_start }}(\s*)(abstract|field|instance|macro|mutual|opaque|postulate|primitive|private|variable|where){{ token_boundary_end }}
+    while: (^|\G)(?:\2(?=\s)|\s*$)
+    name: meta.block.$3.agda
+    beginCaptures:
+      3: { name: keyword.control.$3.agda }
     patterns:
-{% for block_keyword in ["abstract", "field", "instance", "macro", "mutual", "opaque", "postulate", "primitive", "private", "variable", "where"] %} # TODO: do, let
-      - comment: {{ block_keyword }} block #TODO: continue working on this
-        begin: {{ statement_boundary_start }}(\s*)({{ block_keyword }}){{ token_boundary_end }}
-        while: (^|\G)(?:\2(?=\s)|\s*$)
-        name: meta.block.{{block_keyword}}.agda
-        beginCaptures:
-          3: { name: keyword.control.{{block_keyword}}.agda }
-        patterns:
-          - include: "#the_usual"
-{% endfor %}
+      - include: "#the_usual"
 
   agda_block_declarations:
     patterns:
@@ -931,7 +919,7 @@ repository:
       - include: "#agda_comments"
 
   unquote_data_declaration:
-    match: {{ token_boundary('(unquoteDecl)') }}(\s+){{ token_boundary('(data)') }}
+    match: {{ token_boundary_start }}(unquoteDecl)(\s+)(data){{ token_boundary_end }}
     captures:
       1: { name: keyword.control.agda }
       3: { name: storage.type.class.data.agda }
