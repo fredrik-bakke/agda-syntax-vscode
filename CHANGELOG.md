@@ -1,8 +1,9 @@
 # Changelog
 
-## [0.7.8]
+## [0.7.8] 2026-09-08
 
 - Refine sort highlighting, and add non-native `Type`
+- Highlight untypes parameters in `data` and `record` telescopes after newlines
 
 ## [0.7.7] - 2026-08-29
 
