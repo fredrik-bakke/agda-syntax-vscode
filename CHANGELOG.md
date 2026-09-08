@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.7.8]
+
+- Add non-native `Type` highlighting as a sort
+- Add missing sorts `SizeUniv` and `primLockUniv`
+
 ## [0.7.7] - 2026-08-29
 
 - Fix some competing patterns

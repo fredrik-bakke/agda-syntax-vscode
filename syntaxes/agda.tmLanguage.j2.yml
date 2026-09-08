@@ -876,7 +876,7 @@ repository:
   agda_builtin:
     patterns:
       - name: support.type.sort.agda
-        match: {{ token_boundary('((S?Set|Prop)(?:ω)?([0-9]*|[₀-₉]*))') }}
+        match: {{ token_boundary('((S?Set|Prop|S?Type)(?:ω)?([0-9]*|[₀-₉]*))') }}
       - name: support.type.sort.agda
         match:  {{ token_boundary('LevelUniv') }}
       - name: support.type.sort.agda
