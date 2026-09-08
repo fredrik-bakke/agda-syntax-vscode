@@ -88,6 +88,8 @@ repository:
   declaration_telescope:
     patterns:
       - include: "#agda_comments"
+      - name: invalid.illegal.keyword.agda
+        match: {{ FORALL_TOKEN }}
       - include: "#multiline_parameter_declaration"
       - include: "#binder_declaration"
       - include: "#typed_parameter_parenthesized_expression"

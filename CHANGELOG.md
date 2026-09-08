@@ -4,6 +4,7 @@
 
 - Refine sort highlighting, and add non-native `Type`
 - Highlight untypes parameters in `data` and `record` telescopes after newlines
+- Highlight `∀` as invalid in telescopes
 
 ## [0.7.7] - 2026-08-29
 
