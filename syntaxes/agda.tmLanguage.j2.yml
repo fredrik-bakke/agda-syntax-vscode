@@ -80,7 +80,7 @@ patterns:
 
 repository:
   data_record_telescope:
-    begin: \G(?=\s*\S)
+    begin: \G(?!\s*where{{ token_boundary_end }})(?:(?=\s*\S)|(?<=\S)(?=\s*$))
     end: (?={{ token_boundary('(?::|where)') }})
     patterns:
       - include: "#declaration_telescope"
@@ -160,7 +160,7 @@ repository:
       - include: "#telescope_term"
 
   visible_untyped_parameter_declaration:
-    match: (?<!\s)(?<!->)(?<!→)(\s*){{ token_boundary_start }}(?!{{ PARAMETER_START }})(?!(?:{{ DECLARATION_START_KEYWORD }}|module){{ token_boundary_end }})({{ BINDER_LABELS }})(?=\s*(?:{{ PARAMETER_START }}|{{ token_boundary('(?::|where|=)') }}))
+    match: (?<!\s)(?<!->)(?<!→)(\s*){{ token_boundary_start }}(?!{{ PARAMETER_START }})(?!(?:{{ DECLARATION_START_KEYWORD }}|module){{ token_boundary_end }})({{ BINDER_LABELS }})(?=\s*(?:$|{{ PARAMETER_START }}|{{ token_boundary('(?::|where|=)') }}))
     captures:
       2:
         name: meta.declaration.parameters.explicit.pattern.agda
